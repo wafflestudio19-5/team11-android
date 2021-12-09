@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        binding.statusCodeText.text = response
+        //binding.statusCodeText.text = response
 
     }
 }
