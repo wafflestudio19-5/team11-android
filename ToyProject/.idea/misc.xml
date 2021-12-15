@@ -7,8 +7,11 @@
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.35625" />
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/drawable/login_btn.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/drawable/btn_login.xml" value="0.2390625" />
+        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_univ_certify.xml" value="0.22291666666666668" />
+        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/item_spinner_year.xml" value="0.22291666666666668" />
       </map>
     </option>
   </component>
