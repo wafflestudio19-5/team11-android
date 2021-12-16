@@ -14,6 +14,8 @@
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true" >
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity"/>
+        <activity android:name=".UnivCertifyActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
