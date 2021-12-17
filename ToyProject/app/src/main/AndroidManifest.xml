@@ -14,10 +14,10 @@
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true" >
         <activity android:name=".UnivCertifyActivity" />
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".SignupActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
