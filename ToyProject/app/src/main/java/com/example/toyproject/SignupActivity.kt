@@ -35,47 +35,56 @@ class SignupActivity: AppCompatActivity() {
         var emailChecked = false
         var nicknameChecked = false
 
+
+        // 아이디 중복확인 부분
         binding.idCheckButton.setOnClickListener {
             if(!idChecked) {
-                try {
-                    val result = service.checkId(binding.idEdit.text.toString())
-                    if (result.check) {
-                        idChecked = true
-                        binding.idCheckButton.text = "확인 완료"
-                    }
-                    Toast.makeText(this@SignupActivity, result.detail, Toast.LENGTH_LONG).show()
-                } catch (e : Exception) {
-                    Timber.d(e)
-                }
+                Timber.d(binding.idEdit.text.toString())
+                viewModel.checkID(binding.idEdit.text.toString())
             }
         }
+        viewModel.idCheckResult.observe(this, {
+            if(it.check=="True") {
+                idChecked = true
+                binding.idCheckButton.text = "확인 완료"
+            }
+            Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
+        })
+
+        // 이메일 중복확인 부분
         binding.emailCheckButton.setOnClickListener {
             if (!emailChecked) {
-                try {
-                    val result = service.checkEmail(binding.emailEdit.text.toString())
-                    if (result.check) {
-                        emailChecked = true
-                        binding.emailCheckButton.text = "확인 완료"
-                    }
-                    Toast.makeText(this@SignupActivity, result.detail, Toast.LENGTH_LONG).show()
-                } catch (e: Exception) {
-                    Timber.d(e)
-                }
+                Timber.d(binding.emailEdit.text.toString())
+                viewModel.checkEmail(binding.emailEdit.text.toString())
             }
         }
+        viewModel.emailCheckResult.observe(this, {
+            if(it.check=="True") {
+                emailChecked = true
+                binding.emailCheckButton.text = "확인 완료"
+            }
+            Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
+        })
 
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
-            val param = Signup(binding.idEdit.text.toString(),
-                               binding.passwordEdit.text.toString(),
-                               binding.emailEdit.text.toString(),
-                               intent.getIntExtra("year", 2022),
-                               binding.nicknameEdit.text.toString())
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.signup(param)
+            if(idChecked && emailChecked) {
+                val param = Signup(binding.idEdit.text.toString(),
+                    binding.passwordEdit.text.toString(),
+                    binding.emailEdit.text.toString(),
+                    intent.getIntExtra("year", 2022),
+                    binding.nicknameEdit.text.toString(),
+                    intent.getStringExtra("university"),
+                    "이름"
+                )                   // TODO : UI 에서 이름 입력받기
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.signup(param)
+                }
+            }
+            else {
+                // TODO : 중복확인 해주세요 메시지 띄우기
             }
         }
-
         // signup 성공하면 MainActivity 시작하고, 켜져 있는 다른 액티비티(univCertify, login) 끄기
         viewModel.result.observe(this, {
             if(it=="success") {

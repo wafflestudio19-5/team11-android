@@ -49,8 +49,8 @@
             android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="학교 이름을 검색하세요." />
+            android:hint="학교 이름을 검색하세요."
+            android:minHeight="48dp" />
 
         <Button
             android:id="@+id/button"

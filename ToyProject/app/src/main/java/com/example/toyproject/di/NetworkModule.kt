@@ -1,5 +1,7 @@
 package com.example.toyproject.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.toyproject.BuildConfig
 import com.example.toyproject.network.Service
 import com.squareup.moshi.Moshi
@@ -7,7 +9,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,15 +34,21 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(sharedPreferences: SharedPreferences): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor{chain : Interceptor.Chain ->
+                val newRequest = chain.request().newBuilder()
+                val token = sharedPreferences.getString("token","nothing")
+                if(token!="nothing") {
+                    newRequest.addHeader("Authorization", "JWT $token")
+                }
+                chain.proceed(newRequest.build())}
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level =
                         if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
                         else HttpLoggingInterceptor.Level.NONE
-                }
-            )
+                })
             .build()
     }
 
@@ -56,6 +66,16 @@ object NetworkModule {
     @Singleton
     fun provideService(retrofit: Retrofit): Service {
         return retrofit.create(Service::class.java)
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object PreferenceModule {
+        @Provides
+        @Singleton
+        fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+            return context.getSharedPreferences("ToyProject.preference", Context.MODE_PRIVATE)
+        }
     }
 
 }

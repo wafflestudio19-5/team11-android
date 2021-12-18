@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         var response: String = "Hi"
 
+        /*
         val coroutine = scope.launch {
             try{
                 response = service.getStatusCode().detail
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+         */
 
         //binding.statusCodeText.text = response
 

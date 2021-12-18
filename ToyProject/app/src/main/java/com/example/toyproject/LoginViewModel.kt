@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
     fun login(param : Login) {
         service.login(param).enqueue(object : Callback<SignupResponse>{
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onResponse(

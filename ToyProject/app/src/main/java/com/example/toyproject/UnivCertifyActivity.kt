@@ -29,18 +29,15 @@ class UnivCertifyActivity  : AppCompatActivity() {
         binding = ActivityUnivCertifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel
-        CoroutineScope(Dispatchers.IO).launch {
-            // viewModel에서 list 받아와서 adapter에 넣는 부분
-            val univList = viewModel.loadUnivList()
-            val nameList = mutableListOf<String>()
-            for ((idx, name) in univList) {
-                nameList.add(idx-1, name)
-            }
-            val autoCompleteTextView = findViewById<AutoCompleteTextView>(binding.autoCompleteTextView.id)
-            val adapter = ArrayAdapter<String>(this@UnivCertifyActivity, android.R.layout.simple_dropdown_item_1line, nameList)
-            autoCompleteTextView.setAdapter(adapter)
-
+        // viewModel에서 list 받아와서 adapter에 넣는 부분
+        val univList = viewModel.loadUnivList()
+        val nameList = mutableListOf<String>()
+        for ((idx, name) in univList) {
+            nameList.add(idx-1, name)
         }
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(binding.autoCompleteTextView.id)
+        val adapter = ArrayAdapter<String>(this@UnivCertifyActivity, android.R.layout.simple_dropdown_item_1line, nameList)
+        autoCompleteTextView.setAdapter(adapter)
 
         val years = resources.getStringArray(R.array.years)
         val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, years)

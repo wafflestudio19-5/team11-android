@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityLoginBinding
 import com.example.toyproject.network.dto.Login
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity:AppCompatActivity() {
