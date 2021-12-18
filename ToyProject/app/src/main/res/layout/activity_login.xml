@@ -27,14 +27,14 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="대학 생활을 더 편하고 즐겁게"
+            android:text="@string/logo_text1"
             android:textSize="13sp" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="에브리타임"
+            android:text="@string/logo_text2"
             android:textColor="@color/everytime_red"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="아이디"
+            android:hint="@string/id"
             android:paddingTop="50sp"
             android:paddingBottom="10dp"
             app:boxCornerRadiusBottomEnd="30dp"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="비밀번호"
+            android:hint="@string/password"
             android:paddingBottom="20dp"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
@@ -90,7 +90,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_login"
             android:backgroundTint="@color/everytime_red"
-            android:text="에브리타임 로그인"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -102,7 +102,7 @@
             android:layout_marginRight="40dp"
             android:background="#00FFFFFF"
             android:backgroundTint="@color/white"
-            android:text="회원가입"
+            android:text="@string/signup"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />

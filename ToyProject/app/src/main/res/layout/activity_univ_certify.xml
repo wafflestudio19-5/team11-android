@@ -15,9 +15,9 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
             android:paddingTop="20sp"
-            android:text="학교 선택"
+            android:text="@string/choose_univ"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -26,9 +26,9 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
             android:paddingTop="20sp"
-            android:text="입학년도" />
+            android:text="@string/year" />
 
         <Spinner
             android:id="@+id/spinner_year"
@@ -41,16 +41,18 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
             android:paddingTop="20sp"
-            android:text="학교" />
+            android:text="@string/univ" />
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="학교 이름을 검색하세요."
-            android:minHeight="48dp" />
+            android:hint="@string/search_univ"
+            android:hintTextColor="#757575"
+            android:minHeight="48dp"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <Button
             android:id="@+id/button"
@@ -60,7 +62,7 @@
             android:layout_marginRight="20sp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/everytime_red"
-            android:text="다음"
+            android:text="@string/next"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="10sp" />
