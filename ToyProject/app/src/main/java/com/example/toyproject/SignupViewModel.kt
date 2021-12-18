@@ -37,6 +37,9 @@ class SignupViewModel @Inject constructor(
     private val _emailCheckResult  = MutableLiveData<RegisterCheck>()
     val emailCheckResult : LiveData<RegisterCheck> = _emailCheckResult
 
+    private val _nicknameCheckResult  = MutableLiveData<RegisterCheck>()
+    val nicknameCheckResult : LiveData<RegisterCheck> = _nicknameCheckResult
+
     lateinit var errorMessage : String
 
     fun signup(param : Signup) {
@@ -122,6 +125,34 @@ class SignupViewModel @Inject constructor(
                     _result.value = "fail"
                 }
 
+            }
+        })
+    }
+
+    fun checkNickname(nickname : String) {
+        service.checkNickname(nickname).clone().enqueue(object : Callback<RegisterCheck>{
+            override fun onFailure(call: Call<RegisterCheck>, t: Throwable) {
+                // TODO : 예상 밖 에러 처리
+            }
+
+            override fun onResponse(call: Call<RegisterCheck>, response: Response<RegisterCheck>) {
+                if(response.isSuccessful){
+                    _nicknameCheckResult.value = response.body()
+                }
+                else {
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                        } catch (e:Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    _result.value = "fail"
+                }
             }
         })
     }

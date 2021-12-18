@@ -35,8 +35,7 @@ class LoginActivity:AppCompatActivity() {
                 finish()
             }
             else {
-                Toast.makeText(this, "에러 메시지", Toast.LENGTH_LONG).show()
-                // TODO : 에러 메시지 띄우기
+                Toast.makeText(this, viewModel.errorMessage, Toast.LENGTH_LONG).show()
             }
         })
 

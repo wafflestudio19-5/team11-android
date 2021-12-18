@@ -39,6 +39,8 @@ class SignupActivity: AppCompatActivity() {
         var emailChecked = false
         var emailTemp = ""      // 중복확인 한 후에, 다시 email 수정하는 것 탐지 용도
         var nicknameChecked = false
+        var nicknameTemp = "" // 중복확인 한 후에, 다시 nickname 수정하는 것 탐지 용도
+
 
         // id editText 변화 탐지
         binding.idEdit.addTextChangedListener(object : TextWatcher{
@@ -69,11 +71,26 @@ class SignupActivity: AppCompatActivity() {
             }
         })
 
+        // nickname editText 변화 탐지
+        binding.nicknameEdit.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(p0.toString() != nicknameTemp) {
+                    nicknameChecked = false
+                    binding.nicknameCheckButton.text = "중복확인"
+                }
+            }
+        })
+
         // 아이디 중복확인 부분
         binding.idCheckButton.setOnClickListener {
             if(!idChecked) {
                 idTemp = binding.idEdit.text.toString()
-                viewModel.checkID(binding.idEdit.text.toString())
+                viewModel.checkID(idTemp)
             }
             else {
                 Toast.makeText(this, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
@@ -93,8 +110,8 @@ class SignupActivity: AppCompatActivity() {
         // 이메일 중복확인 부분
         binding.emailCheckButton.setOnClickListener {
             if (!emailChecked) {
-                Timber.d(binding.emailEdit.text.toString())
-                viewModel.checkEmail(binding.emailEdit.text.toString())
+                emailTemp = binding.emailEdit.text.toString()
+                viewModel.checkEmail(emailTemp)
             }
             else {
                 Toast.makeText(this, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
@@ -111,17 +128,38 @@ class SignupActivity: AppCompatActivity() {
             }
         })
 
+        // 닉네임 중복확인 부분
+        binding.nicknameCheckButton.setOnClickListener {
+            if(!nicknameChecked) {
+                nicknameTemp = binding.nicknameEdit.text.toString()
+                viewModel.checkNickname(nicknameTemp)
+            }
+            else {
+                Toast.makeText(this, "사용 가능한 닉네임입니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        viewModel.nicknameCheckResult.observe(this, {
+            if(it.check=="True") {
+                nicknameChecked = true
+                binding.nicknameCheckButton.text = "확인 완료"
+                Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
+            }
+            else {
+                Toast.makeText(this, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        })
+
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
-            if(idChecked && emailChecked) {         // TODO : 닉네임 중복확인 체크
+            if(idChecked && emailChecked && nicknameChecked) {
                 val param = Signup(binding.idEdit.text.toString(),
                     binding.passwordEdit.text.toString(),
                     binding.emailEdit.text.toString(),
                     intent.getIntExtra("year", 2022),
                     binding.nicknameEdit.text.toString(),
                     intent.getStringExtra("university"),
-                    "이름"
-                )                   // TODO : UI 에서 이름 입력받기
+                    binding.nameEdit.text.toString()
+                )
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.signup(param)
                 }
@@ -132,6 +170,9 @@ class SignupActivity: AppCompatActivity() {
                 }
                 else if(!emailChecked) {
                     Toast.makeText(this, "이메일 중복확인을 해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else if(!nicknameChecked) {
+                    Toast.makeText(this, "닉네임 중복확인을 해주세요.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

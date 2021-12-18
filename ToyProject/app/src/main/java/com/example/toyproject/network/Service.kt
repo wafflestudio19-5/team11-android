@@ -15,7 +15,7 @@ interface Service {
     fun checkEmail(@Query("email") email : String) : Call<RegisterCheck>
 
     @GET("/api/v1/register/check_nickname")
-    fun checkNickname(user_id : String) : RegisterCheck
+    fun checkNickname(@Query("nickname") nickname : String) : Call<RegisterCheck>
 
     @GET("api/v1/register/university")
     suspend fun getUniversityList() : List<University>
