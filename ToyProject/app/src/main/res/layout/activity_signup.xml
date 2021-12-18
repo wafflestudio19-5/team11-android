@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|top"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,42 +20,63 @@
             android:id="@+id/imageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="20sp"
-            android:layout_marginBottom="20sp"
-            android:src="@drawable/download" />
+            android:src="@drawable/everytime_logo" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:hint="아이디"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp">
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/id_check_button"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="40sp"
-            android:layout_marginBottom="10sp"
-            android:layout_weight="0"
-            android:background="#00FFFFFF"
-            android:backgroundTint="@color/white"
-            android:text="중복확인"
-            android:textColor="@color/black" />
+            android:text="대학 생활을 더 편하고 즐겁게"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="에브리타임"
+            android:textColor="@color/everytime_red"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="10sp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:hint="아이디"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/id_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/id_check_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="40sp"
+                android:layout_weight="0"
+                android:background="#00FFFFFF"
+                android:backgroundTint="@color/white"
+                android:text="중복확인"
+                android:textColor="@color/black" />
+
+        </FrameLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -77,59 +98,82 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout3"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:hint="이메일"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp">
+            android:layout_marginBottom="10sp">
 
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_edit"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:hint="이메일"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/email_check_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="40sp"
-            android:layout_marginBottom="10sp"
-            android:layout_weight="0"
-            android:background="#00FFFFFF"
-            android:backgroundTint="@color/white"
-            android:text="중복확인"
-            android:textColor="@color/black" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout4"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/email_check_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="40sp"
+                android:layout_weight="0"
+                android:background="#00FFFFFF"
+                android:backgroundTint="@color/white"
+                android:text="중복확인"
+                android:textColor="@color/black" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:hint="닉네임"
-            android:paddingBottom="20dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp">
+            android:layout_marginBottom="20sp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nickname_edit"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:hint="닉네임"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nickname_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/nickname_check_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="40sp"
+                android:layout_weight="0"
+                android:background="#00FFFFFF"
+                android:backgroundTint="@color/white"
+                android:text="중복확인"
+                android:textColor="@color/black" />
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_button"

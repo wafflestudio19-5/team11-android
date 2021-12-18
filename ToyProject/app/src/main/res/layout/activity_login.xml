@@ -21,7 +21,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="30sp"
-            android:src="@drawable/download" />
+            android:src="@drawable/everytime_logo" />
 
         <TextView
             android:id="@+id/textView"
