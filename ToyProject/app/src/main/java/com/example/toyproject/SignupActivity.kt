@@ -1,10 +1,13 @@
 package com.example.toyproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivitySignupBinding
 import com.example.toyproject.network.Service
+import com.example.toyproject.network.dto.Signup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +19,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
+    private val viewModel : SignupViewModel by viewModels()
 
     @Inject
     lateinit var service: Service
@@ -25,6 +29,7 @@ class SignupActivity: AppCompatActivity() {
 
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel
 
         var idChecked = false
         var emailChecked = false
@@ -58,9 +63,31 @@ class SignupActivity: AppCompatActivity() {
                 }
             }
         }
+
+        // 회원가입 버튼
         binding.loginButton.setOnClickListener {
-
-
+            val param = Signup(binding.idEdit.text.toString(),
+                               binding.passwordEdit.text.toString(),
+                               binding.emailEdit.text.toString(),
+                               intent.getIntExtra("year", 2022),
+                               binding.nicknameEdit.text.toString())
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.signup(param)
+            }
         }
+
+        // signup 성공하면 MainActivity 시작하고, 켜져 있는 다른 액티비티(univCertify, login) 끄기
+        viewModel.result.observe(this, {
+            if(it=="success") {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                setResult(RESULT_OK, Intent())
+                finish()
+            }
+            else {
+                Toast.makeText(this, "에러 메시지", Toast.LENGTH_LONG).show()
+                //TODO : 에러메시지 띄우기
+            }
+        })
     }
 }

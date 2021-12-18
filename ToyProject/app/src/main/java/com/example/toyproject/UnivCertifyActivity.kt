@@ -1,20 +1,46 @@
 package com.example.toyproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityUnivCertifyBinding
+import com.example.toyproject.network.Service
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UnivCertifyActivity: AppCompatActivity() {
+@AndroidEntryPoint
+class UnivCertifyActivity  : AppCompatActivity() {
     private lateinit var binding: ActivityUnivCertifyBinding
+    private val viewModel : UnivCertifyViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityUnivCertifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel
+        CoroutineScope(Dispatchers.IO).launch {
+            // viewModel에서 list 받아와서 adapter에 넣는 부분
+            val univList = viewModel.loadUnivList()
+            val nameList = mutableListOf<String>()
+            for ((idx, name) in univList) {
+                nameList.add(idx-1, name)
+            }
+            val autoCompleteTextView = findViewById<AutoCompleteTextView>(binding.autoCompleteTextView.id)
+            val adapter = ArrayAdapter<String>(this@UnivCertifyActivity, android.R.layout.simple_dropdown_item_1line, nameList)
+            autoCompleteTextView.setAdapter(adapter)
+
+        }
 
         val years = resources.getStringArray(R.array.years)
         val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, years)
@@ -41,6 +67,21 @@ class UnivCertifyActivity: AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
 
             }
+        }
+
+        // signup 이 완료되지 않았으면 뒤로가기 버튼으로 다시 이 화면으로 돌아올 수 있고, signup 이 끝날 때 이 액티비티를 종료
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    setResult(RESULT_OK)
+                    finish()
+                }
+            }
+        binding.button.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
+            intent.putExtra("university", binding.autoCompleteTextView.text.toString())
+            resultListener.launch(intent)
         }
     }
 
