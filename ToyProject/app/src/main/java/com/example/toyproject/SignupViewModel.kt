@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
-import com.example.toyproject.network.dto.RegisterCheck
-import com.example.toyproject.network.dto.Signup
-import com.example.toyproject.network.dto.SignupResponse
+import com.example.toyproject.network.dto.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -39,10 +37,12 @@ class SignupViewModel @Inject constructor(
     private val _emailCheckResult  = MutableLiveData<RegisterCheck>()
     val emailCheckResult : LiveData<RegisterCheck> = _emailCheckResult
 
+    lateinit var errorMessage : String
+
     fun signup(param : Signup) {
         service.register(param).clone().enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                // TODO : 예상치 못한 에러 처리
             }
             override fun onResponse(
                 call: Call<SignupResponse>, response: Response<SignupResponse>) {
@@ -53,6 +53,17 @@ class SignupViewModel @Inject constructor(
                     }
                 }
                 else {
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                        } catch (e:Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
                     _result.value = "fail"
                 }
             }
@@ -69,7 +80,18 @@ class SignupViewModel @Inject constructor(
                     _idCheckResult.value = response.body()
                 }
                 else {
-                    // TODO : response.errorBody() 출력하기
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                        } catch (e:Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    _result.value = "fail"
                 }
             }
         })
@@ -86,7 +108,18 @@ class SignupViewModel @Inject constructor(
                     _emailCheckResult.value = response.body()
                 }
                 else {
-                    // TODO : response.errorBody() 출력하기
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                        } catch (e:Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    _result.value = "fail"
                 }
 
             }

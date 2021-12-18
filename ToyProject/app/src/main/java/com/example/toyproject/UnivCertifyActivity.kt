@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -75,10 +77,21 @@ class UnivCertifyActivity  : AppCompatActivity() {
                 }
             }
         binding.button.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
-            intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
-            intent.putExtra("university", binding.autoCompleteTextView.text.toString())
-            resultListener.launch(intent)
+            when {
+                binding.spinnerYear.selectedItem == "연도 선택(학번)" -> {
+                    Toast.makeText(this, "연도를 선택해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+                binding.autoCompleteTextView.text.toString() !in nameList -> {
+                    Toast.makeText(this, "학교를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val intent = Intent(this, SignupActivity::class.java)
+                    intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
+                    intent.putExtra("university", binding.autoCompleteTextView.text.toString())
+                    resultListener.launch(intent)
+                }
+            }
+
         }
     }
 
