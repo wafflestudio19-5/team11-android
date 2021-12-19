@@ -18,7 +18,7 @@
             android:paddingStart="10sp"
             android:paddingTop="20sp"
             android:text="@string/choose_univ"
-            android:textColor="@color/black"
+            android:textColor="@color/OnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -61,9 +61,9 @@
             android:layout_marginLeft="20sp"
             android:layout_marginRight="20sp"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/everytime_red"
+            android:backgroundTint="@color/Primary"
             android:text="@string/next"
-            android:textColor="@color/white"
+            android:textColor="@color/OnPrimary"
             android:textSize="16sp"
             app:cornerRadius="10sp" />
     </LinearLayout>
