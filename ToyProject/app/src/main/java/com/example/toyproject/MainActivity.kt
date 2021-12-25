@@ -1,8 +1,10 @@
 package com.example.toyproject
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.edit
 import com.example.toyproject.databinding.ActivityMainBinding
 import com.example.toyproject.network.Service
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -21,6 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var service: Service
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth : FirebaseAuth
@@ -47,6 +52,9 @@ class MainActivity : AppCompatActivity() {
             mGoogleSignInClient.signOut()
             val intent  = Intent(this, LoginActivity::class.java)
             //intent.putExtra("logout", true)
+            sharedPreferences.edit {
+                this.remove("token")
+            }
             startActivity(intent)
             finish()
         }
