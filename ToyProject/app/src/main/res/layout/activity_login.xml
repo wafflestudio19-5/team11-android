@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logo_text2"
-            android:textColor="@color/everytime_red"
+            android:textColor="@color/Primary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -89,9 +89,9 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_login"
-            android:backgroundTint="@color/everytime_red"
+            android:backgroundTint="@color/Primary"
             android:text="@string/login"
-            android:textColor="@color/white"
+            android:textColor="@color/OnPrimary"
             android:textSize="16sp" />
 
 
@@ -102,9 +102,9 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:background="#00FFFFFF"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/OnPrimary"
             android:text="@string/signup"
-            android:textColor="@color/black"
+            android:textColor="@color/OnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 
