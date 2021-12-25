@@ -101,9 +101,9 @@ class LoginActivity:AppCompatActivity() {
         else {
 
             // Google 로그인
-            auth = FirebaseAuth.getInstance()
+            // auth = FirebaseAuth.getInstance()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.firebase_web_client_id))
+                //.requestIdToken(getString(R.string.firebase_web_client_id))
                 .requestEmail()
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -114,7 +114,8 @@ class LoginActivity:AppCompatActivity() {
             if (preAccount != null) {
                 if(preAccount.idToken!=null) {
                     try {
-                        firebaseAuthWithGoogle(preAccount.idToken!!)
+                        //TODO : 서버랑 통신
+                        //// firebaseAuthWithGoogle(preAccount.idToken!!)
                     } catch (e: Exception) {
                         Toast.makeText(this, "다시 로그인 해 주세요", Toast.LENGTH_SHORT).show()
                     }
@@ -130,7 +131,8 @@ class LoginActivity:AppCompatActivity() {
                             GoogleSignIn.getSignedInAccountFromIntent(intent)
                         try {
                             val account = task.getResult(ApiException::class.java)!!
-                            firebaseAuthWithGoogle(account.idToken!!)
+                            Toast.makeText(this, account.email+account.displayName+account.givenName, Toast.LENGTH_LONG).show()
+                            // firebaseAuthWithGoogle(account.idToken!!)
                         } catch (e : Exception) {
                             Timber.d(e)
                         }
@@ -163,7 +165,8 @@ class LoginActivity:AppCompatActivity() {
         }
     }
 
-    // Google 로그인 부분
+    // Google 로그인 부분(firebase)
+    /*
     private fun firebaseAuthWithGoogle(idToken : String) {
         val credential : AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener {
@@ -178,5 +181,7 @@ class LoginActivity:AppCompatActivity() {
             }
         }
     }
+
+     */
 }
 
