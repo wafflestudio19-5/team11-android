@@ -116,9 +116,9 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:background="#00FFFFFF"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/OnPrimary"
             android:text = "구글 로그인(임시)"
-            android:textColor="@color/black"
+            android:textColor="@color/OnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 
