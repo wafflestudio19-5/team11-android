@@ -94,6 +94,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signup_button"
             android:layout_width="match_parent"
@@ -106,6 +107,21 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/googleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="#00FFFFFF"
+            android:backgroundTint="@color/white"
+            android:text = "구글 로그인(임시)"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 

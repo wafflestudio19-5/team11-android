@@ -26,4 +26,7 @@ interface Service {
     @POST("api/v1/login/")
     fun login(@Body param : Login) : Call<SignupResponse>
 
+    @POST("api/v1/login/")
+    fun loginToken() : Call<SignupResponse>
+
 }

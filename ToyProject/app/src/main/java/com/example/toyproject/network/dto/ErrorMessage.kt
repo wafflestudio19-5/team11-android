@@ -41,7 +41,6 @@ fun parsing(errorMessage: ErrorMessage?) : String {
         errorMessage?.non_field_errors != null -> {
             errorMessage.non_field_errors.toString()
         }
-
         else -> {
             "Error"
         }
