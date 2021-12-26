@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
-import com.example.toyproject.network.dto.ErrorMessage
-import com.example.toyproject.network.dto.Login
-import com.example.toyproject.network.dto.SignupResponse
-import com.example.toyproject.network.dto.parsing
+import com.example.toyproject.network.dto.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,6 +31,11 @@ class LoginViewModel @Inject constructor(
 
     private val _tokenResult  = MutableLiveData<String>()
     val tokenResult : LiveData<String> = _tokenResult
+
+    // 로그인한 구글 계정에서 받은 token 으로 먼저 로그인을 시도하고,
+    // 서버에서 로그인에 실패했으면(=신규 유저이면) register 로 넘어간다.
+    private val _googleLoginResult  = MutableLiveData<String>()
+    val googleLoginResult : LiveData<String> = _googleLoginResult
 
     lateinit var errorMessage : String
 
@@ -97,5 +99,45 @@ class LoginViewModel @Inject constructor(
                 }
             }
         } )
+    }
+
+    fun googleLogin(param : LoginSocial) {
+        service.googleLogin(param).enqueue(object : Callback<LoginSocialResponse>{
+            override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
+
+            }
+
+            override fun onResponse(
+                call: Call<LoginSocialResponse>,
+                response: Response<LoginSocialResponse>
+            ) {
+                if(response.isSuccessful) {
+                    _googleLoginResult.value = "success"
+                }
+                else {
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                            if(error?.non_field_errors != null) {
+                                _result.value = "register"
+                            }
+                            else {
+                                _result.value = "fail"
+                            }
+                        } catch (e: Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    else {
+                        _result.value = "fail"
+                    }
+
+                }
+            }
+        })
     }
 }

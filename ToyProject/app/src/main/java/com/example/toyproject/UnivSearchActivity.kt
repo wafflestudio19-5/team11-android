@@ -10,19 +10,19 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.toyproject.databinding.ActivityUnivCertifyBinding
+import com.example.toyproject.databinding.ActivityUnivSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class UnivSearchActivity  : AppCompatActivity() {
-    private lateinit var binding: ActivityUnivCertifyBinding
+    private lateinit var binding: ActivityUnivSearchBinding
     private val viewModel : UnivSearchViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityUnivCertifyBinding.inflate(layoutInflater)
+        binding = ActivityUnivSearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel
         // viewModel에서 list 받아와서 adapter에 넣는 부분

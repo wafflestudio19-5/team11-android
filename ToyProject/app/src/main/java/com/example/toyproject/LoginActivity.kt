@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityLoginBinding
 import com.example.toyproject.network.dto.Login
+import com.example.toyproject.network.dto.LoginSocial
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -39,7 +40,8 @@ class LoginActivity:AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     // Google 로그인
-    private lateinit var auth : FirebaseAuth
+        // firebase 부분
+        // private lateinit var auth : FirebaseAuth
     private lateinit var mGoogleSignInClient : GoogleSignInClient
 
 
@@ -57,7 +59,7 @@ class LoginActivity:AppCompatActivity() {
                 }
             }
 
-        // token 있음
+        // token 있을 때
         if(sharedPreferences.contains("token")) {
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.loginToken()
@@ -91,7 +93,7 @@ class LoginActivity:AppCompatActivity() {
                         }
                     })
                     binding.signupButton.setOnClickListener {
-                        val intent = Intent(this, UnivCertifyActivity::class.java)
+                        val intent = Intent(this, UnivSearchActivity::class.java)
                         resultListener.launch(intent)
                     }
                 }
@@ -101,7 +103,7 @@ class LoginActivity:AppCompatActivity() {
         else {
 
             // Google 로그인
-            // auth = FirebaseAuth.getInstance()
+                //auth = FirebaseAuth.getInstance()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 //.requestIdToken(getString(R.string.firebase_web_client_id))
                 .requestEmail()
@@ -115,6 +117,8 @@ class LoginActivity:AppCompatActivity() {
                 if(preAccount.idToken!=null) {
                     try {
                         //TODO : 서버랑 통신
+
+                        // firebase 부분
                         //// firebaseAuthWithGoogle(preAccount.idToken!!)
                     } catch (e: Exception) {
                         Toast.makeText(this, "다시 로그인 해 주세요", Toast.LENGTH_SHORT).show()
@@ -129,19 +133,33 @@ class LoginActivity:AppCompatActivity() {
                         val intent : Intent = result.data!!
                         val task : Task<GoogleSignInAccount> =
                             GoogleSignIn.getSignedInAccountFromIntent(intent)
-                        try {
-                            val account = task.getResult(ApiException::class.java)!!
-                            Toast.makeText(this, account.email+account.displayName+account.givenName, Toast.LENGTH_LONG).show()
-                            // firebaseAuthWithGoogle(account.idToken!!)
-                        } catch (e : Exception) {
-                            Timber.d(e)
+                        if(task.isSuccessful) {
+                            val token = task.getResult(ApiException::class.java).toString()
+                            val param = LoginSocial(token)
+                            viewModel.googleLogin(param)
+                        }
+                        else {
+                            Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             binding.googleButton.setOnClickListener {
                 googleResultListener.launch(mGoogleSignInClient.signInIntent)
             }
-
+            viewModel.googleLoginResult.observe(this, {
+                if(it=="register") {
+                    // 구글 계정으로 회원가입 TODO
+                    googleRegister()
+                }
+                else if(it=="success") {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else {
+                    Toast.makeText(this, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            })
 
             // 로그인 버튼 눌렀을 때 (일반 로그인)
             binding.loginButton.setOnClickListener {
@@ -159,10 +177,14 @@ class LoginActivity:AppCompatActivity() {
                 }
             })
             binding.signupButton.setOnClickListener {
-                val intent = Intent(this, UnivCertifyActivity::class.java)
+                val intent = Intent(this, UnivSearchActivity::class.java)
                 resultListener.launch(intent)
             }
         }
+    }
+
+    private fun googleRegister() {
+
     }
 
     // Google 로그인 부분(firebase)
