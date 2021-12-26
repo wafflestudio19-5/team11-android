@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.univsearch
 
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service

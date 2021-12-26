@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.login
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,21 +8,17 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.ui.univsearch.UnivSearchActivity
+import com.example.toyproject.ui.main.MainActivity
 import com.example.toyproject.databinding.ActivityLoginBinding
 import com.example.toyproject.network.dto.Login
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,7 +87,7 @@ class LoginActivity:AppCompatActivity() {
                         }
                     })
                     binding.signupButton.setOnClickListener {
-                        val intent = Intent(this, UnivCertifyActivity::class.java)
+                        val intent = Intent(this, UnivSearchActivity::class.java)
                         resultListener.launch(intent)
                     }
                 }
@@ -159,7 +155,7 @@ class LoginActivity:AppCompatActivity() {
                 }
             })
             binding.signupButton.setOnClickListener {
-                val intent = Intent(this, UnivCertifyActivity::class.java)
+                val intent = Intent(this, UnivSearchActivity::class.java)
                 resultListener.launch(intent)
             }
         }

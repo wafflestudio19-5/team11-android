@@ -1,7 +1,6 @@
-package com.example.toyproject
+package com.example.toyproject.ui.signup
 
 import android.content.SharedPreferences
-import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,12 +8,10 @@ import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
 import com.example.toyproject.network.dto.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
 
