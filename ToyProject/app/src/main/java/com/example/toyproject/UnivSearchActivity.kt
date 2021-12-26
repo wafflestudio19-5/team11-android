@@ -11,18 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityUnivCertifyBinding
-import com.example.toyproject.network.Service
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class UnivCertifyActivity  : AppCompatActivity() {
+class UnivSearchActivity  : AppCompatActivity() {
     private lateinit var binding: ActivityUnivCertifyBinding
-    private val viewModel : UnivCertifyViewModel by viewModels()
+    private val viewModel : UnivSearchViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +32,7 @@ class UnivCertifyActivity  : AppCompatActivity() {
             nameList.add(idx-1, name)
         }
         val autoCompleteTextView = findViewById<AutoCompleteTextView>(binding.autoCompleteTextView.id)
-        val adapter = ArrayAdapter<String>(this@UnivCertifyActivity, android.R.layout.simple_dropdown_item_1line, nameList)
+        val adapter = ArrayAdapter<String>(this@UnivSearchActivity, android.R.layout.simple_dropdown_item_1line, nameList)
         autoCompleteTextView.setAdapter(adapter)
 
         val years = resources.getStringArray(R.array.years)

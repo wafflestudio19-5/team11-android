@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class UnivCertifyViewModel @Inject constructor(
+class UnivSearchViewModel @Inject constructor(
     private val service: Service
 ) : ViewModel() {
 

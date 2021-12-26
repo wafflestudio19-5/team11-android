@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true" >
-        <activity android:name=".UnivCertifyActivity" />
+        <activity android:name=".UnivSearchActivity" />
         <activity android:name=".MainActivity"/>
         <activity android:name=".SignupActivity"/>
+        <activity android:name=".profile.UserActivity"/>
+        <activity android:name=".profile.ChangePasswordActivity"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
