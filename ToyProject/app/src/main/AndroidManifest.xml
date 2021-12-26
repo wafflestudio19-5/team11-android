@@ -13,11 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true" >
-        <activity android:name=".UnivCertifyActivity" />
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SignupActivity"/>
+        <activity android:name=".ui.univcertify.UnivCertifyActivity" />
+        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.signup.SignupActivity"/>
+        <activity android:name=".ui.profile.ProfileActivity"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

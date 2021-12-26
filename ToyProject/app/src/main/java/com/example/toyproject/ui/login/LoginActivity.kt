@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,10 +6,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.ui.main.MainActivity
+import com.example.toyproject.ui.univcertify.UnivCertifyActivity
 import com.example.toyproject.databinding.ActivityLoginBinding
 import com.example.toyproject.network.dto.Login
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity:AppCompatActivity() {

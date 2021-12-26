@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.univcertify
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,14 +10,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUnivCertifyBinding
-import com.example.toyproject.network.Service
+import com.example.toyproject.ui.signup.SignupActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class UnivCertifyActivity  : AppCompatActivity() {
