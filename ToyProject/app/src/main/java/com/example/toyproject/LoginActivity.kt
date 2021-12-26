@@ -1,5 +1,6 @@
 package com.example.toyproject
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +45,11 @@ class LoginActivity:AppCompatActivity() {
         // firebase 부분
         // private lateinit var auth : FirebaseAuth
     private lateinit var mGoogleSignInClient : GoogleSignInClient
+
+    // 카카오 로그인
+    companion object {
+        var appContext : Context? = null
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +116,10 @@ class LoginActivity:AppCompatActivity() {
                 .requestEmail()
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+            // 카카오 로그인
+            appContext = this
+            KakaoSdk.init(this,getString(R.string.kakao_app_key))
 
             // 기존 구글 로그인 돼있으면 바로 로그인
             // TODO : 로그인 로딩 창 필요
