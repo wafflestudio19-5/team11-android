@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/outline_search_24"
+        android:title="search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/profile_button"
+        android:icon="@drawable/outline_perm_identity_24"
+        android:title="profile"
+        app:showAsAction="ifRoom" />
+
+</menu>
