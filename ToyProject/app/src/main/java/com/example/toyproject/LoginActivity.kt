@@ -25,7 +25,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +51,19 @@ class LoginActivity:AppCompatActivity() {
     // 카카오 로그인
     companion object {
         var appContext : Context? = null
+    }
+    internal val callback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Timber.e("로그인 실패- $error")
+            Toast.makeText(this, "에러에러", Toast.LENGTH_SHORT).show()
+        }
+        else if (token != null) {
+            UserApiClient.instance.me { user, error ->
+                val kakaoId = user!!.id
+                // Toast.makeText(this, token.accessToken, Toast.LENGTH_LONG).show()
+                // viewModel?.addKakaoUser(token.accessToken, kakaoId)
+            }
+        }
     }
 
 
@@ -171,6 +186,16 @@ class LoginActivity:AppCompatActivity() {
                     Toast.makeText(this, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
                 }
             })
+
+            // 카카오 로그인 버튼
+            binding.kakaoButton.setOnClickListener {
+                if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this, callback =callback)
+                }
+                else {
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                }
+            }
 
             // 로그인 버튼 눌렀을 때 (일반 로그인)
             binding.loginButton.setOnClickListener {
