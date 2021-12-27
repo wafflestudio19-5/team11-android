@@ -21,6 +21,7 @@ data class RegisterSocial(
     val email : String?,
     val university : String?,
     val admission_year : Int?,
+    val nickname : String?
 )
 
 data class RegisterSocialResponse(

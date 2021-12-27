@@ -83,7 +83,8 @@ class SocialSignupActivity: AppCompatActivity() {
                 val email = intent.getStringExtra("email")
                 val university = intent.getStringExtra("university")
                 val year = intent.getIntExtra("year", 2022)
-                val param = RegisterSocial(access_token, name, email, university, year)
+                val nickname = binding.nicknameEdit.text.toString()
+                val param = RegisterSocial(access_token, name, email, university, year, nickname)
                 viewModel.socialSignup(param)
             }
             else {
