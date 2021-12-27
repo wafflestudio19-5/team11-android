@@ -1,4 +1,4 @@
-package com.example.toyproject.profile
+package com.example.toyproject.ui.profile
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true" >
-        <activity android:name=".UnivSearchActivity" />
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SignupActivity"/>
-        <activity android:name=".profile.UserActivity"/>
-        <activity android:name=".profile.ChangePasswordActivity"/>
+        <activity android:name=".ui.univsearch.UnivSearchActivity" />
+        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.signup.SignupActivity"/>
+        <activity android:name="com.example.toyproject.ui.profile.UserActivity"/>
+        <activity android:name="com.example.toyproject.ui.profile.ChangePasswordActivity"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

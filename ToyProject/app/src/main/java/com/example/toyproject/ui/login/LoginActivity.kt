@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.login
 
 import android.content.Intent
 import android.content.SharedPreferences

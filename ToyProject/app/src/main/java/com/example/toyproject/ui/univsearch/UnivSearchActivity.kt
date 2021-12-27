@@ -1,4 +1,4 @@
-package com.example.toyproject
+package com.example.toyproject.ui.univsearch
 
 import android.content.Intent
 import android.os.Bundle
