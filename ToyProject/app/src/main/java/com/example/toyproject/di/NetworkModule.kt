@@ -85,4 +85,9 @@ object NetworkModule {
         }
     }
 
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
 }
