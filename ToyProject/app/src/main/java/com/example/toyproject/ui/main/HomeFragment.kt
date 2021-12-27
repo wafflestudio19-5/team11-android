@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentHomeBinding
-import com.example.toyproject.profile.UserActivity
+import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
