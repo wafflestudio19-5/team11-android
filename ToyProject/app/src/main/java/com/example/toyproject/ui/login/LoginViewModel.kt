@@ -158,6 +158,9 @@ class LoginViewModel @Inject constructor(
             ) {
                 // 카카오 로그인 성공
                 if(response.isSuccessful) {
+                    sharedPreferences.edit {
+                        this.putString("token", response.body()!!.token)
+                    }
                     _kakaoLoginResult.value = "success"
                 }
                 else {
@@ -170,10 +173,12 @@ class LoginViewModel @Inject constructor(
                             ).convert(response.errorBody())
                             errorMessage = parsing(error)
                             // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태.
-                            // 아니면, 통신 에러 및 기타 에러
                             if(error?.non_field_errors != null) {
+                                // val registerParam = RegisterSocial()
                                 _result.value = "register"
+                                param.access_token
                             }
+                            // 아니면, 통신 에러 및 기타 에러
                             else {
                                 _result.value = "fail"
                             }
@@ -188,5 +193,9 @@ class LoginViewModel @Inject constructor(
                 }
             }
         })
+    }
+
+    fun socialRegister() {
+
     }
 }

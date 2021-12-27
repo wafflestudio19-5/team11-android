@@ -57,6 +57,7 @@ class LoginActivity:AppCompatActivity() {
         else if (token != null) {
             UserApiClient.instance.me { user, error ->
                 val accessToken = token.accessToken
+                val name = user!!.id
                 viewModel.kakaoLogin(LoginSocial(accessToken))
             }
         }
@@ -171,7 +172,7 @@ class LoginActivity:AppCompatActivity() {
             viewModel.googleLoginResult.observe(this, {
                 if(it=="register") {
                     // 구글 계정으로 회원가입 TODO
-                    googleRegister()
+                    socialRegister()
                 }
                 else if(it=="success") {
                     val intent = Intent(this, MainActivity::class.java)
@@ -192,6 +193,19 @@ class LoginActivity:AppCompatActivity() {
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 }
             }
+            viewModel.kakaoLoginResult.observe(this, {
+                if(it=="success") {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else if(it=="fail") {
+                    Toast.makeText(this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else if(it=="register") {
+                    socialRegister()
+                }
+            })
 
             // 로그인 버튼 눌렀을 때 (일반 로그인)
             binding.loginButton.setOnClickListener {
@@ -215,7 +229,7 @@ class LoginActivity:AppCompatActivity() {
         }
     }
 
-    private fun googleRegister() {
+    private fun socialRegister() {
 
     }
 
