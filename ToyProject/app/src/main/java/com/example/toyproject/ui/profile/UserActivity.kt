@@ -21,9 +21,7 @@ class UserActivity: AppCompatActivity() {
         viewModel.getUser()
 
         viewModel.result.observe(this, {
-            if(it=="fail") {
-                Toast.makeText(this, "연결에 실패했습니다.", Toast.LENGTH_LONG).show()
-            }
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
 
         viewModel.profile.observe(this, {
