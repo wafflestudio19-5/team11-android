@@ -35,4 +35,10 @@ interface Service {
     @POST("api/v1/login/google")
     fun googleLogin(@Body param : LoginSocial) : Call<LoginSocialResponse>
 
+    @POST("api/v1/register/kakao")
+    fun kakaoRegister(@Body param : RegisterSocial) : Call<RegisterSocial>
+
+    @POST("api/v1/login/kakao")
+    fun kakaoLogin(@Body param : LoginSocial) : Call<LoginSocialResponse>
+
 }

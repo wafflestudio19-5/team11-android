@@ -32,10 +32,14 @@ class LoginViewModel @Inject constructor(
     private val _tokenResult  = MutableLiveData<String>()
     val tokenResult : LiveData<String> = _tokenResult
 
-    // 로그인한 구글 계정에서 받은 token 으로 먼저 로그인을 시도하고,
-    // 서버에서 로그인에 실패했으면(=신규 유저이면) register 로 넘어간다.
+    // 로그인 버튼 누르면, 구글 계정에서 access token 받아서 먼저 로그인을 시도하고,
+    // 서버에서 로그인에 실패했으면(=신규 유저이면) 팝업을 띄우고 자동 register
     private val _googleLoginResult  = MutableLiveData<String>()
     val googleLoginResult : LiveData<String> = _googleLoginResult
+
+    // 카카오 로그인도 같은 방식
+    private val _kakaoLoginResult = MutableLiveData<String>()
+    val kakaoLoginResult : LiveData<String> = _kakaoLoginResult
 
     lateinit var errorMessage : String
 
@@ -134,8 +138,53 @@ class LoginViewModel @Inject constructor(
                     }
                     else {
                         _result.value = "fail"
+                        errorMessage = "다시 시도해 주세요."
                     }
 
+                }
+            }
+        })
+    }
+
+    fun kakaoLogin(param : LoginSocial) {
+        service.kakaoLogin(param).clone().enqueue(object : Callback<LoginSocialResponse>{
+            override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
+                // TODO
+            }
+
+            override fun onResponse(
+                call: Call<LoginSocialResponse>,
+                response: Response<LoginSocialResponse>
+            ) {
+                // 카카오 로그인 성공
+                if(response.isSuccessful) {
+                    _kakaoLoginResult.value = "success"
+                }
+                else {
+                    // 카카오 로그인 실패 : case1->첫 로그인  case2->기타 에러(통신 에러, 카카오 계정 에러 등등)
+                    if(response.errorBody()!=null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                            // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태.
+                            // 아니면, 통신 에러 및 기타 에러
+                            if(error?.non_field_errors != null) {
+                                _result.value = "register"
+                            }
+                            else {
+                                _result.value = "fail"
+                            }
+                        } catch (e: Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    else {
+                        _kakaoLoginResult.value = "fail"
+                        errorMessage = "다시 시도해 주세요."
+                    }
                 }
             }
         })

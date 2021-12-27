@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,10 +9,12 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.ui.univsearch.UnivSearchActivity
 import com.example.toyproject.ui.main.MainActivity
 import com.example.toyproject.databinding.ActivityLoginBinding
 import com.example.toyproject.network.dto.Login
+import com.example.toyproject.network.dto.LoginSocial
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,6 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,9 +56,8 @@ class LoginActivity:AppCompatActivity() {
         }
         else if (token != null) {
             UserApiClient.instance.me { user, error ->
-                val kakaoId = user!!.id
-                // Toast.makeText(this, token.accessToken, Toast.LENGTH_LONG).show()
-                // viewModel?.addKakaoUser(token.accessToken, kakaoId)
+                val accessToken = token.accessToken
+                viewModel.kakaoLogin(LoginSocial(accessToken))
             }
         }
     }
@@ -115,7 +120,7 @@ class LoginActivity:AppCompatActivity() {
         // token 없음
         else {
 
-            // Google 로그인
+            // Google 로그인 초기 설정
                 //auth = FirebaseAuth.getInstance()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 //.requestIdToken(getString(R.string.firebase_web_client_id))
@@ -123,11 +128,11 @@ class LoginActivity:AppCompatActivity() {
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-            // 카카오 로그인
+            // 카카오 로그인 초기 설정
             appContext = this
             KakaoSdk.init(this,getString(R.string.kakao_app_key))
 
-            // 기존 구글 로그인 돼있으면 바로 로그인
+            // 기존 구글 로그인 돼있으면 바로 로그인 TODO : 수정할 것. 기존 로그인 돼있으면 우리가 만든 토큰 사용할 예정
             // TODO : 로그인 로딩 창 필요
             val preAccount : GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
             if (preAccount != null) {
