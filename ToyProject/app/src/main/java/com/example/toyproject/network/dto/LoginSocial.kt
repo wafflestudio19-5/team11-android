@@ -4,7 +4,7 @@ package com.example.toyproject.network.dto
 // Register 할 때 & 응답, Login 할때 & 응답
 
 data class LoginSocial(
-    val access_token : String,
+    val access_token : String
 )
 
 data class LoginSocialResponse(
@@ -14,11 +14,16 @@ data class LoginSocialResponse(
     val access_token : String?
 )
 
-// Response 도 동일한 data class 사용
+
 data class RegisterSocial(
-    val access_token: String,
-    val name : String,
+    val access_token: String?,
+    val name : String?,
+    val email : String?,
+    val university : String?,
+    val admission_year : Int?,
+)
+
+data class RegisterSocialResponse(
     val email : String,
-    val university : String,
-    val admission_year : String,
+    val token : String
 )

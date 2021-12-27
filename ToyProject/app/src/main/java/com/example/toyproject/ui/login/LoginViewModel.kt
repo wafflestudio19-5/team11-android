@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.login
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
@@ -7,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
 import com.example.toyproject.network.dto.*
+import com.example.toyproject.ui.univsearch.UnivSearchActivity
+import com.example.toyproject.ui.univsearch.UnivSearchActivity_GeneratedInjector
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +43,10 @@ class LoginViewModel @Inject constructor(
     // 카카오 로그인도 같은 방식
     private val _kakaoLoginResult = MutableLiveData<String>()
     val kakaoLoginResult : LiveData<String> = _kakaoLoginResult
+
+    // 카카오 회원가입용 정보
+    lateinit var registerInfoEmail : String
+    lateinit var registerInfoToken : String
 
     lateinit var errorMessage : String
 
@@ -146,12 +153,11 @@ class LoginViewModel @Inject constructor(
         })
     }
 
-    fun kakaoLogin(param : LoginSocial) {
+    fun kakaoLogin(param : LoginSocial, email : String) {
         service.kakaoLogin(param).clone().enqueue(object : Callback<LoginSocialResponse>{
             override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
                 // TODO
             }
-
             override fun onResponse(
                 call: Call<LoginSocialResponse>,
                 response: Response<LoginSocialResponse>
@@ -172,11 +178,12 @@ class LoginViewModel @Inject constructor(
                                 ErrorMessage::class.java.annotations
                             ).convert(response.errorBody())
                             errorMessage = parsing(error)
-                            // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태.
+                            // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태. 회원가입 진행
                             if(error?.non_field_errors != null) {
-                                // val registerParam = RegisterSocial()
+                                // TODO : "카카오 계정으로 회원가입 하시겠습니까?" 창 띄우기
+                                registerInfoEmail = email
+                                registerInfoToken = param.access_token
                                 _result.value = "register"
-                                param.access_token
                             }
                             // 아니면, 통신 에러 및 기타 에러
                             else {
@@ -193,9 +200,5 @@ class LoginViewModel @Inject constructor(
                 }
             }
         })
-    }
-
-    fun socialRegister() {
-
     }
 }

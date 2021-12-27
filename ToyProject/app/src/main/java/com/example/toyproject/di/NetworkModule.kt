@@ -20,7 +20,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -67,12 +66,6 @@ object NetworkModule {
     @Singleton
     fun provideService(retrofit: Retrofit): Service {
         return retrofit.create(Service::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUserService(retrofit: Retrofit): UserService {
-        return retrofit.create(UserService::class.java)
     }
 
     @InstallIn(SingletonComponent::class)

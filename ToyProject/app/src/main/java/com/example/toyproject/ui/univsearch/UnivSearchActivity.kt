@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUnivSearchBinding
 import com.example.toyproject.ui.signup.SignupActivity
+import com.example.toyproject.ui.signup.SocialSignupActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,10 +82,24 @@ class UnivSearchActivity  : AppCompatActivity() {
                     Toast.makeText(this, "학교를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    val intent = Intent(this, SignupActivity::class.java)
-                    intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
-                    intent.putExtra("university", binding.autoCompleteTextView.text.toString())
-                    resultListener.launch(intent)
+
+                    // 소셜 로그인일때는 다음 버튼을 누르면 SocialSignupActivity 로 이동
+                    if(intent.getStringExtra("mode")=="social") {
+                        val intent = Intent(this, SocialSignupActivity::class.java)
+                        intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
+                        intent.putExtra("university", binding.autoCompleteTextView.text.toString())
+                        intent.putExtra("email", intent.getStringExtra("email"))
+                        intent.putExtra("access_token", intent.getStringExtra("access_token"))
+                        resultListener.launch(intent)
+                    }
+                    // 일반 로그인일때는 다음 버튼을 누르면 SignupActivity 로 이동
+                    else {
+                        val intent = Intent(this, SignupActivity::class.java)
+                        intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
+                        intent.putExtra("university", binding.autoCompleteTextView.text.toString())
+                        resultListener.launch(intent)
+                    }
+
                 }
             }
 

@@ -57,12 +57,11 @@ class LoginActivity:AppCompatActivity() {
         else if (token != null) {
             UserApiClient.instance.me { user, error ->
                 val accessToken = token.accessToken
-                val name = user!!.id
-                viewModel.kakaoLogin(LoginSocial(accessToken))
+                val email = user!!.kakaoAccount.toString()
+                viewModel.kakaoLogin(LoginSocial(accessToken), email)
             }
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,7 +171,7 @@ class LoginActivity:AppCompatActivity() {
             viewModel.googleLoginResult.observe(this, {
                 if(it=="register") {
                     // 구글 계정으로 회원가입 TODO
-                    socialRegister()
+
                 }
                 else if(it=="success") {
                     val intent = Intent(this, MainActivity::class.java)
@@ -187,7 +186,8 @@ class LoginActivity:AppCompatActivity() {
             // 카카오 로그인 버튼
             binding.kakaoButton.setOnClickListener {
                 if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-                    UserApiClient.instance.loginWithKakaoTalk(this, callback =callback)
+                    //UserApiClient.instance.loginWithKakaoTalk(this, callback =callback)
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback =callback)
                 }
                 else {
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
@@ -203,7 +203,7 @@ class LoginActivity:AppCompatActivity() {
                     Toast.makeText(this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else if(it=="register") {
-                    socialRegister()
+                    socialRegister(viewModel.registerInfoEmail, viewModel.registerInfoToken)
                 }
             })
 
@@ -229,8 +229,19 @@ class LoginActivity:AppCompatActivity() {
         }
     }
 
-    private fun socialRegister() {
-
+    // 소셜 회원가입에 필요한 추가 정보(대학, 연도 등등)을 얻으러 UnivSearchActivity 를 실행
+    private fun socialRegister(email : String, access_token : String) {
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    finish()
+                }
+            }
+        val intent : Intent = Intent(this, UnivSearchActivity::class.java)
+        intent.putExtra("mode", "social")
+        intent.putExtra("email", email)
+        intent.putExtra("access_token", access_token)
+        resultListener.launch(intent)
     }
 
     // Google 로그인 부분(firebase)
