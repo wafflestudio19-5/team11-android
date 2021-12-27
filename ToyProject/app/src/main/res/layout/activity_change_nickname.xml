@@ -37,7 +37,7 @@
             android:textSize="14sp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailInputLayout"
+            android:id="@+id/nicknameInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -49,7 +49,7 @@
             app:boxCornerRadiusTopStart="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/new_email"
+                android:id="@+id/new_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
