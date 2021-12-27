@@ -31,5 +31,4 @@
     <string name="password_hint">영문, 숫자, 특문이 2종류 이상 조합된 8~20자</string>
     <string name="new_pw_confirm">새 비밀번호 확인</string>
     <string name="cur_pw">현재 비밀번호</string>
-    <string name="firebase_web_client_id">777881216706-c839nln2esv8siei1rscqbdmnsb8va5u.apps.googleusercontent.com</string>
 </resources>
