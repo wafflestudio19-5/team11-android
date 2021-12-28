@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityUserBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     private val viewModel: UserViewModel by viewModels()

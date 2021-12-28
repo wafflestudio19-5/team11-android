@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="10dp" >
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/img"
+        android:layout_margin="2sp"/>
+
+
+    <TextView
+        android:id="@+id/default_board_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자유게시판"
+        android:textSize="18dp"
+        android:layout_marginLeft="50sp"
+        android:textColor="@color/OnBackground" />
+
+</LinearLayout>

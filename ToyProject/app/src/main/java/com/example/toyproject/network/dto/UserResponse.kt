@@ -4,8 +4,8 @@ package com.example.toyproject.network.dto
 data class UserResponse(
     val id : String?,
     val name : String?,
+    val email: String?,
     val nickname : String?,
     val university : String?,
-    val admissionYear : Int?,
-    val email: String?
+    val admissionYear : Int?
 )
