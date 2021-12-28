@@ -12,24 +12,36 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUnivSearchBinding
+import com.example.toyproject.network.dto.GetUniversity
+import com.example.toyproject.network.dto.University
 import com.example.toyproject.ui.signup.SignupActivity
 import com.example.toyproject.ui.signup.SocialSignupActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class UnivSearchActivity  : AppCompatActivity() {
     private lateinit var binding: ActivityUnivSearchBinding
     private val viewModel : UnivSearchViewModel by viewModels()
 
+    lateinit var email : String
+    lateinit var access_token : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(intent.getStringExtra("email") != null) {
+            email = intent.getStringExtra("email").toString()
+        }
+        if(intent.getStringExtra("access_token") != null) {
+            access_token = intent.getStringExtra("access_token").toString()
+        }
+
         binding = ActivityUnivSearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel
-        // viewModel에서 list 받아와서 adapter에 넣는 부분
-        val univList = viewModel.loadUnivList()
+        // viewModel 에서 list 받아와서 adapter 에 넣는 부분
+        val univList : List<University> = viewModel.loadUnivList().university_list
         val nameList = mutableListOf<String>()
         for ((idx, name) in univList) {
             nameList.add(idx-1, name)
@@ -88,8 +100,8 @@ class UnivSearchActivity  : AppCompatActivity() {
                         val intent = Intent(this, SocialSignupActivity::class.java)
                         intent.putExtra("admission_year", binding.spinnerYear.selectedItem.toString().toInt())
                         intent.putExtra("university", binding.autoCompleteTextView.text.toString())
-                        intent.putExtra("email", intent.getStringExtra("email"))
-                        intent.putExtra("access_token", intent.getStringExtra("access_token"))
+                        intent.putExtra("email", email)
+                        intent.putExtra("access_token", access_token)
                         resultListener.launch(intent)
                     }
                     // 일반 로그인일때는 다음 버튼을 누르면 SignupActivity 로 이동

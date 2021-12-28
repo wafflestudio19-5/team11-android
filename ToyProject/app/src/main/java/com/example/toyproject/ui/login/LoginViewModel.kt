@@ -2,6 +2,7 @@ package com.example.toyproject.ui.login
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -153,10 +154,10 @@ class LoginViewModel @Inject constructor(
         })
     }
 
-    fun kakaoLogin(param : LoginSocial, email : String) {
+    fun kakaoLogin(param : LoginSocial, email : String?) {
         service.kakaoLogin(param).clone().enqueue(object : Callback<LoginSocialResponse>{
             override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
-                // TODO
+                Timber.d("로그인 실패")
             }
             override fun onResponse(
                 call: Call<LoginSocialResponse>,
@@ -181,13 +182,13 @@ class LoginViewModel @Inject constructor(
                             // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태. 회원가입 진행
                             if(error?.non_field_errors != null) {
                                 // TODO : "카카오 계정으로 회원가입 하시겠습니까?" 창 띄우기
-                                registerInfoEmail = email
+                                registerInfoEmail = email.toString()
                                 registerInfoToken = param.access_token
-                                _result.value = "register"
+                                _kakaoLoginResult.value = "register"
                             }
                             // 아니면, 통신 에러 및 기타 에러
                             else {
-                                _result.value = "fail"
+                                _kakaoLoginResult.value = "fail"
                             }
                         } catch (e: Exception) {
                             errorMessage = response.errorBody()?.string()!!

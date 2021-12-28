@@ -8,7 +8,7 @@ data class LoginSocial(
 )
 
 data class LoginSocialResponse(
-    val success : String?,
+    val success : Boolean,
     val token : String?,
     val non_field_error : String?,
     val access_token : String?

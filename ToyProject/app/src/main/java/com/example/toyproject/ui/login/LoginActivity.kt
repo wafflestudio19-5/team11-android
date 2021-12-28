@@ -9,6 +9,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import com.example.toyproject.App
 import com.example.toyproject.R
 import com.example.toyproject.ui.univsearch.UnivSearchActivity
 import com.example.toyproject.ui.main.MainActivity
@@ -22,9 +24,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.kakao.auth.AuthType
+import com.kakao.auth.ISessionCallback
+import com.kakao.auth.KakaoSDK
+import com.kakao.auth.Session
+import com.kakao.network.ErrorResult
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.auth.model.Prompt
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.MeV2ResponseCallback
+import com.kakao.usermgmt.response.MeV2Response
+import com.kakao.usermgmt.response.model.User
+import com.kakao.util.exception.KakaoException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +45,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class LoginActivity:AppCompatActivity() {
@@ -45,20 +59,25 @@ class LoginActivity:AppCompatActivity() {
         // private lateinit var auth : FirebaseAuth
     private lateinit var mGoogleSignInClient : GoogleSignInClient
 
-    // 카카오 로그인
-    companion object {
-        var appContext : Context? = null
-    }
+
+    // 카카오 로그인 콜백(로그인 할 때)
     internal val callback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Timber.e("로그인 실패- $error")
-            Toast.makeText(this, "에러에러", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }
         else if (token != null) {
-            UserApiClient.instance.me { user, error ->
-                val accessToken = token.accessToken
-                val email = user!!.kakaoAccount.toString()
-                viewModel.kakaoLogin(LoginSocial(accessToken), email)
+            // 로그인 성공해서 토큰 받고, 추가 동의 사항(이메일) 받기
+            val scopes = mutableListOf<String>()
+            scopes.add("account_email")
+            UserApiClient.instance.loginWithNewScopes(context = this, scopes) {
+                    token, error ->
+                // 추가 동의 사항 받았으면 유저 정보 재요청
+                UserApiClient.instance.me { user, error ->
+                    Timber.d(user!!.kakaoAccount.toString())
+                    // 유저 정보를 취합해서 서버에 전달
+                    viewModel.kakaoLogin(LoginSocial(token!!.accessToken), user.kakaoAccount?.email)
+                }
             }
         }
     }
@@ -71,6 +90,12 @@ class LoginActivity:AppCompatActivity() {
 
         // signup 이 완료되지 않았으면 뒤로가기 버튼으로 다시 이 화면으로 돌아올 수 있고, 이후 과정이 모두 끝날 때 이 액티비티를 종료
         val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    finish()
+                }
+            }
+        val resultListenerSocial =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if(it.resultCode == RESULT_OK) {
                     finish()
@@ -94,6 +119,9 @@ class LoginActivity:AppCompatActivity() {
                 else {
                     // 에러 메시지 띄우고,
                     Toast.makeText(this, viewModel.errorMessage, Toast.LENGTH_LONG).show()
+                    sharedPreferences.edit {
+                        this.remove("token")
+                    }
 
                     // 평소처럼 진행
                     binding.loginButton.setOnClickListener {
@@ -128,9 +156,6 @@ class LoginActivity:AppCompatActivity() {
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-            // 카카오 로그인 초기 설정
-            appContext = this
-            KakaoSdk.init(this,getString(R.string.kakao_app_key))
 
             // 기존 구글 로그인 돼있으면 바로 로그인 TODO : 수정할 것. 기존 로그인 돼있으면 우리가 만든 토큰 사용할 예정
             // TODO : 로그인 로딩 창 필요
@@ -185,16 +210,11 @@ class LoginActivity:AppCompatActivity() {
 
             // 카카오 로그인 버튼
             binding.kakaoButton.setOnClickListener {
-                if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-                    //UserApiClient.instance.loginWithKakaoTalk(this, callback =callback)
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback =callback)
-                }
-                else {
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-                }
+                UserApiClient.instance.loginWithKakaoAccount(this, callback=callback)
             }
             viewModel.kakaoLoginResult.observe(this, {
                 if(it=="success") {
+                    Toast.makeText(this, "로그인에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -203,7 +223,13 @@ class LoginActivity:AppCompatActivity() {
                     Toast.makeText(this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else if(it=="register") {
-                    socialRegister(viewModel.registerInfoEmail, viewModel.registerInfoToken)
+                    // 소셜 회원가입에 필요한 추가 정보(대학, 연도 등등)을 얻으러 UnivSearchActivity 를 실행
+                    Toast.makeText(this, "카카오 계정으로 회원가입을 진행합니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, UnivSearchActivity::class.java)
+                    intent.putExtra("mode", "social")
+                    intent.putExtra("email", viewModel.registerInfoEmail.toString())
+                    intent.putExtra("access_token", viewModel.registerInfoToken.toString())
+                    resultListenerSocial.launch(intent)
                 }
             })
 
@@ -229,20 +255,6 @@ class LoginActivity:AppCompatActivity() {
         }
     }
 
-    // 소셜 회원가입에 필요한 추가 정보(대학, 연도 등등)을 얻으러 UnivSearchActivity 를 실행
-    private fun socialRegister(email : String, access_token : String) {
-        val resultListener =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if(it.resultCode == RESULT_OK) {
-                    finish()
-                }
-            }
-        val intent : Intent = Intent(this, UnivSearchActivity::class.java)
-        intent.putExtra("mode", "social")
-        intent.putExtra("email", email)
-        intent.putExtra("access_token", access_token)
-        resultListener.launch(intent)
-    }
 
     // Google 로그인 부분(firebase)
     /*

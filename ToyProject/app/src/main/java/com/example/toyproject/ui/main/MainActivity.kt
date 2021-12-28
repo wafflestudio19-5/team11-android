@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
 
-
+        // binding.logoutButton.visibility = View.GONE
         // Google 로그아웃 부분
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             // .requestIdToken(getString(R.string.firebase_web_client_id))

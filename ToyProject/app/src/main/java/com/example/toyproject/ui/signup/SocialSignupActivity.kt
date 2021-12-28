@@ -65,7 +65,7 @@ class SocialSignupActivity: AppCompatActivity() {
             }
         }
         viewModel.nicknameCheckResult.observe(this, {
-            if(it.check=="True") {
+            if(it.check) {
                 nicknameChecked = true
                 binding.nicknameCheckButton.text = "확인 완료"
                 Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()

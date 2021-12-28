@@ -95,7 +95,7 @@ class SignupActivity: AppCompatActivity() {
             }
         }
         viewModel.idCheckResult.observe(this, {
-            if(it.check=="True") {
+            if(it.check==true) {
                 idChecked = true
                 binding.idCheckButton.text = "확인 완료"
                 Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
@@ -116,7 +116,7 @@ class SignupActivity: AppCompatActivity() {
             }
         }
         viewModel.emailCheckResult.observe(this, {
-            if(it.check=="True") {
+            if(it.check==true) {
                 emailChecked = true
                 binding.emailCheckButton.text = "확인 완료"
                 Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
@@ -137,7 +137,7 @@ class SignupActivity: AppCompatActivity() {
             }
         }
         viewModel.nicknameCheckResult.observe(this, {
-            if(it.check=="True") {
+            if(it.check) {
                 nicknameChecked = true
                 binding.nicknameCheckButton.text = "확인 완료"
                 Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
