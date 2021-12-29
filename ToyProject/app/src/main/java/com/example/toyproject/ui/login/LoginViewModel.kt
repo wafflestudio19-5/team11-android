@@ -1,15 +1,16 @@
 package com.example.toyproject.ui.login
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
-import com.example.toyproject.network.dto.ErrorMessage
-import com.example.toyproject.network.dto.Login
-import com.example.toyproject.network.dto.SignupResponse
-import com.example.toyproject.network.dto.parsing
+import com.example.toyproject.network.dto.*
+import com.example.toyproject.ui.univsearch.UnivSearchActivity
+import com.example.toyproject.ui.univsearch.UnivSearchActivity_GeneratedInjector
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,6 +35,19 @@ class LoginViewModel @Inject constructor(
 
     private val _tokenResult  = MutableLiveData<String>()
     val tokenResult : LiveData<String> = _tokenResult
+
+    // 로그인 버튼 누르면, 구글 계정에서 access token 받아서 먼저 로그인을 시도하고,
+    // 서버에서 로그인에 실패했으면(=신규 유저이면) 팝업을 띄우고 자동 register
+    private val _googleLoginResult  = MutableLiveData<String>()
+    val googleLoginResult : LiveData<String> = _googleLoginResult
+
+    // 카카오 로그인도 같은 방식
+    private val _kakaoLoginResult = MutableLiveData<String>()
+    val kakaoLoginResult : LiveData<String> = _kakaoLoginResult
+
+    // 카카오 회원가입용 정보
+    lateinit var registerInfoEmail : String
+    lateinit var registerInfoToken : String
 
     lateinit var errorMessage : String
 
@@ -97,5 +111,95 @@ class LoginViewModel @Inject constructor(
                 }
             }
         } )
+    }
+
+    fun googleLogin(param : LoginSocial) {
+        service.googleLogin(param).enqueue(object : Callback<LoginSocialResponse>{
+            override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
+
+            }
+
+            override fun onResponse(
+                call: Call<LoginSocialResponse>,
+                response: Response<LoginSocialResponse>
+            ) {
+                if(response.isSuccessful) {
+                    _googleLoginResult.value = "success"
+                }
+                else {
+                    if(response.errorBody() != null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                            if(error?.non_field_errors != null) {
+                                _result.value = "register"
+                            }
+                            else {
+                                _result.value = "fail"
+                            }
+                        } catch (e: Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    else {
+                        _result.value = "fail"
+                        errorMessage = "다시 시도해 주세요."
+                    }
+
+                }
+            }
+        })
+    }
+
+    fun kakaoLogin(param : LoginSocial, email : String?) {
+        service.kakaoLogin(param).clone().enqueue(object : Callback<LoginSocialResponse>{
+            override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
+                Timber.d("로그인 실패")
+            }
+            override fun onResponse(
+                call: Call<LoginSocialResponse>,
+                response: Response<LoginSocialResponse>
+            ) {
+                // 카카오 로그인 성공
+                if(response.isSuccessful) {
+                    sharedPreferences.edit {
+                        this.putString("token", response.body()!!.token)
+                    }
+                    _kakaoLoginResult.value = "success"
+                }
+                else {
+                    // 카카오 로그인 실패 : case1->첫 로그인  case2->기타 에러(통신 에러, 카카오 계정 에러 등등)
+                    if(response.errorBody()!=null) {
+                        try {
+                            val error = retrofit.responseBodyConverter<ErrorMessage>(
+                                ErrorMessage::class.java,
+                                ErrorMessage::class.java.annotations
+                            ).convert(response.errorBody())
+                            errorMessage = parsing(error)
+                            // non_field_error 가 왔으면 우리 서버에 그 카카오 계정이 등록되어있지 않은 상태. 회원가입 진행
+                            if(error?.non_field_errors != null) {
+                                // TODO : "카카오 계정으로 회원가입 하시겠습니까?" 창 띄우기
+                                registerInfoEmail = email.toString()
+                                registerInfoToken = param.access_token
+                                _kakaoLoginResult.value = "register"
+                            }
+                            // 아니면, 통신 에러 및 기타 에러
+                            else {
+                                _kakaoLoginResult.value = "fail"
+                            }
+                        } catch (e: Exception) {
+                            errorMessage = response.errorBody()?.string()!!
+                        }
+                    }
+                    else {
+                        _kakaoLoginResult.value = "fail"
+                        errorMessage = "다시 시도해 주세요."
+                    }
+                }
+            }
+        })
     }
 }

@@ -9,3 +9,4 @@ data class Signup(
     val university: String?,
     val name : String
 )
+
