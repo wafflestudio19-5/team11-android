@@ -4,21 +4,27 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp" >
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp" >
 
     <LinearLayout
+        android:id="@+id/article_ui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="6dp">
 
         <ImageView
+            android:id="@+id/profile_image"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/anonymous_photo"
             android:layout_marginRight="7dp"/>
 
         <TextView
+            android:id="@+id/profile_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="익명"
@@ -33,6 +39,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/article_written_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="23:05"

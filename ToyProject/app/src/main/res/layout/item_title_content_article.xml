@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/article_ui"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp" >
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp">
 
     <TextView
         android:id="@+id/article_title"
@@ -77,20 +81,11 @@
             android:textSize="12dp"
             android:textColor="@color/SecondaryVariant"/>
 
-
-
-
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3px"
         android:background="#D3D3D3"/>
-
-
-
-
-
-
 
 </LinearLayout>

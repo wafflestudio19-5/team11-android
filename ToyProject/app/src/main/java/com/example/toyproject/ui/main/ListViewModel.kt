@@ -47,22 +47,22 @@ class ListViewModel @Inject constructor(
     fun classifyBoardList(){
         for(board in _boardList.value!!){
             when (board.type) {
-                "default" -> {
+                0 -> {
                     _defaultBoardList.value?.add(board)
                 }
-                "career" -> {
+                1 -> {
                     _careerBoardList.value?.add(board)
                 }
-                "promotion" -> {
+                2 -> {
                     _careerBoardList.value?.add(board)
                 }
-                "organization" -> {
+                3 -> {
                     _careerBoardList.value?.add(board)
                 }
-                "department" -> {
+                4 -> {
                     _careerBoardList.value?.add(board)
                 }
-                "general" -> {
+                5 -> {
                     _careerBoardList.value?.add(board)
                 }
             }
