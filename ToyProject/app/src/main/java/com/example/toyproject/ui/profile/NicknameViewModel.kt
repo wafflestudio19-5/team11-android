@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.ChangeSuccess
+import com.example.toyproject.network.Nickname
 import com.example.toyproject.network.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
@@ -22,7 +23,7 @@ class NicknameViewModel @Inject constructor(
     val response: LiveData<ChangeSuccess> = _response
 
     fun changeNickname(nickname: String) {
-        service.changeNick(nickname).clone().enqueue(object : Callback<ChangeSuccess> {
+        service.changeNick(Nickname(nickname)).enqueue(object : Callback<ChangeSuccess> {
             override fun onFailure(call: Call<ChangeSuccess>, t: Throwable) {
                 _result.value = t.message
             }

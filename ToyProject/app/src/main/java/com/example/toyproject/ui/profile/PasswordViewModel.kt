@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.ChangeSuccess
+import com.example.toyproject.network.Password
 import com.example.toyproject.network.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
@@ -22,7 +23,7 @@ class PasswordViewModel @Inject constructor(
     val response: LiveData<ChangeSuccess> = _response
 
     fun changePassword(password: String) {
-        service.changePassword(password).clone().enqueue(object : Callback<ChangeSuccess> {
+        service.changePassword(Password(password)).enqueue(object : Callback<ChangeSuccess> {
             override fun onFailure(call: Call<ChangeSuccess>, t: Throwable) {
                 _result.value = t.message
             }

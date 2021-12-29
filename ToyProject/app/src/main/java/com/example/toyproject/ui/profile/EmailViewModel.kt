@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.ChangeSuccess
+import com.example.toyproject.network.Email
 import com.example.toyproject.network.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EmailViewModel @Inject constructor(
-    private val service: UserService,
+    private val service: UserService
 ): ViewModel(){
     private val _result = MutableLiveData<String>()
     val result: LiveData<String> = _result
@@ -22,7 +23,7 @@ class EmailViewModel @Inject constructor(
     val response: LiveData<ChangeSuccess> = _response
 
     fun changeEmail(email: String) {
-        service.changeEmail(email).clone().enqueue(object : Callback<ChangeSuccess> {
+        service.changeEmail(Email(email)).enqueue(object : Callback<ChangeSuccess> {
             override fun onFailure(call: Call<ChangeSuccess>, t: Throwable) {
                 _result.value = t.message
             }

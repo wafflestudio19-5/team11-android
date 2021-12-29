@@ -29,14 +29,17 @@ class UserActivity: AppCompatActivity() {
         viewModel.profile.observe(this, {
             nickname = it.nickname.toString()
             email = it.email.toString()
-            binding.userId.text = it.id
-            "${it.name} / ${it.nickname}/n${it.university} ${it.admissionYear?.minus(2000)}학번".also { binding.userProfile.text = it }
+            binding.userId.text = it.user_id
+            binding.userProfile.text = "${it.name} / ${it.nickname}"
+            binding.userProfile2.text = "${it.university} ${it.admission_year?.minus(2000)}학번"
         })
 
         binding.changeEmail.setOnClickListener{
             val intent = Intent(this, ChangeEmailActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.changeNick.setOnClickListener{
@@ -44,13 +47,14 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("nickname", nickname)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.changePw.setOnClickListener{
             val intent = Intent(this, ChangePasswordActivity::class.java)
-            intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
     }
 }

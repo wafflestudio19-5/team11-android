@@ -10,18 +10,30 @@ interface UserService {
     fun getUserProfile(): Call<UserResponse>
 
     @PUT("/api/v1/my/password/")
-    fun changePassword(@Query("password") password : String) : Call<ChangeSuccess>
+    fun changePassword(@Body password : Password) : Call<ChangeSuccess>
 
     @PUT("api/v1/my/email/")
-    fun changeEmail(@Query("email") email : String) : Call<ChangeSuccess>
+    fun changeEmail(@Body email : Email) : Call<ChangeSuccess>
 
     @PUT("api/v1/my/nickname/")
-    fun changeNick(@Query("nickname") nickname : String) : Call<ChangeSuccess>
+    fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
     //탈퇴는 아직 구현하지 않음.
 }
 
+data class Password(
+    val password: String
+)
+
+data class Email(
+    val email: String
+)
+
+data class Nickname(
+    val nickname: String
+)
+
 data class ChangeSuccess(
-    val success: Boolean,
+    val success: Boolean?,
     val detail: String?
 )

@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityChangeNicknameBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChangeNicknameActivity:AppCompatActivity() {
     private lateinit var binding:ActivityChangeNicknameBinding
     private val viewModel: NicknameViewModel by viewModels()
@@ -17,7 +19,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
         binding.nicknameInputLayout.hint = intent.getStringExtra("nickname")
 
         binding.changeNickButton.setOnClickListener{
-            if(binding.newNickname.text == binding.nicknameInputLayout.hint){
+            if(binding.newNickname.text.toString() == binding.nicknameInputLayout.hint){
                 Toast.makeText(this, "기존의 닉네임과 동일합니다.", Toast.LENGTH_SHORT).show()
             }
             else{
@@ -26,7 +28,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
         }
 
         viewModel.response.observe(this, {
-            if(it.success){
+            if(it.success!=null){
                 finish()
             }
             else{
