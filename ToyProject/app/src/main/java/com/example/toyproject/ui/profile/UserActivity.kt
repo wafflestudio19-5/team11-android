@@ -81,5 +81,13 @@ class UserActivity: AppCompatActivity() {
             setResult(RESULT_OK, Intent())
             finish()
         }
+
+        binding.univCertify.setOnClickListener {
+            val intent = Intent(this, UnivCertifyActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
+            setResult(RESULT_OK, Intent())
+            finish()
+        }
     }
 }

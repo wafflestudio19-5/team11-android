@@ -33,7 +33,7 @@ class WithdrawalViewModel @Inject constructor(
                     _response.value = response.body()
                 }
                 else {
-                    _result.value = response.errorBody().toString()
+                    _result.value = response.errorBody()?.string()!!
                 }
             }
         })

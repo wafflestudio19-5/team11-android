@@ -15,6 +15,12 @@ interface UserService {
     @PUT("/api/v1/my/email/")
     fun changeEmail(@Body email : Email) : Call<ChangeSuccess>
 
+    @POST("/api/v1/email_code/")
+    fun sendEmailCode(@Query("email") email: String): Call<Void>
+
+    @GET("/api/v1/email_code/")
+    fun compareCode(@Query("email") email: String, @Query("code") code: Int): Call<CompareResult>
+
     @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
@@ -40,4 +46,8 @@ data class ChangeSuccess(
 
 data class WithdrawalSuccess(
     val success: Boolean?,
+)
+
+data class CompareResult(
+    val Result: String?
 )
