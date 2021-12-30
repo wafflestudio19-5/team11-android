@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.databinding.FragmentListBinding
+import com.example.toyproject.network.dto.Board
+import com.example.toyproject.ui.board.BoardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -98,8 +101,6 @@ class ListFragment : Fragment() {
 
         viewModel.getBoardList()
 
-        viewModel.classifyBoardList()
-
         viewModel.defaultBoardList.observe(viewLifecycleOwner, {
             defaultAdapter.setDefaultBoards(it)
         })
@@ -122,6 +123,25 @@ class ListFragment : Fragment() {
 
         viewModel.generalBoardList.observe(viewLifecycleOwner, {
             generalAdapter.setDefaultBoards(it)
+        })
+
+        generalAdapter.setItemClickListener(object: GeneralRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+
+            }
+        })
+
+        defaultAdapter.setItemClickListener(object: DefaultRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+            }
         })
 
 

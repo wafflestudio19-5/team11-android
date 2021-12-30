@@ -4,5 +4,5 @@ data class Board(
     val id: Int,
     val name: String,
     val type: Int,
-    val desc: String?
+    val description: String?
 )

@@ -22,7 +22,7 @@ class PromotionRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
             is PromotionBoardViewHolder -> {
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
-                    notDefaultBoardDescription.text = data.desc
+                    notDefaultBoardDescription.text = data.description
                 }
             }
         }

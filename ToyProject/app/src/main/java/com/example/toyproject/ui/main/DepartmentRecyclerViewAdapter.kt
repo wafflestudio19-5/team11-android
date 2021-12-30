@@ -22,7 +22,7 @@ class DepartmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
             is DepartmentBoardViewHolder -> {
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
-                    notDefaultBoardDescription.text = data.desc
+                    notDefaultBoardDescription.text = data.description
                 }
             }
         }

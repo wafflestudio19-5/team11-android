@@ -1,14 +1,17 @@
 package com.example.toyproject.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemNotDefaultBoardBinding
 import com.example.toyproject.network.dto.Board
+import java.lang.IllegalStateException
 
 class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var generalBoards: List<Board> = listOf()
+    private var generalBoards: MutableList<Board> = mutableListOf()
+
     inner class GeneralBoardViewHolder(val binding: ItemNotDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -22,7 +25,10 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
             is GeneralBoardViewHolder -> {
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
-                    notDefaultBoardDescription.text = data.desc
+                    notDefaultBoardDescription.text = data.description
+                    root.setOnClickListener {
+                        itemClickListener.onItemClick(root, data, position)
+                    }
                 }
             }
         }
@@ -32,7 +38,17 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         return generalBoards.size
     }
 
-    fun setDefaultBoards(defaultBoards: List<Board>){
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, data: Board, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener : OnItemClickListener){
+        this.itemClickListener = onItemClickListener
+    }
+
+    fun setDefaultBoards(defaultBoards: MutableList<Board>){
         this.generalBoards = defaultBoards
         this.notifyDataSetChanged()
     }

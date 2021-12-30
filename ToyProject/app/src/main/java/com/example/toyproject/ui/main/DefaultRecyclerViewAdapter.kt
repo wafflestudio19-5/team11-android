@@ -1,6 +1,7 @@
 package com.example.toyproject.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemDefaultBoardBinding
@@ -22,6 +23,9 @@ class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
             is DefaultBoardViewHolder -> {
                 holder.binding.apply {
                     defaultBoardType.text = data.name
+                    root.setOnClickListener {
+                        itemClickListener.onItemClick(root, data, position)
+                    }
                 }
             }
         }
@@ -34,6 +38,16 @@ class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     fun setDefaultBoards(defaultBoards: List<Board>){
         this.defaultBoards = defaultBoards
         this.notifyDataSetChanged()
+    }
+
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, data: Board, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener : OnItemClickListener){
+        this.itemClickListener = onItemClickListener
     }
 
 

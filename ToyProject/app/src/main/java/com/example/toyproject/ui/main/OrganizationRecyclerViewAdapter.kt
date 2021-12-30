@@ -22,7 +22,7 @@ class OrganizationRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHo
             is OrganizationBoardViewHolder -> {
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
-                    notDefaultBoardDescription.text = data.desc
+                    notDefaultBoardDescription.text = data.description
                 }
             }
         }

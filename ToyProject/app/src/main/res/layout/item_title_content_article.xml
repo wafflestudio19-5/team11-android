@@ -59,7 +59,7 @@
             android:layout_marginRight="3dp"/>
 
         <TextView
-            android:id="@+id/like_number"
+            android:id="@+id/article_like_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9"
@@ -74,7 +74,7 @@
             android:layout_marginRight="3dp"/>
 
         <TextView
-            android:id="@+id/comment_number"
+            android:id="@+id/article_comment_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"

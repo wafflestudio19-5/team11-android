@@ -8,11 +8,12 @@ import com.example.toyproject.network.BoardService
 import com.example.toyproject.network.dto.Board
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val service: BoardService,
+    private val service: BoardService
 ) : ViewModel(){
 
     private val _boardList = MutableLiveData<List<Board>>()
@@ -36,39 +37,60 @@ class ListViewModel @Inject constructor(
     private val _generalBoardList = MutableLiveData<MutableList<Board>>()
     val generalBoardList: LiveData<MutableList<Board>> = _generalBoardList
 
-
+    private val defaultTempList = mutableListOf<Board>()
+    private val careerTempList = mutableListOf<Board>()
+    private val promotionTempList = mutableListOf<Board>()
+    private val organizationTempList = mutableListOf<Board>()
+    private val departmentTempList = mutableListOf<Board>()
+    private val generalTempList = mutableListOf<Board>()
 
     fun getBoardList(){
         viewModelScope.launch {
-            _boardList.value = service.getBoardList()
+            _boardList.value = service.getBoardList().boards
+            classifyBoardList()
+            setBoardList()
         }
     }
 
-    fun classifyBoardList(){
+    private fun classifyBoardList(){
         for(board in _boardList.value!!){
             when (board.type) {
                 0 -> {
-                    _defaultBoardList.value?.add(board)
+                    defaultTempList.add(board)
                 }
                 1 -> {
-                    _careerBoardList.value?.add(board)
+                    careerTempList.add(board)
                 }
                 2 -> {
-                    _careerBoardList.value?.add(board)
+                    promotionTempList.add(board)
                 }
                 3 -> {
-                    _careerBoardList.value?.add(board)
+                    organizationTempList.add(board)
                 }
                 4 -> {
-                    _careerBoardList.value?.add(board)
+                    departmentTempList.add(board)
                 }
                 5 -> {
-                    _careerBoardList.value?.add(board)
+                    generalTempList.add(board)
+                }
+                else ->{
+                    Timber.d("error")
                 }
             }
 
 
         }
+    }
+
+    private fun setBoardList(){
+        _defaultBoardList.value = defaultTempList
+        _careerBoardList.value = careerTempList
+        _promotionBoardList.value = promotionTempList
+        _organizationBoardList.value = organizationTempList
+        _departmentBoardList.value = departmentTempList
+        _generalBoardList.value = generalTempList
+
+
     }
 
 
