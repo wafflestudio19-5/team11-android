@@ -10,11 +10,13 @@ import androidx.core.content.edit
 import com.example.toyproject.databinding.ActivityUserBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     private val viewModel: UserViewModel by viewModels()
+    @Inject
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?){

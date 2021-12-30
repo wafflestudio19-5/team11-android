@@ -34,7 +34,7 @@ class EmailViewModel @Inject constructor(
                     _response.value = response.body()
                 }
                 else {
-                    _response.value = response.body()
+                    _result.value = response.errorBody().toString()
                 }
             }
         })

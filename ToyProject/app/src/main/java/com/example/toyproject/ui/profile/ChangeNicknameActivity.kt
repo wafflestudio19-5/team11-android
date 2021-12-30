@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,10 +30,10 @@ class ChangeNicknameActivity:AppCompatActivity() {
 
         viewModel.response.observe(this, {
             if(it.success==true){
+                val intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+                setResult(RESULT_OK, Intent())
                 finish()
-            }
-            else{
-                Toast.makeText(this, it.detail, Toast.LENGTH_SHORT).show()
             }
         })
 

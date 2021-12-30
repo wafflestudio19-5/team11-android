@@ -38,9 +38,6 @@ class WithdrawalActivity: AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            else{
-                Toast.makeText(this, it.detail, Toast.LENGTH_SHORT).show()
-            }
         })
 
         viewModel.result.observe(this,{

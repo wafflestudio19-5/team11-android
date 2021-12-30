@@ -18,7 +18,7 @@ interface UserService {
     @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
-    @DELETE("api/v1/my/withdrawal/")
+    @DELETE("/api/v1/my/withdrawal/")
     fun withdrawal(@Query("password") password: String): Call<WithdrawalSuccess>
 }
 
@@ -36,11 +36,8 @@ data class Nickname(
 
 data class ChangeSuccess(
     val success: Boolean?,
-    val detail: String?
 )
 
 data class WithdrawalSuccess(
     val success: Boolean?,
-    val error: String?,
-    val detail: String?
 )
