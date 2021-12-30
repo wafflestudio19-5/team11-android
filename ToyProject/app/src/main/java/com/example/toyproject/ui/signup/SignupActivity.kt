@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -108,15 +109,21 @@ class SignupActivity: AppCompatActivity() {
         // 이메일 중복확인 부분
         binding.emailCheckButton.setOnClickListener {
             if (!emailChecked) {
-                emailTemp = binding.emailEdit.text.toString()
-                viewModel.checkEmail(emailTemp)
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailEdit.text.toString()).matches())
+                {
+                    Toast.makeText(this,"이메일 형식이 아닙니다",Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    emailTemp = binding.emailEdit.text.toString()
+                    viewModel.checkEmail(emailTemp)
+                }
             }
             else {
                 Toast.makeText(this, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.emailCheckResult.observe(this, {
-            if(it.check==true) {
+            if(it.check) {
                 emailChecked = true
                 binding.emailCheckButton.text = "확인 완료"
                 Toast.makeText(this, it.detail, Toast.LENGTH_LONG).show()
@@ -150,16 +157,22 @@ class SignupActivity: AppCompatActivity() {
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
             if(idChecked && emailChecked && nicknameChecked) {
-                val param = Signup(binding.idEdit.text.toString(),
-                    binding.passwordEdit.text.toString(),
-                    binding.emailEdit.text.toString(),
-                    intent.getIntExtra("year", 2022),
-                    binding.nicknameEdit.text.toString(),
-                    intent.getStringExtra("university"),
-                    binding.nameEdit.text.toString()
-                )
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.signup(param)
+                if(!Pattern.matches("^(?=.*[a-zA-Z0-9])(?=.*[a-zA-Z!@#\$%^&*])(?=.*[0-9!@#\$%^&*]).{8,20}\$", binding.passwordEdit.text.toString()))
+                {
+                    Toast.makeText(this,"비밀번호 형식을 지켜주세요.",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    val param = Signup(binding.idEdit.text.toString(),
+                        binding.passwordEdit.text.toString(),
+                        binding.emailEdit.text.toString(),
+                        intent.getIntExtra("year", 2022),
+                        binding.nicknameEdit.text.toString(),
+                        intent.getStringExtra("university"),
+                        binding.nameEdit.text.toString()
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.signup(param)
+                    }
                 }
             }
             else {

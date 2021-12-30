@@ -17,10 +17,11 @@
         <activity android:name=".ui.signup.SocialSignupActivity" />
         <activity android:name=".ui.main.MainActivity"/>
         <activity android:name=".ui.signup.SignupActivity"/>
-        <activity android:name="com.example.toyproject.ui.profile.UserActivity"/>
-        <activity android:name="com.example.toyproject.ui.profile.ChangeEmailActivity"/>
-        <activity android:name="com.example.toyproject.ui.profile.ChangeNicknameActivity"/>
-        <activity android:name="com.example.toyproject.ui.profile.ChangePasswordActivity"/>
+        <activity android:name=".ui.profile.UserActivity"/>
+        <activity android:name=".ui.profile.ChangeEmailActivity"/>
+        <activity android:name=".ui.profile.ChangeNicknameActivity"/>
+        <activity android:name=".ui.profile.ChangePasswordActivity"/>
+        <activity android:name=".ui.profile.WithdrawalActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">

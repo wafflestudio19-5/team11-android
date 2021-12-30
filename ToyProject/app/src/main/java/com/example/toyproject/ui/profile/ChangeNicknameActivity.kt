@@ -28,7 +28,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
         }
 
         viewModel.response.observe(this, {
-            if(it.success!=null){
+            if(it.success==true){
                 finish()
             }
             else{

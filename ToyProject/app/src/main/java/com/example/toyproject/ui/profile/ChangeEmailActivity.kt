@@ -41,7 +41,7 @@ class ChangeEmailActivity:AppCompatActivity() {
            }
            //이렇게 되면 비번입력이 의미가 있나
            viewModel.response.observe(this, {
-               if(it.success!=null){
+               if(it.success==true){
                    //mGoogleSignInClient.signOut()
                    val intent  = Intent(this, LoginActivity::class.java)
                    //intent.putExtra("logout", true)

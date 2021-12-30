@@ -12,13 +12,14 @@ interface UserService {
     @PUT("/api/v1/my/password/")
     fun changePassword(@Body password : Password) : Call<ChangeSuccess>
 
-    @PUT("api/v1/my/email/")
+    @PUT("/api/v1/my/email/")
     fun changeEmail(@Body email : Email) : Call<ChangeSuccess>
 
-    @PUT("api/v1/my/nickname/")
+    @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
-    //탈퇴는 아직 구현하지 않음.
+    @DELETE("api/v1/my/withdrawal/")
+    fun withdrawal(@Query("password") password: String): Call<WithdrawalSuccess>
 }
 
 data class Password(
@@ -35,5 +36,11 @@ data class Nickname(
 
 data class ChangeSuccess(
     val success: Boolean?,
+    val detail: String?
+)
+
+data class WithdrawalSuccess(
+    val success: Boolean?,
+    val error: String?,
     val detail: String?
 )

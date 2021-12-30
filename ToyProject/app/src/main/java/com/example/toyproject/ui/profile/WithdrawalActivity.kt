@@ -7,34 +7,24 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import com.example.toyproject.databinding.ActivityChangePasswordBinding
+import com.example.toyproject.databinding.ActivityWithdrawalBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChangePasswordActivity:AppCompatActivity() {
-    private lateinit var binding:ActivityChangePasswordBinding
-    private val viewModel: PasswordViewModel by viewModels()
+class WithdrawalActivity: AppCompatActivity() {
+    private lateinit var binding: ActivityWithdrawalBinding
+    private val viewModel: WithdrawalViewModel by viewModels()
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChangePasswordBinding.inflate(layoutInflater)
+        binding = ActivityWithdrawalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.changePwButton.setOnClickListener{
-            if(binding.passwordEdit.text.toString() != binding.passwordConfirm.text.toString()){
-                Toast.makeText(this, "비밀번호가 불일치합니다.", Toast.LENGTH_SHORT).show()
-            }
-            else if(!Pattern.matches("^(?=.*[a-zA-Z0-9])(?=.*[a-zA-Z!@#\$%^&*])(?=.*[0-9!@#\$%^&*]).{8,20}\$", binding.passwordConfirm.text.toString()))
-                {
-                    Toast.makeText(this,"비밀번호 형식을 지켜주세요.",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                viewModel.changePassword(binding.passwordEdit.text.toString())
-            }
+        binding.withdrawalButton.setOnClickListener{
+            viewModel.withdrawal(binding.curPassword.text.toString())
         }
 
         viewModel.response.observe(this, {
