@@ -24,8 +24,8 @@ interface UserService {
     @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
-    @DELETE("/api/v1/my/withdrawal/")
-    fun withdrawal(@Query("password") password: String): Call<WithdrawalSuccess>
+    @HTTP(method = "DELETE", path = "/api/v1/my/withdrawal/", hasBody = true)
+    fun withdrawal(@Body password: Password): Call<WithdrawalSuccess>
 }
 
 data class Password(

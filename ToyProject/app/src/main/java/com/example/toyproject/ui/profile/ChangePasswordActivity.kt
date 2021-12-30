@@ -41,7 +41,7 @@ class ChangePasswordActivity:AppCompatActivity() {
             if(it.success==true){
                 //mGoogleSignInClient.signOut()
                 val intent  = Intent(this, LoginActivity::class.java)
-                //intent.putExtra("logout", true)
+                intent.putExtra("logout", true)
                 sharedPreferences.edit {
                     this.remove("token")
                 }

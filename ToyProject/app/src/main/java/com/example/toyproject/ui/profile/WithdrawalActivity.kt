@@ -24,22 +24,14 @@ class WithdrawalActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         binding.withdrawalButton.setOnClickListener{
-            var password = binding.curPassword.text.toString().replace("!", "%21")
-            password = password.replace("@", "%40")
-            password = password.replace("#", "%23")
-            password = password.replace("$", "%24")
-            password = password.replace("%", "%25")
-            password = password.replace("^", "%5e")
-            password = password.replace("$", "%26")
-            password = password.replace("*", "%2A")
-            viewModel.withdrawal(binding.curPassword.text.toString())
+            viewModel.withdrawal(binding.curPasswordInput.text.toString())
         }
 
         viewModel.response.observe(this, {
             if(it.success==true){
                 //mGoogleSignInClient.signOut()
                 val intent  = Intent(this, LoginActivity::class.java)
-                //intent.putExtra("logout", true)
+                intent.putExtra("logout", true)
                 sharedPreferences.edit {
                     this.remove("token")
                 }

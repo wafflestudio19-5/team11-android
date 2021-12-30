@@ -3,6 +3,7 @@ package com.example.toyproject.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.toyproject.network.Password
 import com.example.toyproject.network.UserService
 import com.example.toyproject.network.WithdrawalSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ class WithdrawalViewModel @Inject constructor(
     val response: LiveData<WithdrawalSuccess> = _response
 
     fun withdrawal(password: String) {
-        service.withdrawal(password).enqueue(object : Callback<WithdrawalSuccess> {
+        service.withdrawal(Password(password)).enqueue(object : Callback<WithdrawalSuccess> {
             override fun onFailure(call: Call<WithdrawalSuccess>, t: Throwable) {
                 _result.value = t.message
             }
