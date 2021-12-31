@@ -32,7 +32,7 @@
     <string name="new_pw_confirm">새 비밀번호 확인</string>
     <string name="cur_pw">현재 비밀번호</string>
     <string name="logout_warning">※변경 시 자동 로그아웃됩니다.</string>
-    <string name="withdrawal_warning">※두 번 묻지 않습니다. 되돌릴 수 없습니다.</string>
+    <string name="withdrawal_warning">※탈퇴 후에는 되돌릴 수 없습니다.</string>
     <string name="send_code">인증코드 발송</string>
     <string name="enter_code">인증코드 입력</string>
     <string name="enter_4">4자리 코드를 입력하세요.</string>
