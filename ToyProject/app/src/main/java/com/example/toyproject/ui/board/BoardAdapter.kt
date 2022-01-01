@@ -52,10 +52,6 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         }
     }
-
-
-
-
     override fun getItemCount(): Int {
         return articles.size
     }

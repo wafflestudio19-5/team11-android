@@ -65,11 +65,10 @@
         android:id="@+id/comment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:textColor="@color/OnBackground"
-        android:textStyle="normal"
-        android:text="댓글 내용\n댓글댓글 대대대대댓글"
         android:textSize="12dp"
-        android:layout_marginBottom="2dp" />
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/comment_written_time"

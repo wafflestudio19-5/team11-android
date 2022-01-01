@@ -3,7 +3,10 @@ package com.example.toyproject.ui.article
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.databinding.ActivityArticleBinding
+import com.example.toyproject.ui.board.BoardAdapter
+import com.example.toyproject.ui.board.CommentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,11 +15,21 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArticleBinding
     private val viewModel : ArticleViewModel by viewModels()
 
+    private lateinit var commentAdapter: CommentAdapter
+    private lateinit var commentLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityArticleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        commentAdapter = CommentAdapter()
+        commentLayoutManager = LinearLayoutManager(this)
+        binding.commentView.apply {
+            adapter = commentAdapter
+            layoutManager = commentLayoutManager
+        }
 
         binding.articleFullBoardName.text = intent.getStringExtra("board_name").toString()
 
@@ -32,6 +45,8 @@ class ArticleActivity : AppCompatActivity() {
             binding.articleFullLikeNumber.text = it.like_count.toString()
             binding.articleFullCommentNumber.text = it.comment_count.toString()
 //            binding.articleFullScrapNumber.text = it
+            commentAdapter.setComments(it.comments)
+            commentAdapter.notifyDataSetChanged()
 
         })
 
