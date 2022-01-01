@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="6dp">
+
+        <ImageView
+            android:id="@+id/comment_profile_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center|left"
+            android:layout_marginRight="7dp"
+            android:src="@drawable/anonymous_photo" />
+
+        <TextView
+            android:id="@+id/comment_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:text="익명1"
+            android:textColor="@color/OnBackground"
+            android:textSize="13dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/comment_subcomment_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/baseline_chat_bubble_outline_24" />
+
+        <ImageButton
+            android:id="@+id/comment_like_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/baseline_thumb_up_off_alt_24" />
+
+        <ImageButton
+            android:id="@+id/comment_more_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/baseline_more_vert_24" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/OnBackground"
+        android:textStyle="normal"
+        android:text="댓글 내용\n댓글댓글 대대대대댓글"
+        android:textSize="12dp"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/comment_written_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="01/01 15:24"
+        android:textSize="11dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="#D3D3D3" />
+
+
+</LinearLayout>
