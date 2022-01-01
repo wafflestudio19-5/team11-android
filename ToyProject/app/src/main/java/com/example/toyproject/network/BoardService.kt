@@ -1,14 +1,9 @@
 package com.example.toyproject.network
 
-import com.example.toyproject.network.dto.ArticleContent
-import com.example.toyproject.network.dto.Board
-import com.example.toyproject.network.dto.FetchAllBoard
-import com.example.toyproject.network.dto.FetchArticlesByBoard
+import com.example.toyproject.network.dto.*
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface BoardService {
 
@@ -26,5 +21,12 @@ interface BoardService {
         @Path("board_id") board_id : Int,
         @Path("article_id") article_id : Int,
     ) : ArticleContent
+
+    @POST("api/v1/board/{board_id}/article/{article_id}/comment/")
+    suspend fun addComment(
+        @Path("board_id") board_id : Int,
+        @Path("article_id") article_id : Int,
+        @Body param : CommentCreate
+    ) : CommentCreateResponse
 
 }

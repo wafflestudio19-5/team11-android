@@ -1,12 +1,15 @@
 package com.example.toyproject.ui.article
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
+import android.widget.ScrollView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.databinding.ActivityArticleBinding
-import com.example.toyproject.ui.board.BoardAdapter
-import com.example.toyproject.ui.board.CommentAdapter
+import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,8 +50,27 @@ class ArticleActivity : AppCompatActivity() {
 //            binding.articleFullScrapNumber.text = it
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
-
+            
+            // 댓글을 새로 쓰면 스크롤 맨 위로.
+            if(viewModel.reload) binding.nestedScroll.fullScroll(ScrollView.FOCUS_UP)
         })
+
+        // 댓글 입력 버튼 누를 때
+        binding.commentButton.setOnClickListener {
+            // 키보드 내려주기
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.commentButton.windowToken, 0)
+
+            // 입력이 없으면 입력해 주라고 하고, 입력이 있으면 서버에 전송(및 재로드)
+            if(binding.commentEditText.text.toString() == "") {
+                Toast.makeText(this, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val param = CommentCreate(0, binding.commentEditText.text.toString(), binding.commentAnonymousCheckBox.isChecked)
+                viewModel.addComment(boardId, articleId, param)
+                binding.commentEditText.text.clear()
+            }
+        }
 
     }
 }

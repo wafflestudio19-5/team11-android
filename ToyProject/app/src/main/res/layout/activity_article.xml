@@ -67,6 +67,7 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -242,12 +243,11 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/comment_view"
+                android:id="@+id/commentView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                tools:listitem="@layout/item_comment"
-                />
+                tools:listitem="@layout/item_comment" />
 
 
         </LinearLayout>
@@ -270,7 +270,7 @@
             android:textColor="@color/Primary" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/commentEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -280,7 +280,7 @@
             android:textSize="15sp" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/commentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

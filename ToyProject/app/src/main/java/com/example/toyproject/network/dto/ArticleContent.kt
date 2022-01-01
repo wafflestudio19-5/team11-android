@@ -13,7 +13,7 @@ data class ArticleContent (
     val image_count : Int,
     val created_at : String,
     val f_created_at : String,
-    val comments : List<Comment>
+    val comments : MutableList<Comment>
 )
 
 data class Comment(

@@ -43,7 +43,6 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     root.setOnClickListener {
                         itemClickListener.onItemClick(root, data, position)
                     }
-
                 }
             }
             else -> {

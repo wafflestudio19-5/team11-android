@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.board
+package com.example.toyproject.ui.article
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -35,7 +35,7 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         return comments.size
     }
 
-    fun setComments(comments: List<Comment>){
-        this.comments.addAll(comments)
+    fun setComments(comments: MutableList<Comment>){
+        this.comments = comments
     }
 }
