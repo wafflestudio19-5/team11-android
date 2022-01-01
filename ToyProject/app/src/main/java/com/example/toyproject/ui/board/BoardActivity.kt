@@ -43,6 +43,9 @@ class BoardActivity : AppCompatActivity() {
         boardAdapter.setItemClickListener(object: BoardAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: Article, position: Int) {
                 Intent(this@BoardActivity, ArticleActivity::class.java).apply{
+                    putExtra("board_id", intent.getIntExtra("board_id", 0))
+                    putExtra("article_id", position)
+                    putExtra("board_name", intent.getStringExtra("board_name"))
 
                 }.run{startActivity(this)}
             }
