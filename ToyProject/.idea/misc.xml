@@ -7,13 +7,20 @@
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.35625" />
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/drawable/login_btn.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/csmki/AndroidStudioProjects/ToyProject/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/csmki/team11-android/ToyProject/app/src/main/res/layout/activity_board.xml" value="0.33" />
-        <entry key="..\:/Users/csmki/team11-android/ToyProject/app/src/main/res/layout/baseline_arrow_back_24.xml" value="0.2" />
-        <entry key="..\:/Users/csmki/team11-android/ToyProject/app/src/main/res/layout/baseline_more_vert_24.xml" value="0.2" />
-        <entry key="..\:/Users/csmki/team11-android/ToyProject/app/src/main/res/layout/item_content_article.xml" value="0.2" />
-        <entry key="..\:/Users/csmki/team11-android/ToyProject/app/src/main/res/layout/item_title_content_article.xml" value="0.1606962663975782" />
         <entry key="..\:/Users/didwn/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_arrow_back_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_chat_bubble_outline_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_more_vert_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_push_pin_20.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_scrab_star_outline_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/baseline_thumb_up_off_alt_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/borderline.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/btn_login.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/outline_search_24.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/outline_table_chart_24.xml" value="0.5494791666666666" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/drawable/table_add_button.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_article.xml" value="0.536" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_board.xml" value="0.4" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_change_email.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_change_nickname.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_login.xml" value="0.264" />
@@ -23,18 +30,22 @@
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_univ_certify.xml" value="0.2" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_univ_search.xml" value="0.264" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_user.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/activity_withdrawal.xml" value="0.5291666666666667" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/fragment_home.xml" value="0.2247191011235955" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/fragment_list.xml" value="0.2221100454316002" />
         <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/fragment_table.xml" value="0.4" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_content_article.xml" value="0.6" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_default_board.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_favorite_board.xml" value="0.4" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_loading.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_not_default_board.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/layout/item_title_content_article.xml" value="0.5291666666666667" />
+        <entry key="..\:/Users/didwn/Desktop/2021-2/Waffle/project/team11-android/ToyProject/app/src/main/res/menu/toolbar_menu.xml" value="0.5291666666666667" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/drawable/btn_login.xml" value="0.2390625" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_change_email.xml" value="0.264" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_change_nickname.xml" value="0.14114583333333333" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_change_password.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_signup.xml" value="0.264" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_socialsignup.xml" value="0.271875" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_univ_certify.xml" value="0.22291666666666668" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_user.xml" value="0.2" />
-        <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/activity_withdrawal.xml" value="0.271875" />
         <entry key="..\:/Users/hongj/GitHub/team11-android/ToyProject/app/src/main/res/layout/item_spinner_year.xml" value="0.22291666666666668" />
       </map>
     </option>
