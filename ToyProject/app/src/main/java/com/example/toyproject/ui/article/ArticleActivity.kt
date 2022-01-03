@@ -1,14 +1,21 @@
 package com.example.toyproject.ui.article
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
+import com.example.toyproject.network.dto.Article
+import com.example.toyproject.network.dto.Comment
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +27,8 @@ class ArticleActivity : AppCompatActivity() {
 
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var commentLayoutManager: LinearLayoutManager
+
+    private var commentParent : Int= 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +75,30 @@ class ArticleActivity : AppCompatActivity() {
                 Toast.makeText(this, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
-                val param = CommentCreate(0, binding.commentEditText.text.toString(), binding.commentAnonymousCheckBox.isChecked)
+                val param = CommentCreate(commentParent, binding.commentEditText.text.toString(), binding.commentAnonymousCheckBox.isChecked)
                 viewModel.addComment(boardId, articleId, param)
                 binding.commentEditText.text.clear()
             }
         }
+
+        // 대댓글 작성시 입력 버튼 누를때
+        commentAdapter.setItemClickListener(object: CommentAdapter.OnCommentClickListener{
+            override fun onCommentClick(parent : Int) {
+                val dialog = LayoutInflater.from(this@ArticleActivity).inflate(R.layout.item_comment_sub_dialog, null)
+                val mBuilder = AlertDialog.Builder(this@ArticleActivity)
+                    .setView(dialog)
+                    .setNegativeButton("취소") { dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    }
+                    .setPositiveButton("확인") { dialogInterface, i ->
+                        commentParent = parent
+
+                    }
+
+                mBuilder.show()
+
+            }
+        })
 
     }
 }
