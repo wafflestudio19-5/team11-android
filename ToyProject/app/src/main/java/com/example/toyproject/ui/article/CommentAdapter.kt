@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.article
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     inner class SubCommentViewHolder(val binding : ItemCommentSubBinding) : RecyclerView.ViewHolder(binding.root)
 
     private lateinit var commentClickListener: OnCommentClickListener
+    var subCommentParent : Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -47,7 +49,6 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                 // TODO : 작성자 본인일 시 표기
                 holder.binding.commentSubcommentButton.setOnClickListener {
                     commentClickListener.onCommentClick(data.id)
-                    holder.binding.bottomBorder.setBackgroundColor(0)
                 }
             }
             is SubCommentViewHolder -> {
@@ -98,8 +99,13 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         this.commentClickListener = onCommentClickListener
     }
 
-    fun makeRed(id : Int) {
-        
+    fun getItemPosition(id : Int) : Int {
+        for(idx in 0 until comments.size) {
+            if(comments[idx].id==id){
+                return idx
+            }
+        }
+        return 0
     }
 
     companion object {
