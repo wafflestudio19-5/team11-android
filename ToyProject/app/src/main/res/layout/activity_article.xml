@@ -60,6 +60,7 @@
             android:src="@drawable/outline_notifications_24" />
 
         <ImageButton
+            android:id="@+id/article_full_more_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"

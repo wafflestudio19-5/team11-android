@@ -1,12 +1,13 @@
 package com.example.toyproject.ui.article
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
 import android.widget.TextView
@@ -59,7 +60,9 @@ class ArticleActivity : AppCompatActivity() {
         val articleId = intent.getIntExtra("article_id", 0)
         viewModel.getArticle(boardId, articleId)
 
+        var is_mine = false
         viewModel.result.observe(this, {
+            is_mine = it.is_mine
             binding.articleFullWriterNickname.text = it.user_nickname
             binding.articleFullWrittenTime.text = it.created_at
             binding.articleFullTitle.text = it.title
@@ -195,11 +198,25 @@ class ArticleActivity : AppCompatActivity() {
         binding.articleBackButton.setOnClickListener {
             finish()
         }
+        // 오른쪽 상단 ... 버튼
+        binding.articleFullMoreButton.setOnClickListener {
+            val array = if(is_mine) {
+                arrayOf("새로고침", "삭제", "URL 공유")
+            } else {
+                arrayOf("새로고침", "쪽지 보내기", "신고", "URL 공유")
+            }
+            val builder = AlertDialog.Builder(this)
+            builder.setItems(array) {a, which ->
+                val selected = array[which]
+                // TODO
+                Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
         // 게시글 좋아요 버튼
         binding.articleFullLikeButton.setOnClickListener {
-            val dialog = LayoutInflater.from(this@ArticleActivity).inflate(R.layout.item_comment_sub_dialog, null)
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                .setView(dialog)
                 .setTitle("이 글을 공감하시겠습니까?")
                 .setNegativeButton("취소") { dialogInterface, i ->
                     dialogInterface.dismiss()
@@ -207,12 +224,11 @@ class ArticleActivity : AppCompatActivity() {
                 .setPositiveButton("확인") { dialogInterface, i ->
                     viewModel.likeArticle(articleId)
                 }
-            mBuilder.show()
+            val dialog = mBuilder.create()
+            dialog.show()
         }
         binding.articleFullScrapButton.setOnClickListener {
-            val dialog = LayoutInflater.from(this@ArticleActivity).inflate(R.layout.item_comment_sub_dialog, null)
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                .setView(dialog)
                 .setTitle("이 글을 스크랩하시겠습니까?")
                 .setNegativeButton("취소") { dialogInterface, i ->
                     dialogInterface.dismiss()
@@ -220,9 +236,9 @@ class ArticleActivity : AppCompatActivity() {
                 .setPositiveButton("확인") { dialogInterface, i ->
                     viewModel.scrapArticle(articleId)
                 }
-            mBuilder.show()
+            val dialog = mBuilder.create()
+            dialog.show()
         }
-
     }
     // 대댓글 작성중에 뒤로가기 누르면 취소(parent 하얗게 되돌리기)
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
