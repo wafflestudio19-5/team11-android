@@ -24,3 +24,8 @@ data class ScrapResponse (
     val detail : String?,
     val error : String?
 )
+
+// 댓글 삭제 결과 response
+data class CommentDeleteResponse(
+    val success : Boolean?
+)

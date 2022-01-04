@@ -32,6 +32,9 @@ class ArticleViewModel @Inject constructor(
     private val _likeResult = MutableLiveData<String>()
     val likeResult : LiveData<String> = _likeResult
 
+    private val _deleteResult = MutableLiveData<String>()
+    val deleteResult : LiveData<String> = _deleteResult
+
     fun getArticle(boardId : Int, articleId : Int) {
         viewModelScope.launch {
             reload = false
@@ -100,6 +103,27 @@ class ArticleViewModel @Inject constructor(
                         ErrorMessage::class.java.annotations
                     ).convert(response.errorBody())
                     _likeResult.value = error!!.detail.toString()
+                }
+            }
+        })
+    }
+    fun deleteComment(board_id : Int, article_id : Int, comment_id : Int) {
+        service.deleteComment(board_id, article_id, comment_id).enqueue(object : Callback<CommentDeleteResponse> {
+            override fun onFailure(call: Call<CommentDeleteResponse>, t: Throwable) {
+                _deleteResult.value = "서버와 통신에 실패하였습니다"
+            }
+
+            override fun onResponse(call: Call<CommentDeleteResponse>, response: Response<CommentDeleteResponse>) {
+                if(response.isSuccessful) {
+                    _deleteResult.value = "success"
+                }
+                else {
+                    // 에러
+                    val error = retrofit.responseBodyConverter<ErrorMessage>(
+                        ErrorMessage::class.java,
+                        ErrorMessage::class.java.annotations
+                    ).convert(response.errorBody())
+                    _deleteResult.value = error!!.detail.toString()
                 }
             }
         })

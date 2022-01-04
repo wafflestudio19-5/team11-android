@@ -38,8 +38,15 @@ interface BoardService {
         @Path("article_id") article_id : Int
     ) : Call<LikeResponse>
 
-    @POST("api/v1/scrap/article/{article_id}")
+    @POST("api/v1/scrap/article/{article_id}/")
     fun scrapArticle(
         @Path("article_id") article_id: Int
     ) : Call<ScrapResponse>
+
+    @DELETE("api/v1/board/{board_id}/article/{article_id}/comment/{comment_id}/")
+    fun deleteComment(
+        @Path("board_id") board_id : Int,
+        @Path("article_id") article_id : Int,
+        @Path("comment_id") comment_id: Int
+    ) : Call<CommentDeleteResponse>
 }

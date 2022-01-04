@@ -188,7 +188,21 @@ class ArticleActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this@ArticleActivity)
                 builder.setItems(array) { _, which ->
                     val selected = array[which]
-                    // TODO
+                    when(selected) {
+                        "삭제" -> {
+                            val mBuilder = AlertDialog.Builder(this@ArticleActivity)
+                                .setTitle("삭제하시겠습니까?")
+                                .setNegativeButton("취소") { dialogInterface, i ->
+                                    dialogInterface.dismiss()
+                                }
+                                .setPositiveButton("확인") { dialogInterface, i ->
+                                    viewModel.deleteComment(boardId, articleId, id)
+                                }
+                            val dialog = mBuilder.create()
+                            dialog.show()
+                        }
+                        // TODO (다른 선택지들)
+                    }
                 }
                 val dialog = builder.create()
                 dialog.show()
@@ -227,6 +241,7 @@ class ArticleActivity : AppCompatActivity() {
             val dialog = mBuilder.create()
             dialog.show()
         }
+        // 게시글 스크랩 버튼
         binding.articleFullScrapButton.setOnClickListener {
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                 .setTitle("이 글을 스크랩하시겠습니까?")
@@ -239,6 +254,16 @@ class ArticleActivity : AppCompatActivity() {
             val dialog = mBuilder.create()
             dialog.show()
         }
+        // 댓글 삭제 결과 출력
+        viewModel.deleteResult.observe(this, {
+            if(it!="success") {
+                viewModel.getArticle(boardId, articleId)
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                viewModel.getArticle(boardId, articleId)
+            }
+        })
     }
     // 대댓글 작성중에 뒤로가기 누르면 취소(parent 하얗게 되돌리기)
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
