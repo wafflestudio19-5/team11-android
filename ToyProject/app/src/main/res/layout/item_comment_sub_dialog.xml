@@ -4,15 +4,4 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="대댓글을 작성하시겠습니까?"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+    android:orientation="vertical"/>

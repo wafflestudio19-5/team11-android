@@ -2,7 +2,6 @@ package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.http.*
 
 interface BoardService {
@@ -29,4 +28,18 @@ interface BoardService {
         @Body param : CommentCreate
     ) : CommentCreateResponse
 
+    @POST("api/v1/like/comment/{comment_id}/")
+    suspend fun likeComment(
+        @Path("comment_id") comment_id : Int
+    ) : LikeResponse
+
+    @POST("api/v1/like/article/{article_id}/")
+    fun likeArticle(
+        @Path("article_id") article_id : Int
+    ) : Call<LikeResponse>
+
+    @POST("api/v1/scrap/article/{article_id}")
+    fun scrapArticle(
+        @Path("article_id") article_id: Int
+    ) : Call<ScrapResponse>
 }
