@@ -67,7 +67,17 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                         // 댓글 좋아요 누를때
                         commentClickListener.onCommentLikeClick(data.id)
                     }
-
+                }
+                holder.binding.commentMoreButton.setOnClickListener {
+                    // 댓글 ... 눌렀을 때
+                    if(data.is_mine) {
+                        // 내 댓글의 ...
+                        commentClickListener.onCommentMore(data.id, mine=true, sub=false)
+                    }
+                    else {
+                        // 남의 댓글의 ...
+                        commentClickListener.onCommentMore(data.id, mine=false, sub=false)
+                    }
                 }
             }
             // 대댓글 item
@@ -88,6 +98,17 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
                     else {
                         // 대댓글에 좋아요 누를때
                         commentClickListener.onCommentLikeClick(data.id)
+                    }
+                }
+                holder.binding.commentMoreButton.setOnClickListener {
+                    // 대댓글 ... 눌렀을 때
+                    if(data.is_mine) {
+                        // 내 대댓글의 ...
+                        commentClickListener.onCommentMore(data.id, mine=true, sub=true)
+                    }
+                    else {
+                        // 남의 대댓글의 ...
+                        commentClickListener.onCommentMore(data.id, mine=false, sub=true)
                     }
                 }
             }
@@ -130,6 +151,7 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     interface OnCommentClickListener {
         fun onCommentClick(parent : Int)
         fun onCommentLikeClick(id : Int)
+        fun onCommentMore(id : Int, mine : Boolean, sub : Boolean)
     }
 
     fun setItemClickListener(onCommentClickListener : OnCommentClickListener) {

@@ -131,9 +131,7 @@ class ArticleActivity : AppCompatActivity() {
         commentAdapter.setItemClickListener(object: CommentAdapter.OnCommentClickListener{
             // 대댓글 작성 버튼 누를때
             override fun onCommentClick(parent : Int) {
-                val dialog = LayoutInflater.from(this@ArticleActivity).inflate(R.layout.item_comment_sub_dialog, null)
                 val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                    .setView(dialog)
                     .setTitle("대댓글을 작성하시겠습니까?")
                    .setNegativeButton("취소") { dialogInterface, i ->
                         dialogInterface.dismiss()
@@ -148,18 +146,16 @@ class ArticleActivity : AppCompatActivity() {
                         binding.commentEditText.requestFocus()
                         subCommentON = true
                     }
-                mBuilder.show()
+                val dialog = mBuilder.create()
+                dialog.show()
             }
-
+            // 댓글&대댓글 좋아요 누를 때
             override fun onCommentLikeClick(id : Int) {
-                // 댓글&대댓글 좋아요 누를 때
                 if(id==-1) {
                     Toast.makeText(this@ArticleActivity, "내가 쓴 댓글은 공감할 수 없습니다", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    val dialog = LayoutInflater.from(this@ArticleActivity).inflate(R.layout.item_comment_sub_dialog, null)
                     val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                        .setView(dialog)
                         .setTitle("이 댓글을 공감하시겠습니까?")
                         .setNegativeButton("취소") { dialogInterface, i ->
                             dialogInterface.dismiss()
@@ -167,8 +163,32 @@ class ArticleActivity : AppCompatActivity() {
                         .setPositiveButton("확인") { dialogInterface, i ->
                             viewModel.likeComment(id)
                         }
-                    mBuilder.show()
+                    val dialog = mBuilder.create()
+                    dialog.show()
                 }
+            }
+            // ... 버튼 누를 때
+            override fun onCommentMore(id: Int, mine: Boolean, sub: Boolean) {
+                val array = if (!mine) {
+                    if(sub) {
+                        arrayOf("쪽지 보내기", "신고")
+                    } else {
+                        arrayOf("대댓글 알림 켜기", "쪽지 보내기", "신고")
+                    }
+                } else {
+                    if(sub) {
+                        arrayOf("삭제")
+                    } else {
+                        arrayOf("대댓글 알림 켜기", "삭제")
+                    }
+                }
+                val builder = AlertDialog.Builder(this@ArticleActivity)
+                builder.setItems(array) { _, which ->
+                    val selected = array[which]
+                    // TODO
+                }
+                val dialog = builder.create()
+                dialog.show()
             }
         })
         // 왼쪽 상단 뒤로가기 버튼
