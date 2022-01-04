@@ -43,7 +43,7 @@ interface BoardService {
         @Path("article_id") article_id: Int
     ) : Call<ScrapResponse>
 
-    @DELETE("api/v1/board/{board_id}/article/{article_id}/comment/{comment_id}/")
+    @DELETE("/api/v1/board/{board_id}/article/{article_id}/comment/{comment_id}/")
     fun deleteComment(
         @Path("board_id") board_id : Int,
         @Path("article_id") article_id : Int,

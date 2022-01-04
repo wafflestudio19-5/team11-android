@@ -19,6 +19,7 @@ data class LikeResponse (
     val detail : String?
 )
 
+// 게시글 스크랩 결과 response
 data class ScrapResponse (
     val scrap : Int?,
     val detail : String?,

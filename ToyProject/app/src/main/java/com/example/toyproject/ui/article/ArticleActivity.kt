@@ -1,32 +1,20 @@
 package com.example.toyproject.ui.article
 
-import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
-import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
-import com.example.toyproject.network.dto.Article
-import com.example.toyproject.network.dto.Comment
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ArticleActivity : AppCompatActivity() {
@@ -60,9 +48,9 @@ class ArticleActivity : AppCompatActivity() {
         val articleId = intent.getIntExtra("article_id", 0)
         viewModel.getArticle(boardId, articleId)
 
-        var is_mine = false
+        var isMine = false
         viewModel.result.observe(this, {
-            is_mine = it.is_mine
+            isMine = it.is_mine
             binding.articleFullWriterNickname.text = it.user_nickname
             binding.articleFullWrittenTime.text = it.created_at
             binding.articleFullTitle.text = it.title
@@ -75,7 +63,7 @@ class ArticleActivity : AppCompatActivity() {
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
             
-            // 댓글을 새로 쓰면 스크롤 맨 위로.
+            // 댓글을 새로 쓰면 스크롤 맨 위로. (잘 작동 안하는듯)
             if(viewModel.reload) binding.nestedScroll.fullScroll(ScrollView.FOCUS_UP)
         })
 
@@ -85,14 +73,14 @@ class ArticleActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.commentButton.windowToken, 0)
 
-            // 입력이 없으면 입력해 주라고 하고, 입력이 있으면 서버에 전송(및 재로드)
+            // 입력이 없으면 입력해 주라고 알림 띄우고, 입력이 있으면 서버에 전송(및 재로드)
             if(binding.commentEditText.text.toString() == "") {
                 Toast.makeText(this, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
                 // 댓글이면 commentParent = 0, 대댓글이면 commentParent = parent
                 if(subCommentON) {
-                    // 대댓글이면, parent 설정해서 param 만들고, 빨갛게 했던 거 하얗게 되돌리기
+                    // 대댓글이면, parent 따로 입력해서 param 만들고, viewModel 로 정보 전달
                     val param = CommentCreate(commentParent, binding.commentEditText.text.toString(), binding.commentAnonymousCheckBox.isChecked)
                     viewModel.addComment(boardId, articleId, param)
                     binding.commentEditText.text.clear()
@@ -100,7 +88,7 @@ class ArticleActivity : AppCompatActivity() {
                     commentParent = 0
                 }
                 else {
-                    // 그냥 댓글이면 평소처럼
+                    // 그냥 댓글이면 평소처럼.
                     val param = CommentCreate(0, binding.commentEditText.text.toString(), binding.commentAnonymousCheckBox.isChecked)
                     viewModel.addComment(boardId, articleId, param)
                     binding.commentEditText.text.clear()
@@ -109,7 +97,7 @@ class ArticleActivity : AppCompatActivity() {
             }
         }
 
-        // 댓글 좋아요 눌렀을때 좋아요 수 refresh 및 에러 시 응답 출력
+        // 댓글 및 게시물 좋아요 눌렀을때 좋아요 수 refresh 및 에러 시 응답 출력
         viewModel.likeResult.observe(this, {
             when (it) {
                 "success_article" -> {
@@ -120,16 +108,18 @@ class ArticleActivity : AppCompatActivity() {
                     viewModel.getArticle(boardId, articleId)
                     Toast.makeText(this, "이 댓글을 공감하였습니다", Toast.LENGTH_SHORT).show()
                 }
-                "success_scrap" -> {
-                    viewModel.getArticle(boardId, articleId)
-                    Toast.makeText(this, "이 글을 스크랩하였습니다", Toast.LENGTH_SHORT).show()
-                }
                 else -> {
                     // 에러 메시지 출력
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
         })
+        // 스크랩 결과 띄우기
+        viewModel.scrapResult.observe(this, {
+            viewModel.getArticle(boardId, articleId)
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        })
+
         // 댓글 창의 itemView 각각과의 소통 인터페이스
         commentAdapter.setItemClickListener(object: CommentAdapter.OnCommentClickListener{
             // 대댓글 작성 버튼 누를때
@@ -143,7 +133,7 @@ class ArticleActivity : AppCompatActivity() {
                         // 원래 빨갰던 댓글은 하얗게 되돌리고,대댓글의 parent 가 될 댓글을 빨갛게 만들고, 키보드 올리기
                         binding.commentView[commentAdapter.getItemPosition(commentParent)].setBackgroundColor(Color.parseColor("#FFFFFF"))
                         commentParent = parent
-                        binding.commentView[commentAdapter.getItemPosition(parent)].setBackgroundColor(Color.parseColor("#FFD2D2"))
+                        binding.commentView[commentAdapter.getItemPosition(parent)].setBackgroundColor(Color.parseColor("#FFE0E0"))
                         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                         binding.commentEditText.requestFocus()
@@ -214,7 +204,7 @@ class ArticleActivity : AppCompatActivity() {
         }
         // 오른쪽 상단 ... 버튼
         binding.articleFullMoreButton.setOnClickListener {
-            val array = if(is_mine) {
+            val array = if(isMine) {
                 arrayOf("새로고침", "삭제", "URL 공유")
             } else {
                 arrayOf("새로고침", "쪽지 보내기", "신고", "URL 공유")
@@ -264,16 +254,16 @@ class ArticleActivity : AppCompatActivity() {
                 viewModel.getArticle(boardId, articleId)
             }
         })
-    }
-    // 대댓글 작성중에 뒤로가기 누르면 취소(parent 하얗게 되돌리기)
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        if(subCommentON) {
-            if(event?.keyCode==KeyEvent.KEYCODE_BACK) {
-                binding.commentView[commentAdapter.getItemPosition(commentParent)].setBackgroundColor(Color.parseColor("#FFFFFF"))
-                commentParent = 0
-                subCommentON = false
+
+        // 대댓글 작성중에 뒤로가기 누르면 취소(parent 하얗게 되돌리기)
+        binding.commentEditText.caller(object : CustomEditText.CustomEditToActivity {
+            override fun call() {
+                if(subCommentON) {
+                    binding.commentView[commentAdapter.getItemPosition(commentParent)].setBackgroundColor(Color.parseColor("#FFFFFF"))
+                    commentParent = 0
+                    subCommentON = false
+                }
             }
-        }
-        return super.dispatchKeyEvent(event)
+        })
     }
 }

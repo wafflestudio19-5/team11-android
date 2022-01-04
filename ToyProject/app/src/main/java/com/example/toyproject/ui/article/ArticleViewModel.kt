@@ -35,6 +35,9 @@ class ArticleViewModel @Inject constructor(
     private val _deleteResult = MutableLiveData<String>()
     val deleteResult : LiveData<String> = _deleteResult
 
+    private val _scrapResult = MutableLiveData<String>()
+    val scrapResult : LiveData<String> = _scrapResult
+
     fun getArticle(boardId : Int, articleId : Int) {
         viewModelScope.launch {
             reload = false
@@ -85,16 +88,17 @@ class ArticleViewModel @Inject constructor(
             }
         })
     }
+    // 게시글 스크랩
     fun scrapArticle(article_id: Int) {
         service.scrapArticle(article_id).clone().enqueue(object : Callback<ScrapResponse> {
             override fun onFailure(call: Call<ScrapResponse>, t: Throwable) {
-                _likeResult.value = "서버와의 통신에 실패하였습니다."
+                _scrapResult.value = "서버와의 통신에 실패하였습니다."
             }
 
             override fun onResponse(call: Call<ScrapResponse>, response: Response<ScrapResponse>) {
                 if(response.isSuccessful) {
-                    // 게시글 좋아요 성공
-                    _likeResult.value = "success_scrap"
+                    // 게시글 스크랩 성공
+                    _scrapResult.value = response.body()!!.detail.toString()
                 }
                 else {
                     // 에러
@@ -102,11 +106,12 @@ class ArticleViewModel @Inject constructor(
                         ErrorMessage::class.java,
                         ErrorMessage::class.java.annotations
                     ).convert(response.errorBody())
-                    _likeResult.value = error!!.detail.toString()
+                    _scrapResult.value = error!!.detail.toString()
                 }
             }
         })
     }
+    // 댓글 삭제
     fun deleteComment(board_id : Int, article_id : Int, comment_id : Int) {
         service.deleteComment(board_id, article_id, comment_id).enqueue(object : Callback<CommentDeleteResponse> {
             override fun onFailure(call: Call<CommentDeleteResponse>, t: Throwable) {

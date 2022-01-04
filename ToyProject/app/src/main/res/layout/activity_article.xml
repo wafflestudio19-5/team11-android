@@ -272,7 +272,8 @@
             android:text="익명"
             android:textColor="@color/Primary" />
 
-        <EditText
+
+        <com.example.toyproject.ui.article.CustomEditText
             android:id="@+id/commentEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
