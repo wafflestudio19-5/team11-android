@@ -25,8 +25,9 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var commentLayoutManager: LinearLayoutManager
 
+    // 대댓글 작성 시 parent
     private var commentParent : Int= 0
-
+    // 대댓글 작성 모드
     private var subCommentON : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +44,12 @@ class ArticleActivity : AppCompatActivity() {
         }
 
         binding.articleFullBoardName.text = intent.getStringExtra("board_name").toString()
-
         val boardId = intent.getIntExtra("board_id", 0)
         val articleId = intent.getIntExtra("article_id", 0)
         viewModel.getArticle(boardId, articleId)
 
         var isMine = false
+        // 게시글 내용물들 다 불러왔으면 채워넣기
         viewModel.result.observe(this, {
             isMine = it.is_mine
             binding.articleFullWriterNickname.text = it.user_nickname
@@ -60,6 +61,8 @@ class ArticleActivity : AppCompatActivity() {
             binding.articleFullLikeNumber.text = it.like_count.toString()
             binding.articleFullCommentNumber.text = it.comment_count.toString()
             binding.articleFullScrapNumber.text = it.scrap_count.toString()
+            // TODO : 프로필 이미지 적용
+            // TODO : 작성자 & 익명 부분 사소한 수정
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
             
@@ -177,8 +180,7 @@ class ArticleActivity : AppCompatActivity() {
                 }
                 val builder = AlertDialog.Builder(this@ArticleActivity)
                 builder.setItems(array) { _, which ->
-                    val selected = array[which]
-                    when(selected) {
+                    when(array[which]) {
                         "삭제" -> {
                             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                                 .setTitle("삭제하시겠습니까?")
@@ -212,7 +214,7 @@ class ArticleActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setItems(array) {a, which ->
                 val selected = array[which]
-                // TODO
+                // TODO (다른 선택지들)
                 Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()
@@ -232,6 +234,7 @@ class ArticleActivity : AppCompatActivity() {
             dialog.show()
         }
         // 게시글 스크랩 버튼
+        // TODO : "스크랩 취소" 아이콘 만들고, 그걸로 구별해야 한다.
         binding.articleFullScrapButton.setOnClickListener {
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                 .setTitle("이 글을 스크랩하시겠습니까?")
@@ -246,12 +249,10 @@ class ArticleActivity : AppCompatActivity() {
         }
         // 댓글 삭제 결과 출력
         viewModel.deleteResult.observe(this, {
+            viewModel.getArticle(boardId, articleId)
             if(it!="success") {
-                viewModel.getArticle(boardId, articleId)
+                // 에러 출력
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-            }
-            else {
-                viewModel.getArticle(boardId, articleId)
             }
         })
 

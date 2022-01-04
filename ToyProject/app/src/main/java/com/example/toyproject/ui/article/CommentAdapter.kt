@@ -155,7 +155,7 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         this.comments = list
     }
 
-    // 댓글, 대댓글 recyclerView 와의 소통을 위한 interface
+    // 댓글, 대댓글 recyclerView 와 activity 의 소통을 위한 interface
     interface OnCommentClickListener {
         fun onCommentClick(parent : Int)
         fun onCommentLikeClick(id : Int)
@@ -174,7 +174,6 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         }
         return 0
     }
-
 
     companion object {
         const val VIEW_TYPE_COMMENT = 0
