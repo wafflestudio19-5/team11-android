@@ -9,18 +9,18 @@ import com.example.toyproject.databinding.ItemTitleContentArticleBinding
 import com.example.toyproject.network.dto.Article
 import java.lang.IllegalStateException
 
-class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticleSearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var articles: MutableList<Article> = mutableListOf()
 
-    inner class BoardViewHolder(val binding: ItemTitleContentArticleBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ArticleSearchViewHolder(val binding: ItemTitleContentArticleBinding) : RecyclerView.ViewHolder(binding.root)
     inner class LoadingViewHolder(val binding: ItemLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType){
             VIEW_TYPE_BOARD -> {
                 val binding = ItemTitleContentArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                BoardViewHolder(binding)
+                ArticleSearchViewHolder(binding)
             }
             VIEW_TYPE_LOADING -> {
                 val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,7 +33,7 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = articles[position]
         when(holder){
-            is BoardViewHolder -> {
+            is ArticleSearchViewHolder -> {
                 holder.binding.apply {
                     articleTitle.text = data.title
                     articleContent.text = data.text

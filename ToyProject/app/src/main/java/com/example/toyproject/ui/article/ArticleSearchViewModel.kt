@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.board
+package com.example.toyproject.ui.article
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,9 +13,9 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class BoardViewModel @Inject constructor(
-    private val service: BoardService
-): ViewModel(){
+class ArticleSearchViewModel @Inject constructor(
+    private val service : BoardService
+) : ViewModel(){
 
     private val _articleList = MutableLiveData<MutableList<Article>>()
     val articleList: LiveData<MutableList<Article>> = _articleList
@@ -23,17 +23,20 @@ class BoardViewModel @Inject constructor(
     private val _listSize = MutableLiveData<Int>(1)
     val listSize: LiveData<Int> = _listSize
 
-    fun getArticleList(board_id: Int, offset: Int, limit: Int) {
+    fun getArticleList(board_id: Int, offset: Int, limit: Int, search: String) {
         viewModelScope.launch{
             try{
                 if(_listSize.value!! < offset) return@launch
-                _articleList.value = service.getArticlesByBoard(board_id, offset, limit).results!!
-                _listSize.value = service.getArticlesByBoard(board_id, offset, limit).count
+                _articleList.value = service.getArticlesByKeyword(board_id, offset, limit, search).results!!
+                _listSize.value = service.getArticlesByKeyword(board_id, offset, limit, search).count
             } catch (e: IOException) {
                 Timber.e(e)
             }
         }
     }
+
+
+
 
 
 }

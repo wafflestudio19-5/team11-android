@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.databinding.FragmentListBinding
 import com.example.toyproject.network.dto.Board
 import com.example.toyproject.ui.board.BoardActivity
+import com.example.toyproject.ui.board.BoardSearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +37,7 @@ class ListFragment : Fragment() {
     private lateinit var departmentLayoutManager: LinearLayoutManager
 
     private lateinit var generalAdapter: GeneralRecyclerViewAdapter
-    private lateinit var generalLayoutManager: LinearLayoutManager
+    private lateinit var generalLayoutManager : LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +70,8 @@ class ListFragment : Fragment() {
         generalAdapter = GeneralRecyclerViewAdapter()
         generalLayoutManager = LinearLayoutManager(activity)
 
+
+
         binding.recyclerViewDefaultBoard.apply{
             adapter = defaultAdapter
             layoutManager = defaultLayoutManager
@@ -98,6 +101,13 @@ class ListFragment : Fragment() {
             adapter = generalAdapter
             layoutManager = generalLayoutManager
         }
+
+
+        binding.searchOtherBoard.setOnClickListener{
+            val intent = Intent(activity, BoardSearchActivity::class.java)
+            startActivity(intent)
+        }
+
 
         viewModel.getBoardList()
 

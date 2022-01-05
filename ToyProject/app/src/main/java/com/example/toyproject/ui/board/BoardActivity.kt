@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ActivityBoardBinding
 import com.example.toyproject.network.dto.Article
 import com.example.toyproject.ui.article.ArticleActivity
+import com.example.toyproject.ui.article.ArticleMakeActivity
+import com.example.toyproject.ui.article.ArticleSearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -33,9 +35,26 @@ class BoardActivity : AppCompatActivity() {
         boardAdapter = BoardAdapter()
         boardLayoutManager = LinearLayoutManager(this)
 
+        binding.backArrow.setOnClickListener {
+            finish()
+        }
+
         binding.recyclerViewArticle.apply {
             adapter = boardAdapter
             layoutManager= boardLayoutManager
+        }
+
+        viewModel.listSize.observe(this, {
+            if(it==0) {
+                binding.noArticleView.visibility = View.VISIBLE
+                binding.recyclerViewArticle.visibility = View.GONE
+            }
+        })
+
+        binding.searchIcon.setOnClickListener {
+            Intent(this@BoardActivity, ArticleSearchActivity::class.java).apply{
+                putExtra("board_id", intent.getIntExtra("board_id", 0))
+            }.run{startActivity(this)}
         }
 
         binding.boardName.text = intent.getStringExtra("board_name")
@@ -48,12 +67,19 @@ class BoardActivity : AppCompatActivity() {
             }
         })
 
+        binding.makeArticleButton.setOnClickListener {
+            Intent(this@BoardActivity, ArticleMakeActivity::class.java).apply{
+                putExtra("board_id", intent.getIntExtra("board_id", 0))
+            }.run{startActivity(this)}
+        }
+
         if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20)
 
         viewModel.articleList.observe(this, {
             boardAdapter.setArticles(it)
             boardAdapter.notifyItemRemoved((page-1)*20)
-            boardAdapter.notifyItemRangeInserted((page-1) * 20, boardAdapter.itemCount)
+//            boardAdapter.notifyItemRangeInserted((page-1) * 20, boardAdapter.itemCount)
+            boardAdapter.notifyDataSetChanged()
         })
 
         binding.recyclerViewArticle.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -66,8 +92,9 @@ class BoardActivity : AppCompatActivity() {
 
                 if(!binding.recyclerViewArticle.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount){
 
-                    boardAdapter.deleteLoading()
+                    //boardAdapter.deleteLoading()
 //                    val runnable = Runnable {
+//
 //                        boardAdapter.notifyItemRemoved(itemTotalCount)
 //                    }
 //                    recyclerView.post(runnable)
