@@ -2,7 +2,6 @@ package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
 import retrofit2.http.*
-import retrofit2.Call
 
 interface BoardService {
 
