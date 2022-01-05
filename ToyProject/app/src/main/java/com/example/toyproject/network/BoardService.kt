@@ -45,4 +45,12 @@ interface BoardService {
         @Query("limit") limit: Int,
         @Query("search") search: String
     ) : FetchArticlesByBoard
+
+
+
+
+
+
+
+
 }
