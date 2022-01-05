@@ -12,5 +12,6 @@
     <color name="OnBackground">#000000</color>
     <color name="OnSurface">#000000</color>
     <color name="OnError">#FFFFFF</color>
+    <color name="ButtonGray">#ECECEC</color>
     <color name="star">#f3ca28</color>
 </resources>

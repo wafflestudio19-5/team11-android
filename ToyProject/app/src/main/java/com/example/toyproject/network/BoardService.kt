@@ -1,8 +1,8 @@
 package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
-import retrofit2.Call
 import retrofit2.http.*
+import retrofit2.Call
 
 interface BoardService {
 
@@ -14,6 +14,49 @@ interface BoardService {
         @Path("board_id") board_id: Int,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int): FetchArticlesByBoard
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @GET("api/v1/board/{board_id}/article/{article_id}/")
     suspend fun getArticleContent(
