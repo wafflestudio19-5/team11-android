@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
         <activity android:name=".ui.univsearch.UnivSearchActivity" />
         <activity android:name=".ui.signup.SocialSignupActivity" />
         <activity android:name=".ui.main.MainActivity"/>

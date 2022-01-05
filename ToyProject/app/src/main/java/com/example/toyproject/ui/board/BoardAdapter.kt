@@ -44,7 +44,6 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     root.setOnClickListener {
                         itemClickListener.onItemClick(root, data, position)
                     }
-
                 }
             }
             else -> {
@@ -53,10 +52,6 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         }
     }
-
-
-
-
     override fun getItemCount(): Int {
         return articles.size
     }

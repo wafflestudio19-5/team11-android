@@ -64,28 +64,6 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
 
-        // binding.logoutButton.visibility = View.GONE
-        // Google 로그아웃 부분
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            // .requestIdToken(getString(R.string.firebase_web_client_id))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        auth = FirebaseAuth.getInstance()
-
-
-        binding.logoutButton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            mGoogleSignInClient.signOut()
-            val intent  = Intent(this, LoginActivity::class.java)
-            //intent.putExtra("logout", true)
-            sharedPreferences.edit {
-                this.remove("token")
-            }
-            startActivity(intent)
-            finish()
-        }
-
         val scope = CoroutineScope(Dispatchers.IO)
 
         var response: String = "Hi"

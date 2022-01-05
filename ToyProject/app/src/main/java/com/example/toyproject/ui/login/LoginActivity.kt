@@ -156,7 +156,7 @@ class LoginActivity:AppCompatActivity() {
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-
+            /*
             // 기존 구글 로그인 돼있으면 바로 로그인 TODO : 수정할 것. 기존 로그인 돼있으면 우리가 만든 토큰 사용할 예정
             // TODO : 로그인 로딩 창 필요
             val preAccount : GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
@@ -172,6 +172,8 @@ class LoginActivity:AppCompatActivity() {
                     }
                 }
             }
+
+             */
             // 없으면 새로 구글 로그인
             val googleResultListener =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -181,9 +183,17 @@ class LoginActivity:AppCompatActivity() {
                         val task : Task<GoogleSignInAccount> =
                             GoogleSignIn.getSignedInAccountFromIntent(intent)
                         if(task.isSuccessful) {
-                            val token = task.getResult(ApiException::class.java).toString()
-                            val param = LoginSocial(token)
-                            viewModel.googleLogin(param)
+
+                            val token = task.getResult(ApiException::class.java)
+                            val param = LoginSocial(token.toString())
+                            Timber.d("이메일")
+                            Timber.d(token.email.toString())
+                            Timber.d("토큰")
+                            
+                            Timber.d(token.idToken.toString())
+                            Timber.d("전체")
+                            Timber.d(token.toString())
+                            // viewModel.googleLogin(param)
                         }
                         else {
                             Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
