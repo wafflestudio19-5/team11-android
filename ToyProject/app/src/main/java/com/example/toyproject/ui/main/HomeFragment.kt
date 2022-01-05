@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
                 else->false
             }
         }
-
     }
 
 
