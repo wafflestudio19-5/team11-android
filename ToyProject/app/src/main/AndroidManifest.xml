@@ -24,7 +24,7 @@
         <activity android:name=".ui.profile.WithdrawalActivity"/>
         <activity android:name=".ui.profile.UnivCertifyActivity"/>
         <activity android:name=".ui.board.BoardActivity"/>
-        <activity android:name=".ui.article.ArticleActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.article.ArticleActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
