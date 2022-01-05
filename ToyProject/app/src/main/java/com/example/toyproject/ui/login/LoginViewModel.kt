@@ -118,7 +118,6 @@ class LoginViewModel @Inject constructor(
             override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
 
             }
-
             override fun onResponse(
                 call: Call<LoginSocialResponse>,
                 response: Response<LoginSocialResponse>
@@ -135,17 +134,17 @@ class LoginViewModel @Inject constructor(
                             ).convert(response.errorBody())
                             errorMessage = parsing(error)
                             if(error?.non_field_errors != null) {
-                                _result.value = "register"
+                                _googleLoginResult.value = "register"
                             }
                             else {
-                                _result.value = "fail"
+                                _googleLoginResult.value = "fail"
                             }
                         } catch (e: Exception) {
                             errorMessage = response.errorBody()?.string()!!
                         }
                     }
                     else {
-                        _result.value = "fail"
+                        _googleLoginResult.value = "fail"
                         errorMessage = "다시 시도해 주세요."
                     }
 

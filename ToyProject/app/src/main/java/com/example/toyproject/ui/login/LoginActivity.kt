@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.fragment.app.strictmode.GetRetainInstanceUsageViolation
 import com.example.toyproject.App
 import com.example.toyproject.R
 import com.example.toyproject.ui.univsearch.UnivSearchActivity
@@ -22,8 +23,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
+import com.google.firebase.auth.GoogleAuthProvider
 import com.kakao.auth.AuthType
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.KakaoSDK
@@ -55,8 +60,7 @@ class LoginActivity:AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     // Google 로그인
-        // firebase 부분
-        // private lateinit var auth : FirebaseAuth
+    private lateinit var auth : FirebaseAuth
     private lateinit var mGoogleSignInClient : GoogleSignInClient
 
 
@@ -149,32 +153,15 @@ class LoginActivity:AppCompatActivity() {
         else {
 
             // Google 로그인 초기 설정
-                //auth = FirebaseAuth.getInstance()
+            auth = FirebaseAuth.getInstance()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.firebase_web_client_id))
+                .requestIdToken(getString(R.string.firebase_web_client_id))
                 .requestEmail()
+                .requestProfile()
                 .build()
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-            /*
-            // 기존 구글 로그인 돼있으면 바로 로그인 TODO : 수정할 것. 기존 로그인 돼있으면 우리가 만든 토큰 사용할 예정
-            // TODO : 로그인 로딩 창 필요
-            val preAccount : GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
-            if (preAccount != null) {
-                if(preAccount.idToken!=null) {
-                    try {
-                        //TODO : 서버랑 통신
-
-                        // firebase 부분
-                        //// firebaseAuthWithGoogle(preAccount.idToken!!)
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "다시 로그인 해 주세요", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-             */
-            // 없으면 새로 구글 로그인
+            // 구글 로그인
             val googleResultListener =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                     result : ActivityResult ->
@@ -182,31 +169,25 @@ class LoginActivity:AppCompatActivity() {
                         val intent : Intent = result.data!!
                         val task : Task<GoogleSignInAccount> =
                             GoogleSignIn.getSignedInAccountFromIntent(intent)
-                        if(task.isSuccessful) {
-
-                            val token = task.getResult(ApiException::class.java)
-                            val param = LoginSocial(token.toString())
-                            Timber.d("이메일")
-                            Timber.d(token.email.toString())
-                            Timber.d("토큰")
-                            
-                            Timber.d(token.idToken.toString())
-                            Timber.d("전체")
-                            Timber.d(token.toString())
-                            // viewModel.googleLogin(param)
+                        try {
+                            val account = task.getResult(ApiException::class.java)!!
+                            firebaseAuthWithGoogle(account.idToken!!)
+                        } catch (e : Exception) {
+                            Timber.d(e)
                         }
-                        else {
-                            Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
-                        }
+                    }
+                    else {
+                        Timber.d(result.resultCode.toString())
+                        Timber.d("에러에러")
                     }
                 }
             binding.googleButton.setOnClickListener {
                 googleResultListener.launch(mGoogleSignInClient.signInIntent)
             }
+            // 구글 로그인 응답 결과
             viewModel.googleLoginResult.observe(this, {
                 if(it=="register") {
                     // 구글 계정으로 회원가입 TODO
-
                 }
                 else if(it=="success") {
                     val intent = Intent(this, MainActivity::class.java)
@@ -263,11 +244,20 @@ class LoginActivity:AppCompatActivity() {
                 resultListener.launch(intent)
             }
         }
+
+        // 유저가 구글 로그인에 성공하면 토큰을 우리 서버에 보낸다.
+        FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.addOnCompleteListener(object : OnCompleteListener<GetTokenResult> {
+            override fun onComplete(task: Task<GetTokenResult>) {
+                if(task.isSuccessful) {
+                    Timber.d(task.result.token.toString())
+                    Timber.d("토큰 여기")
+                }
+            }
+        })
     }
 
 
     // Google 로그인 부분(firebase)
-    /*
     private fun firebaseAuthWithGoogle(idToken : String) {
         val credential : AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener {
@@ -282,7 +272,5 @@ class LoginActivity:AppCompatActivity() {
             }
         }
     }
-
-     */
 }
 
