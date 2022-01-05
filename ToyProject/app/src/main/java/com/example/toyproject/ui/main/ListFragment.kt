@@ -13,6 +13,7 @@ import com.example.toyproject.databinding.FragmentListBinding
 import com.example.toyproject.network.dto.Board
 import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.board.BoardSearchActivity
+import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.board.MyArticleBoardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -121,6 +122,20 @@ class ListFragment : Fragment() {
             Intent(activity, MyArticleBoardActivity::class.java).apply{
                 putExtra("board_name", "스크랩")
                 putExtra("board_interest", "scrap")
+            }.run{startActivity(this)}
+        }
+
+        binding.hotBoardView.setOnClickListener{
+            Intent(activity, HotBestBoardActivity::class.java).apply{
+                putExtra("board_name", "HOT 게시판")
+                putExtra("board_interest", "hot")
+            }.run{startActivity(this)}
+        }
+
+        binding.bestBoardView.setOnClickListener {
+            Intent(activity, HotBestBoardActivity::class.java).apply{
+                putExtra("board_name", "BEST 게시판")
+                putExtra("board_interest", "best")
             }.run{startActivity(this)}
         }
 

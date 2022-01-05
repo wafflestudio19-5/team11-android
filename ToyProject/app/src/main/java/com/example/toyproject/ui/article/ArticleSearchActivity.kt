@@ -67,10 +67,7 @@ class ArticleSearchActivity : AppCompatActivity() {
         binding.articleSearchBar.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 searchKeyword = binding.articleSearchBar.text.toString()
 
                 if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20, searchKeyword)
@@ -80,6 +77,11 @@ class ArticleSearchActivity : AppCompatActivity() {
                     articleSearchAdapter.notifyItemRemoved((page-1)*20)
                     articleSearchAdapter.notifyDataSetChanged()
                 })
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+
 
             }
         })

@@ -47,6 +47,20 @@ interface BoardService {
         @Query("search") search: String
     ) : FetchArticlesByBoard
 
+    @GET("/api/v1/board/my/article/")
+    suspend fun getMyArticle(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+        @Query("interest") interest: String
+    ) : FetchMyArticle
+
+    @GET("/api/v1/board/all/article/")
+    suspend fun getHotBestArticle(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+        @Query("interest") interest: String
+    ) : FetchMyArticle
+
     @GET("api/v1/board/{board_id}/article/{article_id}/")
     suspend fun getArticleContent(
         @Path("board_id") board_id : Int,
@@ -83,12 +97,7 @@ interface BoardService {
     ) : Call<CommentDeleteResponse>
 
 
-    @GET("/api/v1/board/my/article/")
-    fun getMyArticle(
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int,
-        @Query("interest") interest: String
-    ) : FetchMyArticle
+
 
 
 
