@@ -81,4 +81,15 @@ interface BoardService {
         @Path("article_id") article_id : Int,
         @Path("comment_id") comment_id: Int
     ) : Call<CommentDeleteResponse>
+
+
+    @GET("/api/v1/board/my/article/")
+    fun getMyArticle(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+        @Query("interest") interest: String
+    ) : FetchMyArticle
+
+
+
 }

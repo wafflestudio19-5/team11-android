@@ -13,6 +13,7 @@ import com.example.toyproject.databinding.FragmentListBinding
 import com.example.toyproject.network.dto.Board
 import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.board.BoardSearchActivity
+import com.example.toyproject.ui.board.MyArticleBoardActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,6 +102,28 @@ class ListFragment : Fragment() {
             adapter = generalAdapter
             layoutManager = generalLayoutManager
         }
+
+        binding.myArticleView.setOnClickListener{
+            Intent(activity, MyArticleBoardActivity::class.java).apply{
+                putExtra("board_name", "내가 쓴 글")
+                putExtra("board_interest", "article")
+            }.run{startActivity(this)}
+        }
+
+        binding.myCommentView.setOnClickListener{
+            Intent(activity, MyArticleBoardActivity::class.java).apply{
+                putExtra("board_name", "댓글 단 글")
+                putExtra("board_interest", "comment")
+            }.run{startActivity(this)}
+        }
+
+        binding.myScrapView.setOnClickListener{
+            Intent(activity, MyArticleBoardActivity::class.java).apply{
+                putExtra("board_name", "스크랩")
+                putExtra("board_interest", "scrap")
+            }.run{startActivity(this)}
+        }
+
 
 
         binding.searchOtherBoard.setOnClickListener{
