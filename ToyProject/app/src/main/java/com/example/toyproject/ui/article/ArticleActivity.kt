@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
