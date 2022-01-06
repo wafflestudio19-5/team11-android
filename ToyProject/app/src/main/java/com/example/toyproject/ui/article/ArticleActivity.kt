@@ -3,6 +3,8 @@ package com.example.toyproject.ui.article
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
@@ -220,8 +222,7 @@ class ArticleActivity : AppCompatActivity() {
                 when(selected){
                     "삭제" -> {
                         viewModel.deleteArticle(boardId, articleId)
-                        Timber.d("dkdjkfdkfjkdjflkdjfk;ljakfljdsa;fljdksajflsa;fs;jljla")
-                        //finish()
+                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
                     }
                 }
                 Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()

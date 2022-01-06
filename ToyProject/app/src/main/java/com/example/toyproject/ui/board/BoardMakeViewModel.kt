@@ -8,6 +8,7 @@ import com.example.toyproject.network.BoardService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,11 +22,14 @@ class BoardMakeViewModel @Inject constructor(
     fun createBoard(name: String, desc: String, isAnonymous: Boolean){
         viewModelScope.launch {
             try{
-                _error.value = service.createBoard(name, desc, isAnonymous, 5).error!!
-            } catch(e: HttpException){
-
-            } catch(e: NullPointerException){
+                _error.value = service.createBoard(name, desc, isAnonymous, 5).detail!!
                 _error.value = ""
+            } catch(e:NullPointerException) {
+                _error.value = ""
+            } catch(e: Exception){
+                Timber.e(e)
+                _error.value = "error"
+
             }
         }
     }
