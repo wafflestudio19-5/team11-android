@@ -54,17 +54,26 @@ class ArticleViewModel @Inject constructor(
     }
     // 댓글 좋아요
     fun likeComment(comment_id : Int) {
-        viewModelScope.launch {
-            val response = service.likeComment(comment_id)
-            if(response.detail == null) {
-                // 별 이상 없이 공감 성공
-                _likeResult.value = "success_comment"
+        service.likeComment(comment_id).clone().enqueue(object : Callback<LikeResponse> {
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
+                _likeResult.value = "서버와의 통신에 실패하였습니다."
             }
-            else {
-                // 에러 있음
-                _likeResult.value = response.detail.toString()
+            override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
+                if(response.isSuccessful) {
+                    // 별 이상 없이 공감 성공
+                    _likeResult.value = "success_comment"
+                }
+                else {
+                    // 에러 있음
+                    val error = retrofit.responseBodyConverter<ErrorMessage>(
+                        ErrorMessage::class.java,
+                        ErrorMessage::class.java.annotations
+                    ).convert(response.errorBody())
+                    _likeResult.value = error!!.detail.toString()
+                }
+
             }
-        }
+        })
     }
     // 게시글 좋아요
     fun likeArticle(article_id : Int) {

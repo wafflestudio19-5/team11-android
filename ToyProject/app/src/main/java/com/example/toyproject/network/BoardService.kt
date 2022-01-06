@@ -75,9 +75,9 @@ interface BoardService {
     ) : CommentCreateResponse
 
     @POST("api/v1/like/comment/{comment_id}/")
-    suspend fun likeComment(
+    fun likeComment(
         @Path("comment_id") comment_id : Int
-    ) : LikeResponse
+    ) : Call<LikeResponse>
 
     @POST("api/v1/like/article/{article_id}/")
     fun likeArticle(
