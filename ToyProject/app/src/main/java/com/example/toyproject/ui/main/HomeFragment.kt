@@ -1,6 +1,7 @@
 package com.example.toyproject.ui.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentHomeBinding
 import com.example.toyproject.ui.board.HotBestBoardActivity
+import com.example.toyproject.ui.main.homeFragment.BrowseActivity
 import com.example.toyproject.ui.main.homeFragment.HomeFavoriteRecyclerViewAdapter
 import com.example.toyproject.ui.main.homeFragment.HomeFragmentViewModel
 import com.example.toyproject.ui.main.homeFragment.HomeHotRecyclerViewAdapter
 import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Math.abs
-
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -77,9 +77,43 @@ class HomeFragment : Fragment() {
         banner.adapter = bannerAdapter
 
 
-        //
-
-
+        // 아이콘들
+        binding.homeFragmentSchoolhomeButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "https://my.snu.ac.kr")
+            intent.putExtra("title", "서울대학교")   // TODO
+            startActivity(intent)
+        }
+        binding.homeFragmentStudyroomButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "http://libseat.snu.ac.kr/")
+            intent.putExtra("title", "열람실별 실시간 좌석 정보")
+            startActivity(intent)
+        }
+        binding.homeFragmentShuttleButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "https://www.snu.ac.kr/about/gwanak/shuttles/campus_shuttles")
+            intent.putExtra("title", "교내순환 셔틀버스")
+            startActivity(intent)
+        }
+        binding.homeFragmentNewsButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "https://www.snu.ac.kr/snunow/notice/genernal")
+            intent.putExtra("title", "일반공지-공지사항-SNU NOW")
+            startActivity(intent)
+        }
+        binding.homeFragmentCalenderButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "https://www.snu.ac.kr/academics/resources/calendar")
+            intent.putExtra("title", "학사일정-학사행정-교육-서울대학교")
+            startActivity(intent)
+        }
+        binding.homeFragmentLibraryButton.setOnClickListener {
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", "https://library.snu.ac.kr/")
+            intent.putExtra("title", "SNUL")
+            startActivity(intent)
+        }
 
         // 즐겨찾는 게시판 더보기 (누르면 세 번째 탭으로 이동)
         binding.homeFragmentGotoFavoriteButton.setOnClickListener {
