@@ -16,6 +16,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ArticleActivity : AppCompatActivity() {
@@ -216,6 +217,13 @@ class ArticleActivity : AppCompatActivity() {
             builder.setItems(array) {a, which ->
                 val selected = array[which]
                 // TODO (다른 선택지들)
+                when(selected){
+                    "삭제" -> {
+                        viewModel.deleteArticle(boardId, articleId)
+                        Timber.d("dkdjkfdkfjkdjflkdjfk;ljakfljdsa;fljdksajflsa;fs;jljla")
+                        //finish()
+                    }
+                }
                 Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()

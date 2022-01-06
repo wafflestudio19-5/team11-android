@@ -39,6 +39,11 @@ interface BoardService {
         @Query("search") search: String
     ): FetchAllBoard
 
+    @GET("/api/v1/board/{board_id}/")
+    suspend fun getBoardInfo(
+        @Path("board_id") board_id: Int
+    ): BoardInfo
+
     @GET("/api/v1/board/{board_id}/article/")
     suspend fun getArticlesByKeyword(
         @Path("board_id") board_id: Int,
@@ -95,6 +100,17 @@ interface BoardService {
         @Path("article_id") article_id : Int,
         @Path("comment_id") comment_id: Int
     ) : Call<CommentDeleteResponse>
+
+    @DELETE("api/v1/board/{board_id}")
+    suspend fun deleteBoard(
+        @Path("board_id") board_id: Int
+    ) : CommentDeleteResponse
+
+    @DELETE("api/v1/board/{board_id}/article/{article_id}")
+    suspend fun deleteArticle(
+        @Path("board_id") board_id: Int,
+        @Path("article_id") article_id: Int
+    ) : CommentDeleteResponse
 
 
 

@@ -40,7 +40,7 @@ class HotBestBoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     profileNickname.text = data.user_nickname
                     articleCommentNumber.text = data.comment_count.toString()
                     articleLikeNumber.text = data.like_count.toString()
-                    articleWrittenTime.text = data.f_created_at + " | "
+                    articleWrittenTime.text = data.f_created_at
                     root.setOnClickListener {
                         itemClickListener.onItemClick(root, data, position)
                     }
