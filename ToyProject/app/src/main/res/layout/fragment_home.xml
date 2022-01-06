@@ -49,9 +49,9 @@
         android:id="@+id/home_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
@@ -70,7 +70,8 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/home_top_banner"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:clipChildren="false"
                 android:clipToPadding="true">
 
@@ -317,7 +318,7 @@
                         android:layout_marginTop="20sp"
                         android:text="즐겨찾는 게시판"
                         android:textColor="@color/OnBackground"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
                         android:textStyle="bold" />
 
                     <View
@@ -334,7 +335,7 @@
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/home_fragment_more_text_size" />
 
 
                 </LinearLayout>
@@ -366,7 +367,7 @@
                         android:layout_marginTop="20sp"
                         android:text="실시간 인기 글"
                         android:textColor="@color/OnBackground"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
                         android:textStyle="bold" />
 
                     <View
@@ -382,6 +383,48 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_content_article" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_recommend_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="추천 정보"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dfjnvjknbkn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -402,9 +445,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10sp"
                         android:layout_marginTop="20sp"
-                        android:text="HOT 게시판"
+                        android:text="HOT 게시물"
                         android:textColor="@color/OnBackground"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
                         android:textStyle="bold" />
 
                     <View
@@ -421,7 +464,7 @@
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/home_fragment_more_text_size" />
 
 
                 </LinearLayout>
@@ -430,7 +473,114 @@
                     android:id="@+id/recycler_view_hot_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_favorite_board" />
+                    tools:listitem="@layout/item_home_fragment_hot" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_school_news_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="교내 소식"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_school_news_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/dfjnvjknbkffgn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_school_career_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="진로"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_career_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dfjnvjknbkfffggn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -453,7 +603,7 @@
                         android:layout_marginTop="20sp"
                         android:text="최근 강의평"
                         android:textColor="@color/OnBackground"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
                         android:textStyle="bold" />
 
                     <View
@@ -470,7 +620,7 @@
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/home_fragment_more_text_size" />
 
 
                 </LinearLayout>
@@ -481,14 +631,371 @@
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_favorite_board" />
 
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_school_outside_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="공모전 · 대외활동"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_outside_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dfjnvjknffggn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_school_question_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="답변을 기다리는 질문"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_question_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_school_promotion_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="교내 홍보"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_school_promotion_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_recruit_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="채용 정보"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_recruit_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_book_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="판매 중인 책"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/home_fragment_goto_book_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:text="더 보기 >"
+                        android:textColor="@color/PrimaryVariant"
+                        android:textSize="@dimen/home_fragment_more_text_size" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_event_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="이벤트"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_benefit_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="대학생 복지 혜택"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_menu_title_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="준비중입니다..."
+                    android:textAlignment="center"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/home_fragment_setting_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/home_fragment_setting_button_background"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="홈 화면 설정"
+                android:textAlignment="center"
+                android:textSize="15dp" />
 
         </LinearLayout>
 
 
     </ScrollView>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

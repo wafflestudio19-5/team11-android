@@ -7,10 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentHomeBinding
 import com.example.toyproject.ui.board.HotBestBoardActivity
+import com.example.toyproject.ui.main.homeFragment.HomeFavoriteRecyclerViewAdapter
+import com.example.toyproject.ui.main.homeFragment.HomeFragmentViewModel
+import com.example.toyproject.ui.main.homeFragment.HomeHotRecyclerViewAdapter
 import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.abs
@@ -21,6 +26,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var banner : ViewPager2
+
+    private val viewModel: HomeFragmentViewModel by activityViewModels()
+
+    private lateinit var hotAdapter : HomeHotRecyclerViewAdapter
+    private lateinit var hotLayoutManager: LinearLayoutManager
+
+    private lateinit var favorAdapter : HomeFavoriteRecyclerViewAdapter
+    private lateinit var favorLayoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,8 +47,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 최상단 툴바
         val toolbar = binding.toolbar
-
         toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.search_button->{
@@ -63,10 +76,27 @@ class HomeFragment : Fragment() {
         val bannerAdapter = HomeFragmentTopBannerAdapter(this)
         banner.adapter = bannerAdapter
 
+
+        //
+
+
+
         // 즐겨찾는 게시판 더보기 (누르면 세 번째 탭으로 이동)
         binding.homeFragmentGotoFavoriteButton.setOnClickListener {
             (activity as MainActivity).moveToTab(2)
         }
+        // 즐겨찾는 게시판 내용 구성
+        favorAdapter = HomeFavoriteRecyclerViewAdapter()
+        favorLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewFavoriteBoard.apply {
+            adapter = favorAdapter
+            layoutManager = favorLayoutManager
+        }
+        viewModel
+
+
+
+
 
         // 핫게 더보기 (누르면 핫게 액티비티 실행)
         binding.homeFragmentGotoHotButton.setOnClickListener {
@@ -75,11 +105,28 @@ class HomeFragment : Fragment() {
                 putExtra("board_interest", "hot")
             }.run{startActivity(this)}
         }
+        // 핫게 구성 및 내용물
+        hotAdapter = HomeHotRecyclerViewAdapter()
+        hotLayoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewHotBoard.apply {
+            adapter = hotAdapter
+            layoutManager = hotLayoutManager
+        }
+        viewModel.loadHot(0, 4, "hot")
+        viewModel.hotArticleList.observe(this, {
+            hotAdapter.setHotArticles(it)
+        })
+
 
         // 강의평 이동
         binding.homeFragmentGotoLecturesButton.setOnClickListener {
             // TODO
             (activity as MainActivity).preparing()
+        }
+
+
+        binding.homeFragmentSettingButton.setOnClickListener {
+
         }
 
     }
