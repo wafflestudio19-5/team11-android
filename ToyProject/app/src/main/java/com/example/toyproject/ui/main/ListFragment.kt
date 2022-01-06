@@ -154,23 +154,23 @@ class ListFragment : Fragment() {
         })
 
         viewModel.careerBoardList.observe(viewLifecycleOwner, {
-            careerAdapter.setDefaultBoards(it)
+            careerAdapter.setBoards(it)
         })
 
         viewModel.promotionBoardList.observe(viewLifecycleOwner, {
-            promotionAdapter.setDefaultBoards(it)
+            promotionAdapter.setBoards(it)
         })
 
         viewModel.organizationBoardList.observe(viewLifecycleOwner, {
-            organizationAdapter.setDefaultBoards(it)
+            organizationAdapter.setBoards(it)
         })
 
         viewModel.departmentBoardList.observe(viewLifecycleOwner, {
-            departmentAdapter.setDefaultBoards(it)
+            departmentAdapter.setBoards(it)
         })
 
         viewModel.generalBoardList.observe(viewLifecycleOwner, {
-            generalAdapter.setDefaultBoards(it)
+            generalAdapter.setBoards(it)
         })
 
         generalAdapter.setItemClickListener(object: GeneralRecyclerViewAdapter.OnItemClickListener{
@@ -184,6 +184,42 @@ class ListFragment : Fragment() {
         })
 
         defaultAdapter.setItemClickListener(object: DefaultRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+            }
+        })
+
+        careerAdapter.setItemClickListener(object: CareerRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+            }
+        })
+
+        promotionAdapter.setItemClickListener(object: PromotionRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+            }
+        })
+
+        organizationAdapter.setItemClickListener(object: OrganizationRecyclerViewAdapter.OnItemClickListener{
+            override fun onItemClick(v: View, data: Board, position: Int) {
+                Intent(activity, BoardActivity::class.java).apply{
+                    putExtra("board_name", data.name)
+                    putExtra("board_id", data.id)
+                }.run{startActivity(this)}
+            }
+        })
+
+        departmentAdapter.setItemClickListener(object: DepartmentRecyclerViewAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
