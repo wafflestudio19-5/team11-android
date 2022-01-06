@@ -65,8 +65,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginBottom="6dp">
+        android:layout_marginBottom="6dp"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OO 게시판" />
 
         <View
             android:layout_width="0dp"
@@ -83,24 +89,24 @@
             android:id="@+id/like_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
             android:text="9"
-            android:textSize="12dp"
             android:textColor="@color/PrimaryVariant"
-            android:layout_marginRight="7dp"/>
+            android:textSize="12dp" />
 
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/baseline_chat_bubble_outline_24"
-            android:layout_marginRight="3dp"/>
+            android:layout_marginRight="3dp"
+            android:src="@drawable/baseline_chat_bubble_outline_24" />
 
         <TextView
             android:id="@+id/comment_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"
-            android:textSize="12dp"
-            android:textColor="@color/SecondaryVariant"/>
+            android:textColor="@color/SecondaryVariant"
+            android:textSize="12dp" />
 
     </LinearLayout>
 

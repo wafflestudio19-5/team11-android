@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
+        viewPager.isUserInputEnabled = false
 
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->
@@ -64,24 +66,12 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
 
-        val scope = CoroutineScope(Dispatchers.IO)
-
-        var response: String = "Hi"
-
-        /*
-        val coroutine = scope.launch {
-            try{
-                response = service.getStatusCode().detail
-                Timber.d("This is response from server: $response")
-            } catch(e: Exception) {
-                Timber.e(e)
-            }
-
-        }
-
-         */
-
-        //binding.statusCodeText.text = response
-
+    }
+    // 홈 화면에서 더보기 눌렀을 때 그곳으로 이동(viewPager)
+    fun moveToTab(idx : Int) {
+        viewPager.setCurrentItem(idx, false)
+    }
+    fun preparing() {
+        Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show()
     }
 }
