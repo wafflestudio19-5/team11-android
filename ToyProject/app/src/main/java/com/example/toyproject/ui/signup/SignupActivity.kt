@@ -2,9 +2,12 @@ package com.example.toyproject.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivitySignupBinding
@@ -15,6 +18,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -22,6 +31,12 @@ import javax.inject.Inject
 class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel : SignupViewModel by viewModels()
+    private lateinit var file: File
+    val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            binding.profileImageView.setImageURI(result.data?.data)
+            file = File(result.data?.dataString)
+        }
 
     @Inject
     lateinit var service: Service
@@ -154,6 +169,15 @@ class SignupActivity: AppCompatActivity() {
             }
         })
 
+        //프로필 이미지 업로드
+        binding.imageUploadButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.type = "image/*"
+            getContent.launch(intent)
+        }
+
+
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
             if(idChecked && emailChecked && nicknameChecked) {
@@ -162,13 +186,19 @@ class SignupActivity: AppCompatActivity() {
                     Toast.makeText(this,"비밀번호 형식을 지켜주세요.",Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    var fileName = binding.idEdit.text.toString()
+                    fileName += ".png"
+                    val requestBody : RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+                    val body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",fileName,requestBody)
+
                     val param = Signup(binding.idEdit.text.toString(),
                         binding.passwordEdit.text.toString(),
                         binding.emailEdit.text.toString(),
                         intent.getIntExtra("year", 2022),
                         binding.nicknameEdit.text.toString(),
                         intent.getStringExtra("university"),
-                        binding.nameEdit.text.toString()
+                        binding.nameEdit.text.toString(),
+                        body
                     )
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.signup(param)

@@ -24,6 +24,9 @@ interface UserService {
     @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
+    //@PUT("/api/v1/my/profile_image")
+    //fun changeImage(@Body image: ProfileImage): Call<>
+
     @HTTP(method = "DELETE", path = "/api/v1/my/withdrawal/", hasBody = true)
     fun withdrawal(@Body password: Password): Call<WithdrawalSuccess>
 }

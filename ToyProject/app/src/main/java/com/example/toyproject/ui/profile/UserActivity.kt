@@ -34,7 +34,6 @@ class UserActivity: AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             binding.profileImageView.setImageURI(result.data?.data)
         }
-    private val OPEN_GALLERY = 1
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
