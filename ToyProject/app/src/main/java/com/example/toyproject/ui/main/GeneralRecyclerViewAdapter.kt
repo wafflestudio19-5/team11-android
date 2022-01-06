@@ -10,7 +10,7 @@ import java.lang.IllegalStateException
 
 class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var generalBoards: MutableList<Board> = mutableListOf()
+    private var boards: MutableList<Board> = mutableListOf()
 
     inner class GeneralBoardViewHolder(val binding: ItemNotDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -20,7 +20,7 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = generalBoards[position]
+        val data = boards[position]
         when(holder){
             is GeneralBoardViewHolder -> {
                 holder.binding.apply {
@@ -35,7 +35,7 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     override fun getItemCount(): Int {
-        return generalBoards.size
+        return boards.size
     }
 
     private lateinit var itemClickListener: OnItemClickListener
@@ -48,8 +48,8 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.itemClickListener = onItemClickListener
     }
 
-    fun setDefaultBoards(defaultBoards: MutableList<Board>){
-        this.generalBoards = defaultBoards
+    fun setBoards(boards: MutableList<Board>){
+        this.boards = boards
         this.notifyDataSetChanged()
     }
 
