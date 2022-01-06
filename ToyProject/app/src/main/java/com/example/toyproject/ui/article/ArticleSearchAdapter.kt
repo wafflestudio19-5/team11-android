@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemLoadingBinding
 import com.example.toyproject.databinding.ItemTitleContentArticleBinding
 import com.example.toyproject.network.dto.Article
+import okhttp3.internal.notify
 import java.lang.IllegalStateException
 
 class ArticleSearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -85,6 +86,11 @@ class ArticleSearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         temp.addAll(articles)
         this.articles.addAll(temp)
         //this.articles.add(Article(0, "", "", "", 0, 0, 0, "" , ""))
+    }
+
+    fun resetArticles(){
+        articles.clear()
+        this.notifyDataSetChanged()
     }
 
 

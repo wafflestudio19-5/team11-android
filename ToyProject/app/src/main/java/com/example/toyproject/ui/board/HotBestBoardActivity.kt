@@ -3,13 +3,16 @@ package com.example.toyproject.ui.board
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ActivityHotBestBoardBinding
 import com.example.toyproject.network.dto.MyArticle
 import com.example.toyproject.ui.article.ArticleActivity
+import com.example.toyproject.ui.article.ArticleMakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +52,23 @@ class HotBestBoardActivity: AppCompatActivity() {
                 binding.recyclerViewArticle.visibility = View.GONE
             }
         })
+
+        binding.articleFullMoreButton.setOnClickListener {
+            val array = arrayOf("새로고침")
+            val builder = AlertDialog.Builder(this)
+            builder.setItems(array) {a, which ->
+                val selected = array[which]
+                // TODO (다른 선택지들)
+                when(selected){
+                    "새로고침" -> {
+
+                    }
+                }
+                Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
 
         boardAdapter.setItemClickListener(object: HotBestBoardAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
