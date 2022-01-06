@@ -1,14 +1,24 @@
 package com.example.toyproject.ui.profile
 
+import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUserBinding
@@ -20,6 +30,11 @@ import javax.inject.Inject
 class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     private val viewModel: UserViewModel by viewModels()
+    val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            binding.profileImageView.setImageURI(result.data?.data)
+        }
+    private val OPEN_GALLERY = 1
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -103,13 +118,24 @@ class UserActivity: AppCompatActivity() {
 
             val changeButton = mDialogView.findViewById<Button>(R.id.changeImageButton)
             changeButton.setOnClickListener {
-                Toast.makeText(this, "토스트 메시지", Toast.LENGTH_SHORT).show()
+                selectGallery()
+                mAlertDialog.dismiss()
             }
 
             val deleteButton = mDialogView.findViewById<Button>(R.id.deleteImageButton)
             deleteButton.setOnClickListener {
+                binding.profileImageView.setImageResource(R.drawable.anonymous_photo)
                 mAlertDialog.dismiss()
             }
         }
     }
+
+    private fun selectGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = MediaStore.Images.Media.CONTENT_TYPE
+        intent.type = "image/*"
+        getContent.launch(intent)
+
+    }
+
 }
