@@ -48,8 +48,7 @@
             android:layout_height="wrap_content"
             android:icon="@drawable/outline_policy_24" />
 
-
-
     </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

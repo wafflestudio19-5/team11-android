@@ -30,7 +30,7 @@ class BrowseActivity :AppCompatActivity(){
         val toolbar = binding.browserToolbar
         toolbar.setOnMenuItemClickListener {
             when(it.itemId) {
-                R.id.exit_button -> {
+                R.id.home_setting_exit_button -> {
                     finish()
                     true
                 }

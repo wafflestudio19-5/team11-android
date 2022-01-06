@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <ImageButton
+            android:id="@+id/home_setting_back_button"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="15dp"
+            android:backgroundTint="@color/Background"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/icn_m_back_background" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:text="홈 화면 설정"
+            android:textColor="@color/OnBackground"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/borderline"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="15dp">
+
+        <CheckBox
+            android:id="@+id/home_setting_favorite_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="즐겨찾는 게시판"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_issue_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="실시간 인기 글"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_hot_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="HOT 게시물"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_news_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="교내 소식"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_career_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="진로"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_book_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="판매 중인 책"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_promotion_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="교내 홍보"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_lecture_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="최근 강의평"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_eat_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="주변 맛집"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/home_setting_question_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:buttonTint="@color/Primary"
+            android:checked="true"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="답변을 기다리는 질문"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</LinearLayout>

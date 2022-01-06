@@ -35,6 +35,7 @@
         <activity android:name=".ui.board.HotBestBoardActivity" />
         <activity android:name=".ui.board.MyArticleBoardActivity" />
         <activity android:name=".ui.main.homeFragment.BrowseActivity"/>
+        <activity android:name=".ui.main.homeFragment.HomeSettingActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
