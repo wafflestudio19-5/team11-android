@@ -16,3 +16,4 @@ local.properties
 /app/src/main/res/values/app_key.xml
 /.idea/misc.xml
 /app/google-services.json
+/.idea/*
