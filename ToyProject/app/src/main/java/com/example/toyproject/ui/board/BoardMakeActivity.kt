@@ -84,9 +84,6 @@ class BoardMakeActivity : AppCompatActivity() {
                         error = it
                     })
 
-
-
-
                 }
             }
         }

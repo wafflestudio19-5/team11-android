@@ -2,6 +2,8 @@ package com.example.toyproject.ui.board
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -88,10 +90,15 @@ class BoardActivity : AppCompatActivity() {
                     }
                     "게시판 삭제" -> {
                         viewModel.deleteBoard(intent.getIntExtra("board_id", 0))
-                        finish()
+                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
+                    }
+                    "새로고침" -> {
+                        Handler(Looper.getMainLooper()).postDelayed({boardAdapter.resetArticles()
+                            page = 0
+                            if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) }, 1500)
                     }
                 }
-                Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()
             dialog.show()

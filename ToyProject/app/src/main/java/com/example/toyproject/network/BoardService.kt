@@ -101,16 +101,16 @@ interface BoardService {
         @Path("comment_id") comment_id: Int
     ) : Call<CommentDeleteResponse>
 
-    @DELETE("api/v1/board/{board_id}")
+    @DELETE("api/v1/board/{board_id}/")
     suspend fun deleteBoard(
         @Path("board_id") board_id: Int
-    ) : CommentDeleteResponse
+    ) : Success
 
-    @DELETE("api/v1/board/{board_id}/article/{article_id}")
+    @DELETE("api/v1/board/{board_id}/article/{article_id}/")
     suspend fun deleteArticle(
         @Path("board_id") board_id: Int,
         @Path("article_id") article_id: Int
-    ) : CommentDeleteResponse
+    ) : Success
 
 
 

@@ -53,5 +53,10 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.notifyDataSetChanged()
     }
 
+    fun resetBoards(){
+        this.boards.clear()
+        this.notifyDataSetChanged()
+    }
+
 
 }

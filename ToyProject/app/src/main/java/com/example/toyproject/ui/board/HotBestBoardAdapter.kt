@@ -82,6 +82,11 @@ class HotBestBoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         //this.articles.add(Article(0, "", "", "", 0, 0, 0, "" , ""))
     }
 
+    fun resetArticles(){
+        articles.clear()
+        this.notifyDataSetChanged()
+    }
+
 
     companion object {
         const val VIEW_TYPE_BOARD = 0

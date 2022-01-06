@@ -150,7 +150,7 @@ class ArticleViewModel @Inject constructor(
     fun deleteArticle(board_id: Int, article_id: Int){
         viewModelScope.launch{
             try{
-                val response: CommentDeleteResponse = service.deleteArticle(board_id, article_id)
+                val response: Success = service.deleteArticle(board_id, article_id)
             } catch(e: IOException){
                 Timber.e(e)
             }
