@@ -1,12 +1,16 @@
 package com.example.toyproject.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUserBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +71,7 @@ class UserActivity: AppCompatActivity() {
         binding.logout.setOnClickListener {
             //mGoogleSignInClient.signOut()
             val intent  = Intent(this, LoginActivity::class.java)
-            //intent.putExtra("logout", true)
+            intent.putExtra("logout", true)
             sharedPreferences.edit {
                 this.remove("token")
             }
@@ -88,6 +92,24 @@ class UserActivity: AppCompatActivity() {
             startActivity(intent)
             setResult(RESULT_OK, Intent())
             finish()
+        }
+
+        binding.changeImage.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.change_image_dialog, null)
+            val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+
+            val  mAlertDialog = mBuilder.show()
+
+            val changeButton = mDialogView.findViewById<Button>(R.id.changeImageButton)
+            changeButton.setOnClickListener {
+                Toast.makeText(this, "토스트 메시지", Toast.LENGTH_SHORT).show()
+            }
+
+            val deleteButton = mDialogView.findViewById<Button>(R.id.deleteImageButton)
+            deleteButton.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
         }
     }
 }
