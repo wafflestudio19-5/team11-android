@@ -2,6 +2,8 @@ package com.example.toyproject.ui.board
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivityBoardMakeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class BoardMakeActivity : AppCompatActivity() {
@@ -52,9 +55,7 @@ class BoardMakeActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
 
-        viewModel.error.observe(this, {
-            error = it
-        })
+
 
         binding.apply{
             makeBoardButton.setOnClickListener {
@@ -63,20 +64,29 @@ class BoardMakeActivity : AppCompatActivity() {
                     Toast.makeText(this@BoardMakeActivity, "이름을 입력해주세요.", Toast.LENGTH_LONG).show()
 
                 } else {
+
                     viewModel.createBoard(
                         boardName,
                         boardDesc,
                         letAnonymous
                     )
 
-                    if(viewModel.error.value != "") {
+                    Handler(Looper.getMainLooper()).postDelayed({if(error == "error") {
                         Toast.makeText(this@BoardMakeActivity, "중복된 이름의 게시판이 있습니다.", Toast.LENGTH_LONG).show()
                     }
                     else {
-                        Intent(this@BoardMakeActivity, BoardActivity::class.java).apply {
-                            putExtra("board_name", boardName)
-                        }.run { startActivity(this) }
-                    }
+                        Timber.d("error: " + error)
+                        finish()
+                    }}, 1000)
+
+
+                    viewModel.error.observe(this@BoardMakeActivity, {
+                        error = it
+                    })
+
+
+
+
                 }
             }
         }
