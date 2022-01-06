@@ -112,9 +112,7 @@ interface BoardService {
         @Path("article_id") article_id: Int
     ) : Success
 
-
-
-
-
+    @GET("/api/v1/board_favorite/")
+    suspend fun searchFavoriteBoard(): FetchAllBoard
 
 }

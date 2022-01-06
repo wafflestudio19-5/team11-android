@@ -46,7 +46,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/home_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -304,19 +304,21 @@
                 android:id="@+id/home_fragment_favorite_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="top">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="15dp"
                         android:text="즐겨찾는 게시판"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -331,9 +333,9 @@
                         android:id="@+id/home_fragment_goto_favorite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
@@ -345,6 +347,7 @@
                     android:id="@+id/recycler_view_favorite_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     tools:listitem="@layout/item_favorite_board" />
 
             </LinearLayout>
@@ -353,19 +356,20 @@
                 android:id="@+id/home_fragment_issue_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="실시간 인기 글"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -376,6 +380,15 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10sp"
+                        android:textSize="@dimen/home_fragment_more_text_size"
+                        android:visibility="invisible" />
+
 
                 </LinearLayout>
 
@@ -383,6 +396,7 @@
                     android:id="@+id/recycler_view_issue_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     tools:listitem="@layout/item_home_fragment_issue" />
 
             </LinearLayout>
@@ -391,19 +405,20 @@
                 android:id="@+id/home_fragment_recommend_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="추천 정보"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -414,10 +429,19 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10sp"
+                        android:textSize="@dimen/home_fragment_more_text_size"
+                        android:visibility="invisible" />
+
+
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/dfjnvjknbkn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -430,22 +454,23 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/home_fragment_hot_layout"
+                android:id="@+id/home_fragment_hot_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="HOT 게시물"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -460,20 +485,19 @@
                         android:id="@+id/home_fragment_goto_hot_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
-
-
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_hot_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     tools:listitem="@layout/item_home_fragment_hot" />
 
             </LinearLayout>
@@ -482,19 +506,20 @@
                 android:id="@+id/home_fragment_school_news_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="교내 소식"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -506,21 +531,17 @@
                         android:layout_weight="1" />
 
                     <TextView
-                        android:id="@+id/home_fragment_goto_school_news_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
-
                 </LinearLayout>
 
-
                 <TextView
-                    android:id="@+id/dfjnvjknbkffgn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -536,19 +557,20 @@
                 android:id="@+id/home_fragment_school_career_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="진로"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -560,20 +582,17 @@
                         android:layout_weight="1" />
 
                     <TextView
-                        android:id="@+id/home_fragment_goto_career_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10sp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
-
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/dfjnvjknbkfffggn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -586,22 +605,23 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/home_fragment_lecture"
+                android:id="@+id/home_fragment_lecture_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="최근 강의평"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -616,24 +636,15 @@
                         android:id="@+id/home_fragment_goto_lectures_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
-
-
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_lecture_evaluation_board"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/item_favorite_board" />
-
                 <TextView
-                    android:id="@+id/textView7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -651,17 +662,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="공모전 · 대외활동"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -676,8 +688,8 @@
                         android:id="@+id/home_fragment_goto_outside_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
@@ -685,7 +697,6 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/dfjnvjknffggn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -703,17 +714,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="답변을 기다리는 질문"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -728,8 +740,8 @@
                         android:id="@+id/home_fragment_goto_question_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
@@ -752,19 +764,20 @@
                 android:id="@+id/home_fragment_school_promotion_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="교내 홍보"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -779,9 +792,9 @@
                         android:id="@+id/home_fragment_goto_school_promotion_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
@@ -803,19 +816,20 @@
                 android:id="@+id/home_fragment_recruit_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10sp"
                         android:text="채용 정보"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -830,9 +844,9 @@
                         android:id="@+id/home_fragment_goto_recruit_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
@@ -854,19 +868,20 @@
                 android:id="@+id/home_fragment_book_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginStart="10dp"
                         android:text="판매 중인 책"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -881,9 +896,9 @@
                         android:id="@+id/home_fragment_goto_book_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20sp"
-                        android:layout_marginRight="10sp"
-                        android:layout_marginBottom="10sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
                         android:textSize="@dimen/home_fragment_more_text_size" />
@@ -905,19 +920,22 @@
                 android:id="@+id/home_fragment_event_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="이벤트"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -945,19 +963,22 @@
                 android:id="@+id/home_fragment_benefit_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10sp"
-                        android:layout_marginTop="20sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="대학생 복지 혜택"
                         android:textColor="@color/OnBackground"
                         android:textSize="@dimen/home_fragment_menu_title_text_size"
@@ -992,11 +1013,11 @@
                 android:paddingBottom="10dp"
                 android:text="홈 화면 설정"
                 android:textAlignment="center"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

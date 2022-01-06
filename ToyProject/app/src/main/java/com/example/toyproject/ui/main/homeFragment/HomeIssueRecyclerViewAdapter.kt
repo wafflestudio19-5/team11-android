@@ -30,6 +30,7 @@ class HomeIssueRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.binding.articleWrittenTime.text = data.f_created_at
                 holder.binding.profileNickname.text = data.user_nickname
                 holder.binding.articleTitle.text = data.title
+                // holder.binding.homeFragmentIssueBoardName = data. TODO
                 // holder.binding.profileImage TODO
             }
         }

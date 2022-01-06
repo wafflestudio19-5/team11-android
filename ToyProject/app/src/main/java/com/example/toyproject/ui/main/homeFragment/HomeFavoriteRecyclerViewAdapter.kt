@@ -5,15 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemHomeFragmentFavoriteBinding
 import com.example.toyproject.network.dto.Board
+import timber.log.Timber
 
 class HomeFavoriteRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var favorites : MutableList<Board> = mutableListOf()
+    private var favoriteNames : MutableList<String> = mutableListOf()
+    private var titles : MutableList<String> = mutableListOf()
+
     inner class FavoriteViewHolder(val binding : ItemHomeFragmentFavoriteBinding) : RecyclerView.ViewHolder(binding.root)
 
 
     override fun getItemCount(): Int {
-        return favorites.size
+        return favoriteNames.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -22,17 +25,22 @@ class HomeFavoriteRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = favorites[position]
+        val board_name = favoriteNames[position]
+        val title = titles[position]
         when(holder) {
             is FavoriteViewHolder -> {
-                holder.binding.homeFragmentFavoriteBoardName.text = "OO게시판"
-                holder.binding.homeFragmentFavoriteContent.text = "게시판 첫 글 내용"
+                holder.binding.homeFragmentFavoriteBoardName.text = board_name
+                holder.binding.homeFragmentFavoriteContent.text = title
             }
         }
     }
-
-    fun setFavorites(favorites : MutableList<Board>) {
-        this.favorites = favorites
+    fun setFavoriteBoard(titles : List<String>, names : List<String>) {
+        val nameTemp = mutableListOf<String>()
+        nameTemp.addAll(names)
+        val titleTemp = mutableListOf<String>()
+        titleTemp.addAll(titles)
+        this.favoriteNames = nameTemp
+        this.titles = titleTemp
         this.notifyDataSetChanged()
     }
 

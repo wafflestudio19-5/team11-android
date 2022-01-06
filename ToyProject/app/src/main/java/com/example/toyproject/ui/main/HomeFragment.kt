@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,6 @@ import com.example.toyproject.ui.main.homeFragment.*
 import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -146,6 +144,13 @@ class HomeFragment : Fragment() {
             adapter = favorAdapter
             layoutManager = favorLayoutManager
         }
+        viewModel.loadFavorite()
+        viewModel.favorBoards.observe(this, {
+            viewModel.loadFavoriteTitles(it)
+        })
+        viewModel.favorBoardsTitle.observe(this, {
+            favorAdapter.setFavoriteBoard(it, viewModel.names)
+        })
 
         // 실시간 인기 글 게시판
         if(setting[1] =="true") binding.homeFragmentIssueLinearlayout.visibility = View.VISIBLE
@@ -162,8 +167,8 @@ class HomeFragment : Fragment() {
         })
 
         // 핫게 게시판
-        if(setting[2] =="true") binding.homeFragmentHotLayout.visibility = View.VISIBLE
-        else binding.homeFragmentHotLayout.visibility = View.GONE
+        if(setting[2] =="true") binding.homeFragmentHotLinearlayout.visibility = View.VISIBLE
+        else binding.homeFragmentHotLinearlayout.visibility = View.GONE
         binding.homeFragmentGotoHotButton.setOnClickListener {
             Intent(activity, HotBestBoardActivity::class.java).apply {
                 putExtra("board_name", "HOT 게시판")
@@ -198,8 +203,8 @@ class HomeFragment : Fragment() {
         else binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.GONE
 
         // 최근 강의평
-        if(setting[7] =="true") binding.homeFragmentLecture.visibility = View.VISIBLE
-        else binding.homeFragmentLecture.visibility = View.GONE
+        if(setting[7] =="true") binding.homeFragmentLectureLinearlayout.visibility = View.VISIBLE
+        else binding.homeFragmentLectureLinearlayout.visibility = View.GONE
         binding.homeFragmentGotoLecturesButton.setOnClickListener {
             // TODO
             (activity as MainActivity).preparing()
@@ -237,8 +242,8 @@ class HomeFragment : Fragment() {
                 else binding.homeFragmentIssueLinearlayout.visibility = View.GONE
 
                 // 핫게
-                if(setting2[2] =="true") binding.homeFragmentHotLayout.visibility = View.VISIBLE
-                else binding.homeFragmentHotLayout.visibility = View.GONE
+                if(setting2[2] =="true") binding.homeFragmentHotLinearlayout.visibility = View.VISIBLE
+                else binding.homeFragmentHotLinearlayout.visibility = View.GONE
 
                 // 교내 소식
                 if(setting2[3] =="true") binding.homeFragmentSchoolNewsLinearlayout.visibility = View.VISIBLE
@@ -257,8 +262,8 @@ class HomeFragment : Fragment() {
                 else binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.GONE
 
                 // 최근 강의평
-                if(setting2[7] =="true") binding.homeFragmentLecture.visibility = View.VISIBLE
-                else binding.homeFragmentLecture.visibility = View.GONE
+                if(setting2[7] =="true") binding.homeFragmentLectureLinearlayout.visibility = View.VISIBLE
+                else binding.homeFragmentLectureLinearlayout.visibility = View.GONE
 
                 // 답변을 기다리는 질문
                 if(setting2[9] =="true") binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.VISIBLE
