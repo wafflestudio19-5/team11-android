@@ -9,10 +9,39 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:buttonGravity="bottom"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_menu">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="15dp">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="에브리타임"
+                android:textColor="@color/Primary"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/home_top_university_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="서울대"
+                android:textColor="@color/OnBackground"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -38,8 +67,239 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_top_banner"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:clipChildren="false"
+                android:clipToPadding="true">
+
+            </androidx.viewpager2.widget.ViewPager2>
+
 
             <LinearLayout
+                android:id="@+id/home_fragment_icons_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_schoolhome_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_home" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="학교\n홈"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_studyroom_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_library" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="열람실\n현황"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_shuttle_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_bus" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="셔틀\n버스"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_news_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_news" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="학사\n공지"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_calender_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_calendar" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="학사\n일정"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/home_fragment_icon_size"
+                        android:layout_height="@dimen/home_fragment_icon_size"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/home_fragment_library_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="@drawable/home_fragment_icon_background"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icn_mcr_home_library" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="도서관\n"
+                        android:textAlignment="center"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="@dimen/home_fragment_icon_textsize" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_favorite_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
@@ -66,16 +326,15 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/home_fragment_goto_favorite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp"
-                        android:layout_marginRight="10sp" />
-
-
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
@@ -89,6 +348,45 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/home_fragment_issue_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginTop="20sp"
+                        android:text="실시간 인기 글"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_issue_board"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_content_article" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_fragment_hot_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
@@ -115,14 +413,15 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/home_fragment_goto_hot_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp"
-                        android:layout_marginRight="10sp" />
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
@@ -136,6 +435,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/home_fragment_lecture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
@@ -162,16 +462,15 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/home_fragment_goto_lectures_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20sp"
+                        android:layout_marginRight="10sp"
                         android:layout_marginBottom="10sp"
                         android:text="더 보기 >"
                         android:textColor="@color/PrimaryVariant"
-                        android:textSize="16sp"
-                        android:layout_marginRight="10sp" />
-
-
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
