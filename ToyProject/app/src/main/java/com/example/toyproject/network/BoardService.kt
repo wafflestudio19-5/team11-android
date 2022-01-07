@@ -115,4 +115,9 @@ interface BoardService {
     @GET("/api/v1/board_favorite/")
     suspend fun searchFavoriteBoard(): FetchAllBoard
 
+    @PUT("/api/v1/board_favorite/{board_id}/")
+    suspend fun putFavoriteBoard(
+        @Path("board_id") board_id: Int
+    ) : FavoriteBoard
+
 }

@@ -65,5 +65,15 @@ class BoardViewModel @Inject constructor(
         }
     }
 
+    fun addFavoriteBoard(board_id: Int){
+        viewModelScope.launch {
+            try{
+                service.putFavoriteBoard(board_id)
+            } catch(e: IOException){
+                Timber.e(e)
+            }
+        }
+    }
+
 
 }

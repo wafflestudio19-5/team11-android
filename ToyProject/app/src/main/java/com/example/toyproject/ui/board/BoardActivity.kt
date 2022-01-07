@@ -76,7 +76,7 @@ class BoardActivity : AppCompatActivity() {
             val array = if(isMine) {
                 arrayOf("새로고침", "글 쓰기", "게시판 삭제")
             } else {
-                arrayOf("새로고침", "글 쓰기")
+                arrayOf("새로고침", "글 쓰기", "즐겨찾기에 추가")
             }
             val builder = AlertDialog.Builder(this)
             builder.setItems(array) {a, which ->
@@ -97,8 +97,11 @@ class BoardActivity : AppCompatActivity() {
                             page = 0
                             if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) }, 1500)
                     }
+                    "즐겨찾기에 추가" -> {
+                        viewModel.addFavoriteBoard(intent.getIntExtra("board_id", 0))
+                    }
                 }
-                //Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()
             dialog.show()

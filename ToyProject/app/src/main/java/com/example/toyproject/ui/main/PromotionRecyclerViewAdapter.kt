@@ -52,5 +52,10 @@ class PromotionRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
         this.notifyDataSetChanged()
     }
 
+    fun resetBoards(){
+        this.boards.clear()
+        this.notifyDataSetChanged()
+    }
+
 
 }

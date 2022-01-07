@@ -46,7 +46,7 @@ class ListViewModel @Inject constructor(
 
     fun getBoardList(){
         viewModelScope.launch {
-            _boardList.value = service.getBoardList().boards
+            _boardList.value = service.getBoardList().boards!!
             classifyBoardList()
             setBoardList()
         }

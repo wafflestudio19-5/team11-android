@@ -143,6 +143,11 @@ class ListFragment : Fragment() {
 
         binding.refreshButton.setOnClickListener {
             generalAdapter.resetBoards()
+            promotionAdapter.resetBoards()
+            organizationAdapter.resetBoards()
+            departmentAdapter.resetBoards()
+            careerAdapter.resetBoards()
+            defaultAdapter.resetBoards()
             viewModel.getBoardList()
         }
 

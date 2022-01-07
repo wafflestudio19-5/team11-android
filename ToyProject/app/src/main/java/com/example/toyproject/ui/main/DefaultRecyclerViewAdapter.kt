@@ -9,7 +9,7 @@ import com.example.toyproject.network.dto.Board
 
 class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var defaultBoards: List<Board> = listOf()
+    private var defaultBoards: MutableList<Board> = mutableListOf()
     inner class DefaultBoardViewHolder(val binding: ItemDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,7 +35,7 @@ class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         return defaultBoards.size
     }
 
-    fun setDefaultBoards(defaultBoards: List<Board>){
+    fun setDefaultBoards(defaultBoards: MutableList<Board>){
         this.defaultBoards = defaultBoards
         this.notifyDataSetChanged()
     }
@@ -48,6 +48,11 @@ class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     fun setItemClickListener(onItemClickListener : OnItemClickListener){
         this.itemClickListener = onItemClickListener
+    }
+
+    fun resetBoards(){
+        this.defaultBoards.clear()
+        this.notifyDataSetChanged()
     }
 
 
