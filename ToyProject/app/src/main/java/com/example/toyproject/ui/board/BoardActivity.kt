@@ -31,6 +31,7 @@ class BoardActivity : AppCompatActivity() {
 
     private var page = 0
     private var isMine: Boolean = false
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +64,20 @@ class BoardActivity : AppCompatActivity() {
             isMine = it
         })
 
+        viewModel.isFavorite.observe(this, {
+            isFavorite = it
+        })
+
         viewModel.university.observe(this,{
             binding.university.text = it
         })
 
         binding.refreshLayout.setOnRefreshListener {
+            page = 0
+            boardAdapter.resetArticles()
             Handler(Looper.getMainLooper()).postDelayed({
-                boardAdapter.resetArticles()
-                page = 0
+
+
                 if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) },
                 100)
             binding.refreshLayout.isRefreshing = false

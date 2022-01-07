@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +70,12 @@ class HomeFragment : Fragment() {
         }
 
         // 최상단 툴바
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == AppCompatActivity.RESULT_OK) {
+                    (activity as MainActivity).finish()
+                }
+            }
         val toolbar = binding.toolbar
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -76,7 +84,7 @@ class HomeFragment : Fragment() {
                 }
                 R.id.profile_button -> {
                     val intent = Intent(activity, UserActivity::class.java)
-                    startActivity(intent)
+                    resultListener.launch(intent)
                     true
                 }
                 else -> false
@@ -247,6 +255,7 @@ class HomeFragment : Fragment() {
         // 답변을 기다리는 질문
         if(setting[9] =="true") binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.VISIBLE
         else binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.GONE
+
 
         // 맨 밑, 홈 화면 설정 버튼
         binding.homeFragmentSettingButton.setOnClickListener {
