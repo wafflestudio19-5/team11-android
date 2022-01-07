@@ -28,6 +28,9 @@ class BoardViewModel @Inject constructor(
     private val _isMine = MutableLiveData<Boolean>(false)
     val isMine: LiveData<Boolean> = _isMine
 
+    private val _isFavorite = MutableLiveData<Boolean>(false)
+    val isFavorite : LiveData<Boolean> = _isFavorite
+
     private val _university = MutableLiveData<String>()
     val university: LiveData<String> = _university
 
@@ -49,6 +52,7 @@ class BoardViewModel @Inject constructor(
                 val board: BoardInfo = service.getBoardInfo(board_id)
                 _isMine.value = board.is_mine
                 _university.value = board.university
+                _isFavorite.value = board.favorite
             } catch(e: IOException){
                 Timber.e(e)
             }

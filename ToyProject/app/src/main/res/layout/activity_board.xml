@@ -112,6 +112,8 @@
                 android:visibility="visible"
                 tools:listitem="@layout/item_title_content_article" />
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/make_article_button"
                 android:layout_width="100dp"
@@ -125,7 +127,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="bottom|center"/>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 
