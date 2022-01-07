@@ -55,6 +55,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.homeScroll.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
 
         // setting 불러오기
         val defaultJsonArray  = JSONArray()
@@ -303,5 +304,9 @@ class HomeFragment : Fragment() {
                 binding.homeScroll.scrollTo(0, binding.homeTopBanner.top)
             }
         })
+
+        binding.homeScroll.animation = null
+        binding.homeScroll.layoutAnimation = null
+        binding.homeScroll.isSmoothScrollingEnabled = false
     }
 }
