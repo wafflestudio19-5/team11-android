@@ -8,6 +8,7 @@ data class ArticleContent (
     val title : String,
     val text : String,
     val user_nickname : String,
+    val user_image : String,
     val like_count : Int,
     val scrap_count : Int,
     val has_scraped : Boolean,
@@ -33,5 +34,6 @@ data class Comment(
     val created_at : String,
     val like_count : Int,
     val is_writer : Boolean,
-    val user_nickname: String
+    val user_nickname: String,
+    val user_image: String
 )

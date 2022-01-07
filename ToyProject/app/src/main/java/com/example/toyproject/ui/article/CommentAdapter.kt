@@ -1,18 +1,30 @@
 package com.example.toyproject.ui.article
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ItemCommentBinding
 import com.example.toyproject.databinding.ItemCommentSubBinding
 import com.example.toyproject.network.dto.Comment
 import com.example.toyproject.ui.board.BoardAdapter
+import java.net.URL
+import java.util.*
 import kotlin.reflect.jvm.internal.impl.descriptors.PossiblyInnerType
 
-class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class CommentAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     private var comments: MutableList<Comment> = mutableListOf()
 
@@ -45,6 +57,37 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         when(holder) {
             // 댓글 item
             is CommentViewHolder -> {
+                //profile image
+                val credentials: BasicAWSCredentials
+                val key = holder.itemView.context.getString(R.string.AWS_ACCESS_KEY_ID)
+                val secret = holder.itemView.context.getString(R.string.AWS_SECRET_ACCESS_KEY)
+                if(data.user_image!=""){
+                    val objectKey = data.user_image.substring(52)
+                    credentials = BasicAWSCredentials(key, secret)
+                    val s3 = AmazonS3Client(
+                        credentials, Region.getRegion(
+                            Regions.AP_NORTHEAST_2
+                        )
+                    )
+                    val expires = Date(Date().getTime() + 1000 * 60) // 1 minute to expire
+                    val generatePresignedUrlRequest =
+                        GeneratePresignedUrlRequest("team11bucket", objectKey) //generating the signatured url
+                    generatePresignedUrlRequest.expiration = expires
+                    val url: URL = s3.generatePresignedUrl(generatePresignedUrlRequest)
+                    holder.apply {
+                        Glide.with(context)
+                            .setDefaultRequestOptions(
+                                RequestOptions()
+                                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                                    .placeholder(R.drawable.anonymous_photo)
+                                    .fitCenter()
+                            )
+                            .load(url.toString())
+                            .into(itemView.findViewById(R.id.comment_profile_image))
+                    }
+                }
+
+
                 holder.binding.commentContent.text = data.text
                 holder.binding.commentNickname.text = data.user_nickname
                 holder.binding.commentWrittenTime.text = data.created_at
@@ -83,6 +126,37 @@ class CommentAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
             }
             // 대댓글 item
             is SubCommentViewHolder -> {
+                //profile image
+                val credentials: BasicAWSCredentials
+                val key = holder.itemView.context.getString(R.string.AWS_ACCESS_KEY_ID)
+                val secret = holder.itemView.context.getString(R.string.AWS_SECRET_ACCESS_KEY)
+                if(data.user_image!=""){
+                    val objectKey = data.user_image.substring(52)
+                    credentials = BasicAWSCredentials(key, secret)
+                    val s3 = AmazonS3Client(
+                        credentials, Region.getRegion(
+                            Regions.AP_NORTHEAST_2
+                        )
+                    )
+                    val expires = Date(Date().getTime() + 1000 * 60) // 1 minute to expire
+                    val generatePresignedUrlRequest =
+                        GeneratePresignedUrlRequest("team11bucket", objectKey) //generating the signatured url
+                    generatePresignedUrlRequest.expiration = expires
+                    val url: URL = s3.generatePresignedUrl(generatePresignedUrlRequest)
+                    holder.apply {
+                        Glide.with(context)
+                            .setDefaultRequestOptions(
+                                RequestOptions()
+                                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                                    .placeholder(R.drawable.anonymous_photo)
+                                    .fitCenter()
+                            )
+                            .load(url.toString())
+                            .into(itemView.findViewById(R.id.comment_profile_image))
+                    }
+                }
+
+
                 holder.binding.commentWrittenTime.text = data.created_at
                 holder.binding.commentContent.text = data.text
                 holder.binding.commentNickname.text = data.user_nickname

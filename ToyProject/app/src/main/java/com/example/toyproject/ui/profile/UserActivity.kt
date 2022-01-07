@@ -118,7 +118,7 @@ class UserActivity: AppCompatActivity() {
             email = it.email.toString()
             binding.userId.text = it.user_id
             binding.userProfile.text = "${it.name} / ${it.nickname}"
-            binding.userProfile2.text = "${it.university} ${it.admission_year?.minus(2000)}학번"
+            binding.userProfile2.text = "${it.university} ${it.admission_year?.toString()?.substring(2)}학번"
             Glide.with(this)
                 .setDefaultRequestOptions(
                     RequestOptions()

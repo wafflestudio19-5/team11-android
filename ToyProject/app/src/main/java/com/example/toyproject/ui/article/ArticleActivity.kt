@@ -14,11 +14,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.regions.Region
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.net.URL
+import java.util.*
 
 @AndroidEntryPoint
 class ArticleActivity : AppCompatActivity() {
@@ -44,7 +54,7 @@ class ArticleActivity : AppCompatActivity() {
 
         articleImageAdapter = ArticleImageAdapter(this)
         articleImageLayoutManager = LinearLayoutManager(this).also { it.orientation = LinearLayoutManager.HORIZONTAL }
-        commentAdapter = CommentAdapter()
+        commentAdapter = CommentAdapter(this)
         commentLayoutManager = LinearLayoutManager(this)
         binding.articleImageView.apply {
             adapter = articleImageAdapter
@@ -64,6 +74,34 @@ class ArticleActivity : AppCompatActivity() {
         var hasScraped = false
         // 게시글 내용물들 다 불러왔으면 채워넣기
         viewModel.result.observe(this, {
+            //게시글 작성자 프로필 이미지 불러오기
+            val credentials: BasicAWSCredentials
+            val key = getString(R.string.AWS_ACCESS_KEY_ID)
+            val secret = getString(R.string.AWS_SECRET_ACCESS_KEY)
+            if(it.user_image!=""){
+                val objectKey = it.user_image.substring(52)
+                credentials = BasicAWSCredentials(key, secret)
+                val s3 = AmazonS3Client(
+                    credentials, Region.getRegion(
+                        Regions.AP_NORTHEAST_2
+                    )
+                )
+                val expires = Date(Date().getTime() + 1000 * 60) // 1 minute to expire
+                val generatePresignedUrlRequest =
+                    GeneratePresignedUrlRequest("team11bucket", objectKey) //generating the signatured url
+                generatePresignedUrlRequest.expiration = expires
+                val url: URL = s3.generatePresignedUrl(generatePresignedUrlRequest)
+                Glide.with(this)
+                    .setDefaultRequestOptions(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .placeholder(R.drawable.anonymous_photo)
+                            .fitCenter()
+                    )
+                    .load(url.toString())
+                    .into(findViewById(R.id.article_full_writer_profile))
+            }
+
             isMine = it.is_mine
             hasScraped = it.has_scraped
             binding.articleFullWriterNickname.text = it.user_nickname
@@ -77,7 +115,6 @@ class ArticleActivity : AppCompatActivity() {
             binding.articleFullScrapNumber.text = it.scrap_count.toString()
             // binding.articleFullScrapButton.setBackgroundResource(R.drawable.background_gray) // TODO
             // binding.articleFullScrapButton.background = R.drawable.base
-            // TODO : 프로필 이미지 적용
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
             articleImageAdapter.setImages(it.images)
