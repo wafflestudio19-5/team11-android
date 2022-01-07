@@ -26,6 +26,8 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArticleBinding
     private val viewModel : ArticleViewModel by viewModels()
 
+    private lateinit var articleImageAdapter: ArticleImageAdapter
+    private lateinit var articleImageLayoutManager: LinearLayoutManager
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var commentLayoutManager: LinearLayoutManager
 
@@ -40,8 +42,14 @@ class ArticleActivity : AppCompatActivity() {
         binding = ActivityArticleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        articleImageAdapter = ArticleImageAdapter(this)
+        articleImageLayoutManager = LinearLayoutManager(this).also { it.orientation = LinearLayoutManager.HORIZONTAL }
         commentAdapter = CommentAdapter()
         commentLayoutManager = LinearLayoutManager(this)
+        binding.articleImageView.apply {
+            adapter = articleImageAdapter
+            layoutManager = articleImageLayoutManager
+        }
         binding.commentView.apply {
             adapter = commentAdapter
             layoutManager = commentLayoutManager
@@ -72,7 +80,8 @@ class ArticleActivity : AppCompatActivity() {
             // TODO : 프로필 이미지 적용
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
-            
+            articleImageAdapter.setImages(it.images)
+            articleImageAdapter.notifyDataSetChanged()
             // 댓글을 새로 쓰면 스크롤 맨 위로. (잘 작동 안하는듯)
             if(viewModel.reload) binding.nestedScroll.fullScroll(ScrollView.FOCUS_UP)
         })

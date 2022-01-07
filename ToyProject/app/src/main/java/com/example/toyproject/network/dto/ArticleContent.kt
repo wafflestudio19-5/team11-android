@@ -16,9 +16,14 @@ data class ArticleContent (
     val image_count : Int,
     val created_at : String,
     val f_created_at : String,
+    val images: MutableList<ArticleImage>,
     val comments : MutableList<Comment>
 )
 
+data class ArticleImage(
+    val image: String,
+    val description: String
+)
 data class Comment(
     val id : Int,
     val parent : Int,
