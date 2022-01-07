@@ -26,7 +26,7 @@ interface UserService {
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
     @Multipart
-    @PUT("/api/v1/my/profile_image")
+    @PUT("/api/v1/my/profile_image/")
     fun changeImage(@Part image: MultipartBody.Part?): Call<ChangeSuccess>
 
     @HTTP(method = "DELETE", path = "/api/v1/my/withdrawal/", hasBody = true)

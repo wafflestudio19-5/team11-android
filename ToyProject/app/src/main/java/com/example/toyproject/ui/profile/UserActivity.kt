@@ -1,7 +1,6 @@
 package com.example.toyproject.ui.profile
 
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -34,23 +33,14 @@ import java.util.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 import com.bumptech.glide.request.RequestOptions
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import androidx.core.app.ActivityCompat
+import android.os.Build
 
-import android.text.TextUtils
-
-import android.content.pm.PackageManager
-
-import androidx.core.content.ContextCompat
-
-import androidx.annotation.NonNull
-
-
-
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 
 
 @AndroidEntryPoint
@@ -59,11 +49,29 @@ class UserActivity: AppCompatActivity() {
     private val viewModel: UserViewModel by viewModels()
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            binding.profileImageView.setImageURI(result.data?.data)
             val uri: Uri? = result.data?.data
             if (uri != null) {
                 val realPath = getFullPathFromUri(uri)
-                upload(realPath)
+                if (realPath != null) {
+                    //이미지 데이터를 비트맵으로 받아옴
+                        lateinit var imageBitmap: Bitmap
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P){
+                            imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
+                        } else{
+                            imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        }
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                    val requestBody: RequestBody = byteArrayOutputStream.toByteArray()
+                        .toRequestBody()
+
+                        if(imageBitmap.height>4000||imageBitmap.width>4000){
+                            Toast.makeText(this, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                        }else{
+                            upload(requestBody)
+                            binding.profileImageView.setImageURI(result.data?.data)
+                        }
+                }
             }
         }
     @Inject
@@ -198,23 +206,21 @@ class UserActivity: AppCompatActivity() {
 
     }
 
-    private fun upload(uri: String?) {
-        val file = File(uri)
-        var fileName = binding.userProfile.text.toString()
-        fileName += ".png"
-        val requestBody : RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-        val body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",fileName,requestBody)
+    private fun upload(requestBody: RequestBody) {
+        val fileName = System.currentTimeMillis().toString() + ".jpg"
+        val body: MultipartBody.Part =
+            MultipartBody.Part.createFormData("profile_image", fileName, requestBody)
         viewModel.putImage(body)
     }
 
-    fun getFullPathFromUri(fileUri: Uri): String? {
+    private fun getFullPathFromUri(fileUri: Uri): String? {
         var fullPath: String? = null
         val column = "_data"
         var cursor: Cursor? = contentResolver.query(fileUri, null, null, null, null)
         if (cursor != null) {
             cursor.moveToFirst()
-            var document_id = cursor.getString(0)
-            if (document_id == null) {
+            var documentId = cursor.getString(0)
+            if (documentId == null) {
                 for (i in 0 until cursor.columnCount) {
                     if (column.equals(cursor.getColumnName(i), ignoreCase = true)) {
                         fullPath = cursor.getString(i)
@@ -222,7 +228,7 @@ class UserActivity: AppCompatActivity() {
                     }
                 }
             } else {
-                document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+                documentId = documentId.substring(documentId.lastIndexOf(":") + 1)
                 cursor.close()
                 val projection = arrayOf(column)
                 try {
@@ -230,7 +236,7 @@ class UserActivity: AppCompatActivity() {
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                         projection,
                         MediaStore.Images.Media._ID + " = ? ",
-                        arrayOf(document_id),
+                        arrayOf(documentId),
                         null
                     )
                     if (cursor != null) {
