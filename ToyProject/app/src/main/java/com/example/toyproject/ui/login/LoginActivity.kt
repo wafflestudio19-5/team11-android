@@ -100,8 +100,8 @@ class LoginActivity:AppCompatActivity() {
                 FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val param = LoginSocial(task.result.token.toString())
-                        viewModel.googleLogin(param, email)
-                        // viewModel.googleLogin(param, "abdjfjfhr@naver.com") // TODO 디버그 용도!!!!!!!!!!!
+                        viewModel.googleLogin(param, email) // TODO 디버그 용도!!!!!!!!!!!
+                        // viewModel.googleLogin(param, "abdjfjfhr@naver.com")
                     }
                 }
             }
@@ -214,7 +214,7 @@ class LoginActivity:AppCompatActivity() {
                 if(it=="success") {
                     Toast.makeText(this, "로그인에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("socialType", "kakao")
+
                     startActivity(intent)
                     finish()
                 }

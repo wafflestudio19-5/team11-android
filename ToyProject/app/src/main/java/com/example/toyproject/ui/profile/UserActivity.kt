@@ -172,7 +172,10 @@ class UserActivity: AppCompatActivity() {
             sharedPreferences.edit {
                 this.remove("token")
             }
+            applicationContext.cacheDir.deleteRecursively()
+            baseContext.cacheDir.deleteRecursively()
             startActivity(intent)
+            setResult(RESULT_OK)
             finish()
         }
 
