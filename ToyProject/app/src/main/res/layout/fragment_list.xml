@@ -187,7 +187,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_default_board"
-                    android:overScrollMode="never"/>
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"/>
 
             </LinearLayout>
 
@@ -271,7 +272,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_not_default_board"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
             </LinearLayout>
 
@@ -319,7 +321,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_default_board"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
             </LinearLayout>
 
@@ -366,7 +369,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_not_default_board"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
             </LinearLayout>
 
@@ -413,7 +417,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_not_default_board"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
             </LinearLayout>
 
@@ -429,7 +434,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_not_default_board"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
             </LinearLayout>
 
