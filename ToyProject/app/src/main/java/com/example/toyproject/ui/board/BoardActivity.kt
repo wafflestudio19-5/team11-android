@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityBoardBinding
 import com.example.toyproject.network.dto.Article
 import com.example.toyproject.ui.article.ArticleActivity
@@ -65,6 +66,17 @@ class BoardActivity : AppCompatActivity() {
         viewModel.university.observe(this,{
             binding.university.text = it
         })
+
+        binding.refreshLayout.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                boardAdapter.resetArticles()
+                page = 0
+                if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) },
+                100)
+            binding.refreshLayout.isRefreshing = false
+        }
+
+        binding.refreshLayout.setColorSchemeResources(R.color.PrimaryVariant)
 
         binding.searchIcon.setOnClickListener {
             Intent(this@BoardActivity, ArticleSearchActivity::class.java).apply{

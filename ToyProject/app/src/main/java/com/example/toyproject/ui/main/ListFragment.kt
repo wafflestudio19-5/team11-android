@@ -11,6 +11,7 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentListBinding
 import com.example.toyproject.network.dto.Board
 import com.example.toyproject.ui.board.BoardActivity
@@ -157,6 +158,21 @@ class ListFragment : Fragment() {
             val intent = Intent(activity, BoardSearchActivity::class.java)
             startActivity(intent)
         }
+
+        binding.refreshLayout.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                generalAdapter.resetBoards()
+                promotionAdapter.resetBoards()
+                organizationAdapter.resetBoards()
+                departmentAdapter.resetBoards()
+                careerAdapter.resetBoards()
+                defaultAdapter.resetBoards()
+                viewModel.getBoardList() },
+                100)
+            binding.refreshLayout.isRefreshing = false
+        }
+
+        binding.refreshLayout.setColorSchemeResources(R.color.PrimaryVariant)
 
 
         viewModel.getBoardList()
