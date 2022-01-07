@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.ChangeSuccess
-import com.example.toyproject.network.ProfileImage
 import com.example.toyproject.network.UserService
 import com.example.toyproject.network.dto.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,7 +49,7 @@ class UserViewModel @Inject constructor(
         })
     }
 
-    fun putImage(image: ProfileImage){
+    fun putImage(image: MultipartBody.Part?){
         service.changeImage(image).enqueue(object : Callback<ChangeSuccess> {
             override fun onFailure(call: Call<ChangeSuccess>, t: Throwable) {
                 _imageResult.value = t.message

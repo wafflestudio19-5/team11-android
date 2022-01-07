@@ -4,6 +4,8 @@ package com.example.toyproject.ui.profile
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -31,7 +33,6 @@ import java.util.*
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 import com.bumptech.glide.request.RequestOptions
-import com.example.toyproject.network.ProfileImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,11 +44,14 @@ import java.io.File
 class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     private val viewModel: UserViewModel by viewModels()
-    private lateinit var file: File
     val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             binding.profileImageView.setImageURI(result.data?.data)
-            file = File(result.data?.dataString)
+            val uri: Uri? = result.data?.data
+            if (uri != null) {
+                val realPath = getFullPathFromUri(uri)
+                upload(realPath)
+            }
         }
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -161,16 +165,12 @@ class UserActivity: AppCompatActivity() {
             val changeButton = mDialogView.findViewById<Button>(R.id.changeImageButton)
             changeButton.setOnClickListener {
                 selectGallery()
-                var fileName = binding.userProfile.text.toString()
-                fileName += ".png"
-                val requestBody : RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-                val body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",fileName,requestBody)
-                viewModel.putImage(ProfileImage(body))
                 mAlertDialog.dismiss()
             }
 
             val deleteButton = mDialogView.findViewById<Button>(R.id.deleteImageButton)
             deleteButton.setOnClickListener {
+                //viewModel.putImage(null)
                 binding.profileImageView.setImageResource(R.drawable.anonymous_photo)
                 mAlertDialog.dismiss()
             }
@@ -185,5 +185,50 @@ class UserActivity: AppCompatActivity() {
 
     }
 
+    private fun upload(uri: String?) {
+        val file = File(uri)
+        var fileName = binding.userProfile.text.toString()
+        fileName += ".png"
+        val requestBody : RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",fileName,requestBody)
+        viewModel.putImage(body)
+    }
 
+    fun getFullPathFromUri(fileUri: Uri): String? {
+        var fullPath: String? = null
+        val column = "_data"
+        var cursor: Cursor? = contentResolver.query(fileUri, null, null, null, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            var document_id = cursor.getString(0)
+            if (document_id == null) {
+                for (i in 0 until cursor.columnCount) {
+                    if (column.equals(cursor.getColumnName(i), ignoreCase = true)) {
+                        fullPath = cursor.getString(i)
+                        break
+                    }
+                }
+            } else {
+                document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+                cursor.close()
+                val projection = arrayOf(column)
+                try {
+                    cursor = contentResolver.query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        projection,
+                        MediaStore.Images.Media._ID + " = ? ",
+                        arrayOf(document_id),
+                        null
+                    )
+                    if (cursor != null) {
+                        cursor.moveToFirst()
+                        fullPath = cursor.getString(cursor.getColumnIndexOrThrow(column))
+                    }
+                } finally {
+                    cursor.close()
+                }
+            }
+        }
+        return fullPath
+    }
 }

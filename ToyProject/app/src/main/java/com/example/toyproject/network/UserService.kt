@@ -27,7 +27,7 @@ interface UserService {
 
     @Multipart
     @PUT("/api/v1/my/profile_image")
-    fun changeImage(@Part image: ProfileImage): Call<ChangeSuccess>
+    fun changeImage(@Part image: MultipartBody.Part?): Call<ChangeSuccess>
 
     @HTTP(method = "DELETE", path = "/api/v1/my/withdrawal/", hasBody = true)
     fun withdrawal(@Body password: Password): Call<WithdrawalSuccess>
@@ -43,10 +43,6 @@ data class Email(
 
 data class Nickname(
     val nickname: String
-)
-
-data class ProfileImage(
-    val profile_image: MultipartBody.Part?
 )
 
 data class ChangeSuccess(
