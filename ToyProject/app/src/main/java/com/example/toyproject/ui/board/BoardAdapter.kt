@@ -38,6 +38,12 @@ class BoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     articleTitle.text = data.title
                     articleContent.text = data.text
                     articleWriter.text = data.user_nickname
+                    if(data.image_count==0){
+                        articleImageIcon.visibility = View.INVISIBLE
+                    }else{
+                        articleImageIcon.visibility = View.VISIBLE
+                        articleImageNumber.text = data.image_count.toString()
+                    }
                     articleCommentNumber.text = data.comment_count.toString()
                     articleLikeNumber.text = data.like_count.toString()
                     articleWrittenTime.text = data.f_created_at + " | "
