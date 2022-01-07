@@ -179,9 +179,7 @@ class SignupActivity: AppCompatActivity() {
                         intent.getStringExtra("university"),
                         binding.nameEdit.text.toString(),
                     )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.signup(param)
-                    }
+                    viewModel.signup(param)
                 }
             }
             else {
