@@ -18,10 +18,10 @@
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/anonymous_photo"
-            android:layout_marginRight="7dp"/>
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="7dp"
+            android:src="@drawable/anonymous_photo" />
 
         <TextView
             android:id="@+id/profile_nickname"

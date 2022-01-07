@@ -26,6 +26,7 @@ class UnivSearchActivity  : AppCompatActivity() {
 
     lateinit var email : String
     lateinit var access_token : String
+    lateinit var socialType : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,9 @@ class UnivSearchActivity  : AppCompatActivity() {
         }
         if(intent.getStringExtra("access_token") != null) {
             access_token = intent.getStringExtra("access_token").toString()
+        }
+        if(intent.getStringExtra("socialType") != null) {
+            socialType = intent.getStringExtra("socialType").toString()
         }
 
         binding = ActivityUnivSearchBinding.inflate(layoutInflater)
@@ -94,7 +98,6 @@ class UnivSearchActivity  : AppCompatActivity() {
                     Toast.makeText(this, "학교를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-
                     // 소셜 로그인일때는 다음 버튼을 누르면 SocialSignupActivity 로 이동
                     if(intent.getStringExtra("mode")=="social") {
                         val intent = Intent(this, SocialSignupActivity::class.java)
@@ -102,6 +105,7 @@ class UnivSearchActivity  : AppCompatActivity() {
                         intent.putExtra("university", binding.autoCompleteTextView.text.toString())
                         intent.putExtra("email", email)
                         intent.putExtra("access_token", access_token)
+                        intent.putExtra("socialType", socialType)
                         resultListener.launch(intent)
                     }
                     // 일반 로그인일때는 다음 버튼을 누르면 SignupActivity 로 이동

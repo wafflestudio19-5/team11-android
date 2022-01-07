@@ -33,8 +33,13 @@ class SocialSignupViewModel @Inject constructor(
 
     lateinit var errorMessage : String
 
-    fun socialSignup(param : RegisterSocial) {
-        service.kakaoRegister(param).clone().enqueue(object : Callback<RegisterSocialResponse> {
+
+    fun socialSignup(param : RegisterSocial, type : String) {
+        lateinit var response : Call<RegisterSocialResponse>
+        if(type=="kakao")  response = service.kakaoRegister(param).clone()
+        else if(type=="fire") response = service.googleRegister(param).clone()
+
+        response.enqueue(object : Callback<RegisterSocialResponse> {
             override fun onFailure(call: Call<RegisterSocialResponse>, t: Throwable) {
                 // TODO
             }

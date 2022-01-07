@@ -27,6 +27,8 @@ class SocialSignupActivity: AppCompatActivity() {
     @Inject
     lateinit var service: Service
 
+    private lateinit var socialType : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,6 +38,8 @@ class SocialSignupActivity: AppCompatActivity() {
 
         var nicknameChecked = false
         var nicknameTemp = "" // 중복확인 한 후에, 다시 nickname 수정하는 것 탐지 용도
+
+        socialType = intent.getStringExtra("socialType").toString()
 
 
         // nickname editText 변화 탐지
@@ -85,7 +89,7 @@ class SocialSignupActivity: AppCompatActivity() {
                 val year = intent.getIntExtra("year", 2022)
                 val nickname = binding.nicknameEdit.text.toString()
                 val param = RegisterSocial(access_token, name, email, university, year, nickname)
-                viewModel.socialSignup(param)
+                viewModel.socialSignup(param, socialType)
             }
             else {
                 Toast.makeText(this, "닉네임 중복확인을 해주세요.", Toast.LENGTH_SHORT).show()

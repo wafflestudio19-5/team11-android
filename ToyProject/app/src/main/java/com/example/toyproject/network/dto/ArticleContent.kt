@@ -10,6 +10,7 @@ data class ArticleContent (
     val user_nickname : String,
     val like_count : Int,
     val scrap_count : Int,
+    val has_scraped : Boolean,
     val is_mine : Boolean,
     val comment_count : Int,
     val image_count : Int,
