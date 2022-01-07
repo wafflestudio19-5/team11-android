@@ -67,6 +67,31 @@ class HomeSettingActivity : AppCompatActivity() {
             setResult(RESULT_OK)
             finish()
         }
+
+    }
+    // 그냥 뒤로가기 버튼. 체크박스 정보를 모아 MainActivity 에게 전달
+    override fun onBackPressed() {
+        val settingList : BooleanArray = booleanArrayOf(
+            binding.homeSettingFavoriteCheckbox.isChecked,
+            binding.homeSettingIssueCheckbox.isChecked,
+            binding.homeSettingHotCheckbox.isChecked,
+            binding.homeSettingNewsCheckbox.isChecked,
+            binding.homeSettingCareerCheckbox.isChecked,
+            binding.homeSettingBookCheckbox.isChecked,
+            binding.homeSettingPromotionCheckbox.isChecked,
+            binding.homeSettingLectureCheckbox.isChecked,
+            binding.homeSettingEatCheckbox.isChecked,
+            binding.homeSettingQuestionCheckbox.isChecked
+        )
+        val jsonArray  = JSONArray()
+        for(set in settingList) {
+            jsonArray.put(set)
+        }
+        sharedPreferences.edit {
+            putString("setting", jsonArray.toString())
+        }
+        setResult(RESULT_OK)
+        finish()
     }
 
 }

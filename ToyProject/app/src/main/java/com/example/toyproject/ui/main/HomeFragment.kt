@@ -12,11 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentHomeBinding
+import com.example.toyproject.network.dto.Article
+import com.example.toyproject.network.dto.MyArticle
+import com.example.toyproject.ui.article.ArticleActivity
 import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.main.homeFragment.*
 import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -131,6 +135,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+
         // 즐겨찾는 게시판
         if(setting[0] =="true") binding.homeFragmentFavoriteLinearlayout.visibility = View.VISIBLE
         else binding.homeFragmentFavoriteLinearlayout.visibility = View.GONE
@@ -144,13 +149,22 @@ class HomeFragment : Fragment() {
             adapter = favorAdapter
             layoutManager = favorLayoutManager
         }
+        // 즐겨찾는 게시판 내용 채우기
         viewModel.loadFavorite()
         viewModel.favorBoards.observe(this, {
-            viewModel.loadFavoriteTitles(it)
+            if(it.isEmpty()) binding.homeFragmentFavoriteLinearlayout.visibility = View.GONE
+            else viewModel.loadFavoriteTitles(it)
         })
         viewModel.favorBoardsTitle.observe(this, {
-            favorAdapter.setFavoriteBoard(it, viewModel.names)
+            favorAdapter.setFavoriteBoard(it, viewModel.boardIds, viewModel.articleIds, viewModel.boardNames)
         })
+        // 즐겨찾는 게시판 아이템 클릭
+        favorAdapter.setItemClickListener(object : HomeFavoriteRecyclerViewAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int) {
+                (activity as MainActivity).openArticle(board_id, article_id, board_name)
+            }
+        })
+
 
         // 실시간 인기 글 게시판
         if(setting[1] =="true") binding.homeFragmentIssueLinearlayout.visibility = View.VISIBLE
@@ -161,10 +175,21 @@ class HomeFragment : Fragment() {
             adapter = issueAdapter
             layoutManager = issueLayoutManager
         }
+        // 실시간 인기 글 게시판 내용 채우기
         viewModel.loadIssue()
         viewModel.issueArticleList.observe(this, {
-            issueAdapter.setIssue(it)
+            viewModel.loadIssueBoardName(it)
         })
+        viewModel.issueArticleBoardNameList.observe(this, {
+            issueAdapter.setIssue(viewModel.issueArticleList.value!!, it)
+        })
+        // 실시간 인기 글 게시판 아이템 클릭
+        issueAdapter.setItemClickListener(object : HomeIssueRecyclerViewAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, data: MyArticle, position: Int) {
+                (activity as MainActivity).openArticle(data.board_id, data.id, viewModel.issueBoardNames[position])
+            }
+        })
+
 
         // 핫게 게시판
         if(setting[2] =="true") binding.homeFragmentHotLinearlayout.visibility = View.VISIBLE
@@ -185,6 +210,12 @@ class HomeFragment : Fragment() {
         viewModel.hotArticleList.observe(this, {
             hotAdapter.setHotArticles(it)
         })
+        hotAdapter.setItemClickListener(object : HomeHotRecyclerViewAdapter.OnItemClickListener {
+            override fun onItemClick(v: View, data: MyArticle, position: Int) {
+                (activity as MainActivity).openArticle(data.board_id, data.id, "HOT 게시판")
+            }
+        })
+
 
         // 교내 소식
         if(setting[3] =="true") binding.homeFragmentSchoolNewsLinearlayout.visibility = View.VISIBLE
