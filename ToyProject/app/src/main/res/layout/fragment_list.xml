@@ -186,7 +186,8 @@
                     android:id="@+id/recycler_view_default_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_default_board" />
+                    tools:listitem="@layout/item_default_board"
+                    android:overScrollMode="never"/>
 
             </LinearLayout>
 
@@ -269,7 +270,8 @@
                     android:id="@+id/recycler_view_career_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_not_default_board" />
+                    tools:listitem="@layout/item_not_default_board"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
@@ -316,7 +318,8 @@
                     android:id="@+id/recycler_view_promotion_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_default_board" />
+                    tools:listitem="@layout/item_default_board"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
@@ -362,7 +365,8 @@
                     android:id="@+id/recycler_view_organization_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_not_default_board" />
+                    tools:listitem="@layout/item_not_default_board"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
@@ -408,7 +412,8 @@
                     android:id="@+id/recycler_view_department_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_not_default_board" />
+                    tools:listitem="@layout/item_not_default_board"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
@@ -423,7 +428,8 @@
                     android:id="@+id/recycler_view_general_board"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/item_not_default_board" />
+                    tools:listitem="@layout/item_not_default_board"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
