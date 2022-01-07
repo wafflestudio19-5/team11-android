@@ -1,9 +1,11 @@
 package com.example.toyproject.ui.main.homeFragment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemHomeFragmentHotBinding
+import com.example.toyproject.network.dto.Article
 import com.example.toyproject.network.dto.MyArticle
 
 class HomeHotRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,6 +31,12 @@ class HomeHotRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.binding.articleLikeNumber.text = data.like_count.toString()
                 holder.binding.articleTitle.text = data.title
                 holder.binding.articleWrittenTime.text = data.f_created_at
+
+                holder.binding.apply {
+                    root.setOnClickListener {
+                        itemClickListener.onItemClick(root, data, position)
+                    }
+                }
             }
         }
     }
@@ -36,6 +44,16 @@ class HomeHotRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     fun setHotArticles(hotArticles: MutableList<MyArticle>) {
         this.hotArticles = hotArticles
         this.notifyDataSetChanged()
+    }
+
+    // 아이템 클릭 부분
+    interface OnItemClickListener {
+        fun onItemClick(v: View, data: MyArticle, position: Int)
+    }
+    private lateinit var itemClickListener: HomeHotRecyclerViewAdapter.OnItemClickListener
+
+    fun setItemClickListener(onItemClickListener : HomeHotRecyclerViewAdapter.OnItemClickListener){
+        this.itemClickListener = onItemClickListener
     }
 
 }

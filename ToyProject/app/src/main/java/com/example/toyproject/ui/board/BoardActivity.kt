@@ -2,8 +2,12 @@ package com.example.toyproject.ui.board
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +29,7 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var boardLayoutManager: LinearLayoutManager
 
     private var page = 0
+    private var isMine: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +56,52 @@ class BoardActivity : AppCompatActivity() {
             }
         })
 
+        viewModel.getBoardInfo(intent.getIntExtra("board_id", 0))
+
+        viewModel.isMine.observe(this, {
+            isMine = it
+        })
+
+        viewModel.university.observe(this,{
+            binding.university.text = it
+        })
+
         binding.searchIcon.setOnClickListener {
             Intent(this@BoardActivity, ArticleSearchActivity::class.java).apply{
                 putExtra("board_id", intent.getIntExtra("board_id", 0))
             }.run{startActivity(this)}
+        }
+
+        binding.articleFullMoreButton.setOnClickListener {
+            val array = if(isMine) {
+                arrayOf("새로고침", "글 쓰기", "게시판 삭제")
+            } else {
+                arrayOf("새로고침", "글 쓰기")
+            }
+            val builder = AlertDialog.Builder(this)
+            builder.setItems(array) {a, which ->
+                val selected = array[which]
+                // TODO (다른 선택지들)
+                when(selected){
+                    "글 쓰기" -> {
+                        Intent(this@BoardActivity, ArticleMakeActivity::class.java).apply{
+                            putExtra("board_id", intent.getIntExtra("board_id", 0))
+                        }.run{startActivity(this)}
+                    }
+                    "게시판 삭제" -> {
+                        viewModel.deleteBoard(intent.getIntExtra("board_id", 0))
+                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
+                    }
+                    "새로고침" -> {
+                        Handler(Looper.getMainLooper()).postDelayed({boardAdapter.resetArticles()
+                            page = 0
+                            if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) }, 1500)
+                    }
+                }
+                //Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
 
         binding.boardName.text = intent.getStringExtra("board_name")

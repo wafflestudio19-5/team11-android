@@ -66,9 +66,7 @@ class ArticleMakeActivity : AppCompatActivity() {
                     Toast.makeText(this@ArticleMakeActivity, "내용을 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else{
                     viewModel.createArticle(boardId, articleTitleTemp, articleTextTemp, isAnonymous, isQuestion)
-                    Intent(this@ArticleMakeActivity, BoardActivity::class.java).apply{
-                        putExtra("board_id", boardId)
-                    }.run{startActivity(this)}
+                    finish()
                 }
             }
         }

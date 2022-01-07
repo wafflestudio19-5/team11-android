@@ -2,14 +2,19 @@ package com.example.toyproject.ui.board
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ActivityHotBestBoardBinding
 import com.example.toyproject.network.dto.MyArticle
 import com.example.toyproject.ui.article.ArticleActivity
+import com.example.toyproject.ui.article.ArticleMakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +55,36 @@ class HotBestBoardActivity: AppCompatActivity() {
             }
         })
 
+        binding.articleFullMoreButton.setOnClickListener {
+            val array = arrayOf("새로고침")
+            val builder = AlertDialog.Builder(this)
+            builder.setItems(array) {a, which ->
+                val selected = array[which]
+                // TODO (다른 선택지들)
+                when(selected){
+                    "새로고침" -> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            boardAdapter.resetArticles()
+                            page = 0
+                            if (page == 0 && intent.getStringExtra("board_interest") == "hot") viewModel.getArticleList(
+                                page++,
+                                20,
+                                "hot"
+                            )
+                            else if (page == 0 && intent.getStringExtra("board_interest") == "best") viewModel.getArticleList(
+                                page++,
+                                20,
+                                "best"
+                            )
+                        }, 1500)
+                    }
+                }
+                //Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
+
         boardAdapter.setItemClickListener(object: HotBestBoardAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
                 Intent(this@HotBestBoardActivity, ArticleActivity::class.java).apply{
@@ -60,7 +95,7 @@ class HotBestBoardActivity: AppCompatActivity() {
             }
         })
 
-        if(intent.getStringExtra("board_interest")=="best") binding.boardAnnouncement.text= "공감을 100개 이상 받은 게시물 랭킹입니다."
+        if(intent.getStringExtra("board_interest")=="best") binding.boardAnnouncement.text= "공감을 50개 이상 받은 게시물 랭킹입니다."
 
 
         if(page==0 && intent.getStringExtra("board_interest") == "hot") viewModel.getArticleList(page++, 20, "hot")

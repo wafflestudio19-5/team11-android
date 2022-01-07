@@ -3,6 +3,8 @@ package com.example.toyproject.ui.article
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
@@ -16,6 +18,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ArticleActivity : AppCompatActivity() {
@@ -216,6 +219,12 @@ class ArticleActivity : AppCompatActivity() {
             builder.setItems(array) {a, which ->
                 val selected = array[which]
                 // TODO (다른 선택지들)
+                when(selected){
+                    "삭제" -> {
+                        viewModel.deleteArticle(boardId, articleId)
+                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
+                    }
+                }
                 Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()

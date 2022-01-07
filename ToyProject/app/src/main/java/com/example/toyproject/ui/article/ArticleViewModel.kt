@@ -15,6 +15,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import timber.log.Timber
+import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -59,6 +61,7 @@ class ArticleViewModel @Inject constructor(
                 _likeResult.value = "서버와의 통신에 실패하였습니다."
             }
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
+
                 if(response.isSuccessful) {
                     // 별 이상 없이 공감 성공
                     _likeResult.value = "success_comment"
@@ -75,6 +78,7 @@ class ArticleViewModel @Inject constructor(
             }
         })
     }
+
     // 게시글 좋아요
     fun likeArticle(article_id : Int) {
         service.likeArticle(article_id).clone().enqueue(object : Callback<LikeResponse> {
@@ -142,5 +146,17 @@ class ArticleViewModel @Inject constructor(
             }
         })
     }
+
+    fun deleteArticle(board_id: Int, article_id: Int){
+        viewModelScope.launch{
+            try{
+                val response: Success = service.deleteArticle(board_id, article_id)
+            } catch(e: IOException){
+                Timber.e(e)
+            }
+        }
+    }
+
+
 
 }
