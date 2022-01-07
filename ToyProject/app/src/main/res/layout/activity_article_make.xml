@@ -72,7 +72,16 @@
         android:hint="내용을 입력하세요."
         android:text="" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/article_image_upload_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_article_upload_image" />
+
     <ScrollView
+        android:id="@+id/warning_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -116,6 +125,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/gallery_button"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:background="@drawable/icon_camera" />
 
         <View
             android:layout_width="0dp"

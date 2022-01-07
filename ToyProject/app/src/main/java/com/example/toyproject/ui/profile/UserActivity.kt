@@ -135,7 +135,6 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
-            finish()
         }
 
         binding.changeNick.setOnClickListener{
@@ -143,14 +142,12 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("nickname", nickname)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
-            finish()
         }
 
         binding.changePw.setOnClickListener{
             val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
-            finish()
         }
 
         binding.logout.setOnClickListener {
@@ -183,7 +180,6 @@ class UserActivity: AppCompatActivity() {
             val intent = Intent(this, WithdrawalActivity::class.java)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
-            finish()
         }
 
         binding.univCertify.setOnClickListener {
@@ -191,7 +187,6 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
-            finish()
         }
 
         binding.changeImage.setOnClickListener {
