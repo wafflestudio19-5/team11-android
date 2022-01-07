@@ -61,9 +61,9 @@ class HomeFavoriteRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHo
     interface OnItemClickListener {
         fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int)
     }
-    private lateinit var itemClickListener: HomeFavoriteRecyclerViewAdapter.OnItemClickListener
+    private lateinit var itemClickListener: OnItemClickListener
 
-    fun setItemClickListener(onItemClickListener : HomeFavoriteRecyclerViewAdapter.OnItemClickListener){
+    fun setItemClickListener(onItemClickListener : OnItemClickListener){
         this.itemClickListener = onItemClickListener
     }
 }

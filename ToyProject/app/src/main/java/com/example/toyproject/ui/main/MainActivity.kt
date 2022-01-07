@@ -14,6 +14,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityMainBinding
 import com.example.toyproject.network.Service
 import com.example.toyproject.ui.article.ArticleActivity
+import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.login.LoginActivity
 import com.example.toyproject.ui.main.homeFragment.HomeSettingActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -99,6 +100,14 @@ class MainActivity : AppCompatActivity() {
         Intent(this, ArticleActivity::class.java).apply{
             putExtra("board_id", board_id)
             putExtra("article_id", article_id)
+            putExtra("board_name", board_name)
+        }.run{startActivity(this)}
+    }
+
+    // homeFragment 에서 즐겨찾는 게시판 item 선택하면 BoardActivity 시작
+    fun openBoard(board_id : Int, board_name : String) {
+        Intent(this, BoardActivity::class.java).apply{
+            putExtra("board_id", board_id)
             putExtra("board_name", board_name)
         }.run{startActivity(this)}
     }

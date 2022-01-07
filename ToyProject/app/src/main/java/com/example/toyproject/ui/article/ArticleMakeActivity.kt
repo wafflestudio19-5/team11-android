@@ -40,7 +40,7 @@ class ArticleMakeActivity : AppCompatActivity() {
     private var articleTitleTemp: String = ""
     private var articleTextTemp: String = ""
     private var boardId: Int = 0
-    private var isAnonymous: Boolean = true
+    private var isAnonymous: Boolean = false
     private var isQuestion: Boolean = false
 
     private val getContent =
@@ -125,6 +125,7 @@ class ArticleMakeActivity : AppCompatActivity() {
             finish()
         }
 
+
         binding.articleTitle.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -172,9 +173,13 @@ class ArticleMakeActivity : AppCompatActivity() {
             when(view.id){
                 R.id.anonymous_checkbox -> {
                     isAnonymous = checked
+
                 }
                 R.id.question_checkbox ->{
+                    if(checked) binding.questionLayout.visibility = View.VISIBLE
+                    else binding.questionLayout.visibility = View.GONE
                     isQuestion = checked
+
                 }
             }
         }
