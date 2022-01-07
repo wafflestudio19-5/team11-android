@@ -31,12 +31,6 @@ import javax.inject.Inject
 class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel : SignupViewModel by viewModels()
-    private lateinit var file: File
-    val getContent =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            binding.profileImageView.setImageURI(result.data?.data)
-            file = File(result.data?.dataString)
-        }
 
     @Inject
     lateinit var service: Service
@@ -174,7 +168,7 @@ class SignupActivity: AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.type = "image/*"
-            getContent.launch(intent)
+            //getContent.launch(intent)
         }
 
 
@@ -186,11 +180,6 @@ class SignupActivity: AppCompatActivity() {
                     Toast.makeText(this,"비밀번호 형식을 지켜주세요.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    var fileName = binding.idEdit.text.toString()
-                    fileName += ".png"
-                    val requestBody : RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-                    val body : MultipartBody.Part = MultipartBody.Part.createFormData("uploaded_file",fileName,requestBody)
-
                     val param = Signup(binding.idEdit.text.toString(),
                         binding.passwordEdit.text.toString(),
                         binding.emailEdit.text.toString(),
@@ -198,7 +187,6 @@ class SignupActivity: AppCompatActivity() {
                         binding.nicknameEdit.text.toString(),
                         intent.getStringExtra("university"),
                         binding.nameEdit.text.toString(),
-                        body
                     )
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.signup(param)

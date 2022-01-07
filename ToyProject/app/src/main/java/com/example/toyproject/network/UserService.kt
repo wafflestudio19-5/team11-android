@@ -1,6 +1,7 @@
 package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,8 +25,9 @@ interface UserService {
     @PUT("/api/v1/my/nickname/")
     fun changeNick(@Body nickname : Nickname) : Call<ChangeSuccess>
 
-    //@PUT("/api/v1/my/profile_image")
-    //fun changeImage(@Body image: ProfileImage): Call<>
+    @Multipart
+    @PUT("/api/v1/my/profile_image")
+    fun changeImage(@Part image: ProfileImage): Call<ChangeSuccess>
 
     @HTTP(method = "DELETE", path = "/api/v1/my/withdrawal/", hasBody = true)
     fun withdrawal(@Body password: Password): Call<WithdrawalSuccess>
@@ -41,6 +43,10 @@ data class Email(
 
 data class Nickname(
     val nickname: String
+)
+
+data class ProfileImage(
+    val profile_image: MultipartBody.Part?
 )
 
 data class ChangeSuccess(
