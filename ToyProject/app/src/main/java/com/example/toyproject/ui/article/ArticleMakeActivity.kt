@@ -81,13 +81,12 @@ class ArticleMakeActivity : AppCompatActivity() {
             when(view.id){
                 R.id.anonymous_checkbox -> {
                     isAnonymous = checked
-                    Toast.makeText(this@ArticleMakeActivity, "익명 박스 클릭" + isAnonymous, Toast.LENGTH_LONG).show()
 
                 }
                 R.id.question_checkbox ->{
                     if(checked) binding.questionLayout.visibility = View.VISIBLE
+                    else binding.questionLayout.visibility = View.GONE
                     isQuestion = checked
-                    Toast.makeText(this@ArticleMakeActivity, "질문 박스 클릭" + isQuestion, Toast.LENGTH_LONG).show()
 
                 }
             }
