@@ -39,6 +39,9 @@ import android.os.Build
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.user.UserApiClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
@@ -151,7 +154,19 @@ class UserActivity: AppCompatActivity() {
         }
 
         binding.logout.setOnClickListener {
-            //mGoogleSignInClient.signOut()
+            // 구글 로그아웃
+            Firebase.auth.signOut()
+
+            //카카오 로그아웃
+            UserApiClient.instance.logout { error ->
+                if (error != null) {
+                    //...
+                } else {
+                    Toast.makeText(this, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
             val intent  = Intent(this, LoginActivity::class.java)
             intent.putExtra("logout", true)
             sharedPreferences.edit {

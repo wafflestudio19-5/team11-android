@@ -123,7 +123,10 @@ class LoginViewModel @Inject constructor(
                 response: Response<LoginSocialResponse>
             ) {
                 if(response.isSuccessful) {
-                    _googleLoginResult.value = "success"
+                    sharedPreferences.edit {
+                        putString("token", response.body()!!.token)
+                        _result.value = "success"
+                    }
                 }
                 else {
                     if(response.errorBody() != null) {

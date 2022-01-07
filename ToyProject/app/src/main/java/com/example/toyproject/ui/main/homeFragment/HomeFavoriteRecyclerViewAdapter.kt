@@ -33,6 +33,7 @@ class HomeFavoriteRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHo
         val boardId = favoriteBoardIds[position]
         val articleId = favoriteArticleIds[position]
         val boardName = favoriteBoardNames[position]
+        Timber.d(favoriteBoardIds.toString()+favoriteArticleIds.toString()+ favoriteBoardNames.toString()+titles.toString())
 
         when(holder) {
             is FavoriteViewHolder -> {

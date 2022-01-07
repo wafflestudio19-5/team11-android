@@ -100,7 +100,7 @@ class SocialSignupActivity: AppCompatActivity() {
             if(it=="success") {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                setResult(AppCompatActivity.RESULT_OK, Intent())
+                setResult(RESULT_OK, Intent())
                 finish()
             }
             else {

@@ -90,6 +90,26 @@ class LoginActivity:AppCompatActivity() {
             }
         }
     }
+    // Google 로그인 부분(firebase)
+    private fun firebaseAuthWithGoogle(idToken : String, email :String) {
+        val credential : AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener {
+                task ->
+            if(task.isSuccessful) {
+                // 유저가 구글 로그인에 성공하면 토큰을 우리 서버에 보낸다.
+                FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val param = LoginSocial(task.result.token.toString())
+                        // viewModel.googleLogin(param, email) // TODO 디버그 용도!!!!!!!!!!!
+                        viewModel.googleLogin(param, "abdjfjfhr@naver.com")
+                    }
+                }
+            }
+            else {
+                Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -194,6 +214,7 @@ class LoginActivity:AppCompatActivity() {
                 if(it=="success") {
                     Toast.makeText(this, "로그인에 성공하였습니다",Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("socialType", "kakao")
                     startActivity(intent)
                     finish()
                 }
@@ -221,6 +242,7 @@ class LoginActivity:AppCompatActivity() {
             viewModel.kakaoLoginResult.observe(this, {
                 if(it=="success") {
                     Toast.makeText(this, "로그인에 성공하였습니다",Toast.LENGTH_SHORT).show()
+                    intent.putExtra("socialType", "kakao")
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -248,6 +270,7 @@ class LoginActivity:AppCompatActivity() {
             viewModel.result.observe(this, {
                 if(it=="success") {
                     val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("socialType", "normal")
                     startActivity(intent)
                     finish()
                 }
@@ -258,27 +281,6 @@ class LoginActivity:AppCompatActivity() {
             binding.signupButton.setOnClickListener {
                 val intent = Intent(this, UnivSearchActivity::class.java)
                 resultListener.launch(intent)
-            }
-        }
-    }
-
-
-    // Google 로그인 부분(firebase)
-    private fun firebaseAuthWithGoogle(idToken : String, email :String) {
-        val credential : AuthCredential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            task ->
-            if(task.isSuccessful) {
-                // 유저가 구글 로그인에 성공하면 토큰을 우리 서버에 보낸다.
-                FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val param = LoginSocial(task.result.token.toString())
-                        viewModel.googleLogin(param, email)
-                    }
-                }
-            }
-            else {
-                Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
