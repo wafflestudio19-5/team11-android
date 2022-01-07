@@ -14,15 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentHomeBinding
-import com.example.toyproject.network.dto.Article
 import com.example.toyproject.network.dto.MyArticle
-import com.example.toyproject.ui.article.ArticleActivity
 import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.main.homeFragment.*
 import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -171,7 +168,8 @@ class HomeFragment : Fragment() {
         favorAdapter.setItemClickListener(object : HomeFavoriteRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int) {
                 // -1 이라는 것은, 즐겨찾기 한 게시판에 아무 글도 없다는 뜻 (HomeFragmentViewModel 의 loadTitle() 참고)
-                if(article_id!=-1) (activity as MainActivity).openArticle(board_id, article_id, board_name)
+                    // if(article_id!=-1) (activity as MainActivity).openArticle(board_id, article_id, board_name)
+                if(article_id!=-1) (activity as MainActivity).openBoard(board_id, article_id, board_name)
             }
         })
 
@@ -196,7 +194,7 @@ class HomeFragment : Fragment() {
         // 실시간 인기 글 게시판 아이템 클릭
         issueAdapter.setItemClickListener(object : HomeIssueRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
-                (activity as MainActivity).openArticle(data.board_id, data.id, viewModel.issueBoardNames[position])
+                (activity as MainActivity).openBoard(data.board_id, data.id, viewModel.issueBoardNames[position])
             }
         })
 
@@ -222,7 +220,7 @@ class HomeFragment : Fragment() {
         })
         hotAdapter.setItemClickListener(object : HomeHotRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
-                (activity as MainActivity).openArticle(data.board_id, data.id, "HOT 게시판")
+                (activity as MainActivity).openBoard(data.board_id, data.id, "HOT 게시판")
             }
         })
 
