@@ -23,7 +23,7 @@ class ArticleMakeActivity : AppCompatActivity() {
     private var articleTitleTemp: String = ""
     private var articleTextTemp: String = ""
     private var boardId: Int = 0
-    private var isAnonymous: Boolean = true
+    private var isAnonymous: Boolean = false
     private var isQuestion: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +37,7 @@ class ArticleMakeActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
+
 
         binding.articleTitle.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -80,9 +81,14 @@ class ArticleMakeActivity : AppCompatActivity() {
             when(view.id){
                 R.id.anonymous_checkbox -> {
                     isAnonymous = checked
+                    Toast.makeText(this@ArticleMakeActivity, "익명 박스 클릭" + isAnonymous, Toast.LENGTH_LONG).show()
+
                 }
                 R.id.question_checkbox ->{
+                    if(checked) binding.questionLayout.visibility = View.VISIBLE
                     isQuestion = checked
+                    Toast.makeText(this@ArticleMakeActivity, "질문 박스 클릭" + isQuestion, Toast.LENGTH_LONG).show()
+
                 }
             }
         }

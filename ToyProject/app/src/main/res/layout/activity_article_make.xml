@@ -47,6 +47,26 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/question_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/borderline_mint"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="질문 글을 작성하면 게시판상단에 일정 기간 동안 노출되어, 더욱 빠르게 답변을 얻을 수 있게 됩니다.
+\n또한, 다른 학우들이 정성껏 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 글을 수정 및 삭제할 수 없습니다. "
+            android:textColor="@color/SecondaryVariant"
+            android:textSize="11dp"
+            android:layout_margin="10dp"/>
+
+
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/article_title"
