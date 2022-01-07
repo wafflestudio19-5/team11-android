@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         Intent(this, BoardActivity::class.java).apply{
             putExtra("board_id", board_id)
             // putExtra("article_id", article_id)
-            // putExtra("board_name", board_name)
+            putExtra("board_name", board_name)
         }.run{startActivity(this)}
     }
 
