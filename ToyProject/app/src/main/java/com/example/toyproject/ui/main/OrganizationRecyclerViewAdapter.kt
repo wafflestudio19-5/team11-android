@@ -52,5 +52,10 @@ class OrganizationRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHo
         this.notifyDataSetChanged()
     }
 
+    fun resetBoards(){
+        this.boards.clear()
+        this.notifyDataSetChanged()
+    }
+
 
 }

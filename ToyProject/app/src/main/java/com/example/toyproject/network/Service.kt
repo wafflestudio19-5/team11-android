@@ -29,10 +29,10 @@ interface Service {
     @POST("api/v1/login/")
     fun loginToken() : Call<SignupResponse>
 
-    @POST("api/v1/register/google")
+    @POST("api/v1/register/fire/")
     fun googleRegister(@Body param : RegisterSocial) : Call<RegisterSocialResponse>
 
-    @POST("api/v1/login/google")
+    @POST("api/v1/login/fire/")
     fun googleLogin(@Body param : LoginSocial) : Call<LoginSocialResponse>
 
     @POST("api/v1/register/kakao/")

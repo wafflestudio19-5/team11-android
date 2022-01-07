@@ -36,8 +36,7 @@ class LoginViewModel @Inject constructor(
     private val _tokenResult  = MutableLiveData<String>()
     val tokenResult : LiveData<String> = _tokenResult
 
-    // 로그인 버튼 누르면, 구글 계정에서 access token 받아서 먼저 로그인을 시도하고,
-    // 서버에서 로그인에 실패했으면(=신규 유저이면) 팝업을 띄우고 자동 register
+    // 구글 로그인 서버와 통신
     private val _googleLoginResult  = MutableLiveData<String>()
     val googleLoginResult : LiveData<String> = _googleLoginResult
 
@@ -45,7 +44,7 @@ class LoginViewModel @Inject constructor(
     private val _kakaoLoginResult = MutableLiveData<String>()
     val kakaoLoginResult : LiveData<String> = _kakaoLoginResult
 
-    // 카카오 회원가입용 정보
+    // 소셜 회원가입용 정보
     lateinit var registerInfoEmail : String
     lateinit var registerInfoToken : String
 
@@ -113,10 +112,11 @@ class LoginViewModel @Inject constructor(
         } )
     }
 
-    fun googleLogin(param : LoginSocial) {
+    fun googleLogin(param : LoginSocial, email : String) {
         service.googleLogin(param).enqueue(object : Callback<LoginSocialResponse>{
             override fun onFailure(call: Call<LoginSocialResponse>, t: Throwable) {
-
+                _googleLoginResult.value = "fail"
+                errorMessage = "다시 시도해 주세요."
             }
             override fun onResponse(
                 call: Call<LoginSocialResponse>,
@@ -134,6 +134,9 @@ class LoginViewModel @Inject constructor(
                             ).convert(response.errorBody())
                             errorMessage = parsing(error)
                             if(error?.non_field_errors != null) {
+                                // TODO : "구글 계정으로 회원가입 하시겠습니까?" 창 띄우기
+                                registerInfoEmail = email
+                                registerInfoToken = param.access_token
                                 _googleLoginResult.value = "register"
                             }
                             else {

@@ -53,9 +53,11 @@ class ArticleActivity : AppCompatActivity() {
         viewModel.getArticle(boardId, articleId)
 
         var isMine = false
+        var hasScraped = false
         // 게시글 내용물들 다 불러왔으면 채워넣기
         viewModel.result.observe(this, {
             isMine = it.is_mine
+            hasScraped = it.has_scraped
             binding.articleFullWriterNickname.text = it.user_nickname
             binding.articleFullWrittenTime.text = it.created_at
             binding.articleFullTitle.text = it.title
@@ -65,8 +67,9 @@ class ArticleActivity : AppCompatActivity() {
             binding.articleFullLikeNumber.text = it.like_count.toString()
             binding.articleFullCommentNumber.text = it.comment_count.toString()
             binding.articleFullScrapNumber.text = it.scrap_count.toString()
+            // binding.articleFullScrapButton.setBackgroundResource(R.drawable.background_gray) // TODO
+            // binding.articleFullScrapButton.background = R.drawable.base
             // TODO : 프로필 이미지 적용
-            // TODO : 작성자 & 익명 부분 사소한 수정
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
             
@@ -246,8 +249,11 @@ class ArticleActivity : AppCompatActivity() {
         // 게시글 스크랩 버튼
         // TODO : "스크랩 취소" 아이콘 만들고, 그걸로 구별해야 한다.
         binding.articleFullScrapButton.setOnClickListener {
+            lateinit var title : String
+            if(!hasScraped) title = "이 글을 스크랩하시겠습니까?"
+            else title = "스크랩을 취소하시겠습니까"
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                .setTitle("이 글을 스크랩하시겠습니까?")
+                .setTitle(title)
                 .setNegativeButton("취소") { dialogInterface, i ->
                     dialogInterface.dismiss()
                 }

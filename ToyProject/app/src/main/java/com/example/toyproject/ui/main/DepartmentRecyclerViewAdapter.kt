@@ -52,5 +52,10 @@ class DepartmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
         this.notifyDataSetChanged()
     }
 
+    fun resetBoards(){
+        this.boards.clear()
+        this.notifyDataSetChanged()
+    }
+
 
 }
