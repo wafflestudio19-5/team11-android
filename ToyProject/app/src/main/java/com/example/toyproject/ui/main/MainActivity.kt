@@ -95,11 +95,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, HomeSettingActivity::class.java)
         resultListener.launch(intent)
     }
-    // homeFragment 에서 article item 선택하면 ArticleActivity 시작 -> BoardActivity 로 변경
-    fun openBoard(board_id : Int, article_id : Int, board_name : String) {
+    // homeFragment 에서 article item 선택하면 ArticleActivity 시작
+    fun openArticle(board_id : Int, article_id : Int, board_name : String) {
+        Intent(this, ArticleActivity::class.java).apply{
+            putExtra("board_id", board_id)
+            putExtra("article_id", article_id)
+            putExtra("board_name", board_name)
+        }.run{startActivity(this)}
+    }
+
+    // homeFragment 에서 즐겨찾는 게시판 item 선택하면 BoardActivity 시작
+    fun openBoard(board_id : Int, board_name : String) {
         Intent(this, BoardActivity::class.java).apply{
             putExtra("board_id", board_id)
-            // putExtra("article_id", article_id)
             putExtra("board_name", board_name)
         }.run{startActivity(this)}
     }
