@@ -162,7 +162,8 @@ class HomeFragment : Fragment() {
         // 즐겨찾는 게시판 아이템 클릭
         favorAdapter.setItemClickListener(object : HomeFavoriteRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int) {
-                (activity as MainActivity).openArticle(board_id, article_id, board_name)
+                // -1 이라는 것은, 즐겨찾기 한 게시판에 아무 글도 없다는 뜻 (HomeFragmentViewModel 의 loadTitle() 참고)
+                if(article_id!=-1) (activity as MainActivity).openArticle(board_id, article_id, board_name)
             }
         })
 

@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }.run{startActivity(this)}
     }
 
-    // HomeFragment 설정 부분
+    // HomeFragment setting 부분
     interface SettingUpdate {
         fun update()
     }

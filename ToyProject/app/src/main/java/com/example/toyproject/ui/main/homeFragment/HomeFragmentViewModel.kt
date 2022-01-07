@@ -57,32 +57,44 @@ class HomeFragmentViewModel @Inject constructor(
         articleIds = mutableListOf()
         boardIds = mutableListOf()
         titles = mutableListOf()
-        // 각 id 마다 게시글 로드 (새 coroutine 열기)
+        for(i in list.indices) {
+            boardNames.add("")
+            articleIds.add(-1)
+            boardIds.add(-1)
+            titles.add("")
+        }
+        // 각 id 마다 게시글 로드 (새 coroutine 열어서)
         viewModelScope.launch {
+            var idx = 0
             val iterator = list.iterator()
             while(iterator.hasNext()) {
                 val board = iterator.next()
-                boardNames.add(board.name)
-                boardIds.add(board.id)
-                loadTitle(board.id)
+                boardNames[idx] = board.name
+                boardIds[idx] = board.id
+                loadTitle(idx, board.id)
+                idx += 1
             }
         }
     }
-    // 각 id 마다 게시글 로드
-    private fun loadTitle(id : Int){
+    // 3. 각 id 마다 게시판의 첫 게시글 제목 로드
+    private fun loadTitle(idx : Int, id : Int){
         viewModelScope.launch {
             try {
                 val gotArticle = service.getArticlesByBoard(id, 0, 1).results?.get(0)
                 val titleGot : String? = gotArticle?.title
                 val idGot : Int = gotArticle!!.id
-                if(titleGot==null) titles.add("게시글이 없습니다")
+                if(titleGot==null) {
+                    titles[idx] = "게시글이 없습니다"
+                    articleIds[idx] = -1
+                }
                 else {
-                    titles.add(titleGot)
-                    articleIds.add(idGot)
+                    titles[idx] = titleGot
+                    articleIds[idx] = idGot
                 }
             } catch (e : Exception) {
                 // 게시판이 비어있어서 404 에러 뜨면 문구 삽입
-                titles.add("게시글이 없습니다.")
+                titles[idx] = "게시글이 없습니다."
+                articleIds[idx] = -1
             }
             if(titles.size==_favorBoards.value!!.size) {
                 _favorBoardsTitle.value = titles

@@ -244,16 +244,21 @@ class ArticleActivity : AppCompatActivity() {
         }
         // 게시글 좋아요 버튼
         binding.articleFullLikeButton.setOnClickListener {
-            val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                .setTitle("이 글을 공감하시겠습니까?")
-                .setNegativeButton("취소") { dialogInterface, i ->
-                    dialogInterface.dismiss()
-                }
-                .setPositiveButton("확인") { dialogInterface, i ->
-                    viewModel.likeArticle(articleId)
-                }
-            val dialog = mBuilder.create()
-            dialog.show()
+            if(isMine) {
+                Toast.makeText(this, "자신의 게시글은 공감할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val mBuilder = AlertDialog.Builder(this@ArticleActivity)
+                    .setTitle("이 글을 공감하시겠습니까?")
+                    .setNegativeButton("취소") { dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    }
+                    .setPositiveButton("확인") { dialogInterface, i ->
+                        viewModel.likeArticle(articleId)
+                    }
+                val dialog = mBuilder.create()
+                dialog.show()
+            }
         }
         // 게시글 스크랩 버튼
         // TODO : "스크랩 취소" 아이콘 만들고, 그걸로 구별해야 한다.
