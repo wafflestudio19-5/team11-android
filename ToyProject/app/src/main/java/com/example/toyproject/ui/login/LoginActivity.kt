@@ -1,14 +1,19 @@
 package com.example.toyproject.ui.login
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.fragment.app.strictmode.GetRetainInstanceUsageViolation
 import com.example.toyproject.App
@@ -90,6 +95,7 @@ class LoginActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkSelfPermission()
         viewModel
 
         // signup 이 완료되지 않았으면 뒤로가기 버튼으로 다시 이 화면으로 돌아올 수 있고, 이후 과정이 모두 끝날 때 이 액티비티를 종료
@@ -274,6 +280,43 @@ class LoginActivity:AppCompatActivity() {
             else {
                 Toast.makeText(this, "구글 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    //권한에 대한 응답이 있을때 작동하는 함수
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            val length = permissions.size
+            for (i in 0 until length) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "권한허용", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun checkSelfPermission() {
+        var temp = ""
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            temp += Manifest.permission.READ_EXTERNAL_STORAGE + " "
+        }
+        if (!TextUtils.isEmpty(temp)) {
+            ActivityCompat.requestPermissions(
+                this,
+                temp.trim { it <= ' ' }.split(" ").toTypedArray(),
+                1
+            )
+        } else {
+            Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show()
         }
     }
 }

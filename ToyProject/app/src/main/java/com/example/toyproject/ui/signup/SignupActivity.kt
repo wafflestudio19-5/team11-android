@@ -163,15 +163,6 @@ class SignupActivity: AppCompatActivity() {
             }
         })
 
-        //프로필 이미지 업로드
-        binding.imageUploadButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            intent.type = "image/*"
-            //getContent.launch(intent)
-        }
-
-
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
             if(idChecked && emailChecked && nicknameChecked) {

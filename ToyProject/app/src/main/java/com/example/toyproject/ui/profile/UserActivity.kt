@@ -1,6 +1,7 @@
 package com.example.toyproject.ui.profile
 
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -38,13 +39,25 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import androidx.core.app.ActivityCompat
+
+import android.text.TextUtils
+
+import android.content.pm.PackageManager
+
+import androidx.core.content.ContextCompat
+
+import androidx.annotation.NonNull
+
+
+
 
 
 @AndroidEntryPoint
 class UserActivity: AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
     private val viewModel: UserViewModel by viewModels()
-    val getContent =
+    private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             binding.profileImageView.setImageURI(result.data?.data)
             val uri: Uri? = result.data?.data
