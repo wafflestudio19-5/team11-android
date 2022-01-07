@@ -1,6 +1,5 @@
 package com.example.toyproject.network.dto
 
-import okhttp3.MultipartBody
 
 data class Signup(
     val user_id : String,
@@ -10,6 +9,5 @@ data class Signup(
     val nickname : String,
     val university: String?,
     val name : String,
-    val profile_image: MultipartBody.Part?
 )
 
