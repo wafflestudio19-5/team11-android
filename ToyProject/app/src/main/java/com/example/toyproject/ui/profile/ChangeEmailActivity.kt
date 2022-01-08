@@ -57,4 +57,12 @@ class ChangeEmailActivity:AppCompatActivity() {
                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
            })
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
+        setResult(RESULT_OK, Intent())
+        finish()
+    }
 }

@@ -17,6 +17,8 @@ import com.example.toyproject.network.dto.Article
 import com.example.toyproject.ui.article.ArticleActivity
 import com.example.toyproject.ui.article.ArticleMakeActivity
 import com.example.toyproject.ui.article.ArticleSearchActivity
+import com.example.toyproject.ui.main.MainActivity
+import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -176,5 +178,13 @@ class BoardActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        setResult(RESULT_OK, Intent())
+        finish()
     }
 }

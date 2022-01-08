@@ -39,6 +39,7 @@ import android.os.Build
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import com.example.toyproject.ui.main.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
@@ -135,6 +136,7 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.changeNick.setOnClickListener{
@@ -142,12 +144,14 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("nickname", nickname)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.changePw.setOnClickListener{
             val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.logout.setOnClickListener {
@@ -172,7 +176,7 @@ class UserActivity: AppCompatActivity() {
             applicationContext.cacheDir.deleteRecursively()
             baseContext.cacheDir.deleteRecursively()
             startActivity(intent)
-            setResult(RESULT_OK)
+            setResult(RESULT_OK, Intent())
             finish()
         }
 
@@ -180,6 +184,7 @@ class UserActivity: AppCompatActivity() {
             val intent = Intent(this, WithdrawalActivity::class.java)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.univCertify.setOnClickListener {
@@ -187,6 +192,7 @@ class UserActivity: AppCompatActivity() {
             intent.putExtra("email", email)
             startActivity(intent)
             setResult(RESULT_OK, Intent())
+            finish()
         }
 
         binding.changeImage.setOnClickListener {
@@ -262,5 +268,13 @@ class UserActivity: AppCompatActivity() {
             }
         }
         return fullPath
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        setResult(RESULT_OK, Intent())
+        finish()
     }
 }

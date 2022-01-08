@@ -42,4 +42,12 @@ class ChangeNicknameActivity:AppCompatActivity() {
         })
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
+        setResult(RESULT_OK, Intent())
+        finish()
+    }
 }

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleMakeBinding
 import com.example.toyproject.network.dto.MultiMap
+import com.example.toyproject.ui.board.BoardActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -197,6 +198,9 @@ class ArticleMakeActivity : AppCompatActivity() {
                     }
 
                     viewModel.createArticle(boardId, textHashMap, textsList, list)
+                    Intent(this@ArticleMakeActivity, BoardActivity::class.java).apply{
+                        putExtra("board_id", intent.getIntExtra("board_id", 0))
+                    }.run{startActivity(this)}
                     finish()
                 }
             }
@@ -232,13 +236,6 @@ class ArticleMakeActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         getContent.launch(intent)
 
-    }
-
-    private fun upload(requestBody: RequestBody) {
-        val fileName = System.currentTimeMillis().toString() + ".jpg"
-        val body: MultipartBody.Part =
-            MultipartBody.Part.createFormData("profile_image", fileName, requestBody)
-        //viewModel.putImage(body)
     }
 
     private fun getFullPathFromUri(fileUri: Uri): String? {

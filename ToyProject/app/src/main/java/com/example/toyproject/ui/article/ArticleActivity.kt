@@ -1,6 +1,7 @@
 package com.example.toyproject.ui.article
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
+import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.net.URL
@@ -255,6 +257,9 @@ class ArticleActivity : AppCompatActivity() {
         })
         // 왼쪽 상단 뒤로가기 버튼
         binding.articleBackButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            setResult(RESULT_OK, Intent())
             finish()
         }
         // 오른쪽 상단 ... 버튼
@@ -333,5 +338,13 @@ class ArticleActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        setResult(RESULT_OK, Intent())
+        finish()
     }
 }
