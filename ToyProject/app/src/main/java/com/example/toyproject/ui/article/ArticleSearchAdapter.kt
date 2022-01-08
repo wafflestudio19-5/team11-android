@@ -36,6 +36,12 @@ class ArticleSearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when(holder){
             is ArticleSearchViewHolder -> {
                 holder.binding.apply {
+                    if(data.image_count==0){
+                        articleImageIcon.visibility = View.INVISIBLE
+                    }else{
+                        articleImageIcon.visibility = View.VISIBLE
+                        articleImageNumber.text = data.image_count.toString()
+                    }
                     articleTitle.text = data.title
                     articleContent.text = data.text
                     articleWriter.text = data.user_nickname
