@@ -3,8 +3,11 @@ package com.example.toyproject.ui.article
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.BoardService
+import com.example.toyproject.network.dto.MultiMap
+import okhttp3.RequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import retrofit2.HttpException
 import timber.log.Timber
 import java.lang.NullPointerException
@@ -15,12 +18,12 @@ class ArticleMakeViewModel @Inject constructor(
     private val service: BoardService
 ): ViewModel() {
 
-    fun createArticle(board_id: Int, title: String, text: String, is_anonymous: Boolean, is_question: Boolean){
+    fun createArticle(id: Int, hashMap: HashMap<String, RequestBody>, images: MutableList<MultipartBody.Part>){
         viewModelScope.launch {
             try {
-                service.createArticle(board_id, title, text, is_anonymous, is_question)
+                service.createArticle(id, hashMap, images)
             } catch(e: HttpException){
-
+                Timber.e(e)
             } catch(e: NullPointerException){
                 Timber.e(e)
             }

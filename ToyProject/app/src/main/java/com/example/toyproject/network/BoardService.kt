@@ -1,6 +1,8 @@
 package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
+import okhttp3.RequestBody
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,14 +26,14 @@ interface BoardService {
         @Field("type") type: Int
     ): CreateBoard
 
-    @FormUrlEncoded
+    @Multipart
     @POST("/api/v1/board/{board_id}/article/")
     suspend fun createArticle(
         @Path("board_id") board_id: Int,
-        @Field("title") title: String,
-        @Field("text") text: String,
-        @Field("is_anonymous") is_anonymous: Boolean,
-        @Field("is_question") is_question: Boolean
+        @PartMap data: HashMap<String, RequestBody>,
+        //@Part image : MultipartBody.Part
+        //@PartMap texts: MultiMap<String, RequestBody>,
+        @Part images: MutableList<MultipartBody.Part>
     ): CreateArticle
 
     @GET("/api/v1/board/")

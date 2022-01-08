@@ -20,12 +20,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleMakeBinding
+import com.example.toyproject.network.dto.MultiMap
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+
 
 @AndroidEntryPoint
 class ArticleMakeActivity : AppCompatActivity() {
@@ -158,13 +162,49 @@ class ArticleMakeActivity : AppCompatActivity() {
                 } else if(articleTextTemp==""){
                     Toast.makeText(this@ArticleMakeActivity, "내용을 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else{
-                    viewModel.createArticle(boardId, articleTitleTemp, articleTextTemp, isAnonymous, isQuestion)
+                    val list: MutableList<MultipartBody.Part> = mutableListOf()
+                    for(uri in uriList){
+                        //val realPath = uri?.let { getFullPathFromUri(it) }
+                        lateinit var imageBitmap: Bitmap
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P){
+                            imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri!!))
+                        } else{
+                            imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                        }
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                        val requestBody: RequestBody = byteArrayOutputStream.toByteArray()
+                            .toRequestBody()
+                        val fileName = System.currentTimeMillis().toString() + ".jpg"
+                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", fileName, requestBody)
+                        list.add(body)
+                    }
+                    val titleRequestBody: RequestBody = articleTitleTemp.toPlainRequestBody()
+                    val textRequestBody: RequestBody = articleTextTemp.toPlainRequestBody()
+                    val anonymousBody : RequestBody = isAnonymous.toString().toPlainRequestBody()
+                    val questionBody : RequestBody = isQuestion.toString().toPlainRequestBody()
+                    val textHashMap = hashMapOf<String, RequestBody>()
+                    textHashMap["title"] = titleRequestBody
+                    textHashMap["text"] = textRequestBody
+                    textHashMap["is_anonymous"] = anonymousBody
+                    textHashMap["is_question"] = questionBody
+                    val map: MultiMap<String, RequestBody> = MultiMap()
+                    for(i in 0 until list.size){
+                        val texts = i.toString()
+                        val textsRequestBody : RequestBody = texts.toPlainRequestBody()
+                        map.put("texts", textsRequestBody)
+                        textHashMap["texts"] = textsRequestBody
+                    }
+
+                    viewModel.createArticle(boardId, textHashMap, list)
                     finish()
                 }
             }
         }
 
     }
+
+    private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
     fun onCheckboxClicked(view: View){
         if(view is CheckBox){
