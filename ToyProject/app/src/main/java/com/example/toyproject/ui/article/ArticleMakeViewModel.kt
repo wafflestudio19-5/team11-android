@@ -18,10 +18,10 @@ class ArticleMakeViewModel @Inject constructor(
     private val service: BoardService
 ): ViewModel() {
 
-    fun createArticle(id: Int, hashMap: HashMap<String, RequestBody>, images: MutableList<MultipartBody.Part>){
+    fun createArticle(id: Int, hashMap: HashMap<String, RequestBody>,texts: MutableList<MultipartBody.Part>, images: MutableList<MultipartBody.Part>){
         viewModelScope.launch {
             try {
-                service.createArticle(id, hashMap, images)
+                service.createArticle(id, hashMap, texts, images)
             } catch(e: HttpException){
                 Timber.e(e)
             } catch(e: NullPointerException){

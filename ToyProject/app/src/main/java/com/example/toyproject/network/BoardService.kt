@@ -31,8 +31,7 @@ interface BoardService {
     suspend fun createArticle(
         @Path("board_id") board_id: Int,
         @PartMap data: HashMap<String, RequestBody>,
-        //@Part image : MultipartBody.Part
-        //@PartMap texts: MultiMap<String, RequestBody>,
+        @Part texts : MutableList<MultipartBody.Part>,
         @Part images: MutableList<MultipartBody.Part>
     ): CreateArticle
 

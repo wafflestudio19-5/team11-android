@@ -188,15 +188,15 @@ class ArticleMakeActivity : AppCompatActivity() {
                     textHashMap["text"] = textRequestBody
                     textHashMap["is_anonymous"] = anonymousBody
                     textHashMap["is_question"] = questionBody
-                    val map: MultiMap<String, RequestBody> = MultiMap()
+                    val textsList = mutableListOf<MultipartBody.Part>()
                     for(i in 0 until list.size){
                         val texts = i.toString()
-                        val textsRequestBody : RequestBody = texts.toPlainRequestBody()
-                        map.put("texts", textsRequestBody)
-                        textHashMap["texts"] = textsRequestBody
+                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
+                        list.add(body)
+                        textsList.add(body)
                     }
 
-                    viewModel.createArticle(boardId, textHashMap, list)
+                    viewModel.createArticle(boardId, textHashMap, textsList, list)
                     finish()
                 }
             }
