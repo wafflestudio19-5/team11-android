@@ -36,7 +36,7 @@ private const val ARG_OBJECT = "object"
 // object in our collection.
 class HomeFragmentTopBannerObjectFragment : Fragment() {
 
-    val weekDay = listOf("월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일")
+    val weekDay = listOf("", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일")
 
     override fun onCreateView(
         inflater: LayoutInflater,
