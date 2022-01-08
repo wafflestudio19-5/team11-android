@@ -82,9 +82,7 @@ class ArticleSearchAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun setArticles(articles: MutableList<Article>){
-        val temp : MutableList<Article> = mutableListOf()
-        temp.addAll(articles)
-        this.articles.addAll(temp)
+        this.articles = articles
         //this.articles.add(Article(0, "", "", "", 0, 0, 0, "" , ""))
     }
 

@@ -2,6 +2,8 @@ package com.example.toyproject.ui.article
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -63,17 +65,14 @@ class ArticleSearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
                 articleSearchAdapter.resetArticles()
 
                 searchKeyword = binding.articleSearchBar.text.toString()
+
                 page = 0
 
-
-
                 if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20, searchKeyword)
-
-
-
 
             }
 
@@ -97,7 +96,7 @@ class ArticleSearchActivity : AppCompatActivity() {
 
         viewModel.articleList.observe(this@ArticleSearchActivity, {
             articleSearchAdapter.setArticles(it)
-            articleSearchAdapter.notifyItemRemoved((page-1)*20)
+            //articleSearchAdapter.notifyItemRemoved((page-1)*20)
             articleSearchAdapter.notifyDataSetChanged()
         })
 
