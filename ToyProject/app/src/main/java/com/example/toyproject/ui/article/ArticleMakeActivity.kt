@@ -158,9 +158,9 @@ class ArticleMakeActivity : AppCompatActivity() {
 
         binding.apply{
             makeArticleButton.setOnClickListener{
-                if(articleTitleTemp==""){
+                if(articleTitleTemp.replace(" ", "")==""){
                     Toast.makeText(this@ArticleMakeActivity, "제목을 입력해주세요.", Toast.LENGTH_LONG).show()
-                } else if(articleTextTemp==""){
+                } else if(articleTextTemp.replace(" ", "")==""){
                     Toast.makeText(this@ArticleMakeActivity, "내용을 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else{
                     val list: MutableList<MultipartBody.Part> = mutableListOf()
