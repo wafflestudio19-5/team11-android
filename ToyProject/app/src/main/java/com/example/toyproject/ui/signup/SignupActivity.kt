@@ -23,6 +23,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import timber.log.Timber
 import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -49,7 +50,7 @@ class SignupActivity: AppCompatActivity() {
         var nicknameChecked = false
         var nicknameTemp = "" // 중복확인 한 후에, 다시 nickname 수정하는 것 탐지 용도
 
-
+        val admissionYear : Int = intent.getIntExtra("admission_year", 2022)
         // id editText 변화 탐지
         binding.idEdit.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
@@ -174,7 +175,7 @@ class SignupActivity: AppCompatActivity() {
                     val param = Signup(binding.idEdit.text.toString(),
                         binding.passwordEdit.text.toString(),
                         binding.emailEdit.text.toString(),
-                        intent.getIntExtra("year", 2022),
+                        admissionYear,
                         binding.nicknameEdit.text.toString(),
                         intent.getStringExtra("university"),
                         binding.nameEdit.text.toString(),

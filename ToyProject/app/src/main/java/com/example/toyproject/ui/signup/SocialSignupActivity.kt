@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,6 +41,7 @@ class SocialSignupActivity: AppCompatActivity() {
         var nicknameTemp = "" // 중복확인 한 후에, 다시 nickname 수정하는 것 탐지 용도
 
         socialType = intent.getStringExtra("socialType").toString()
+        val admissionYear = intent.getIntExtra("admission_year", 2022)
 
 
         // nickname editText 변화 탐지
@@ -86,7 +88,7 @@ class SocialSignupActivity: AppCompatActivity() {
                 val name = binding.nameEdit.text.toString()
                 val email = intent.getStringExtra("email")
                 val university = intent.getStringExtra("university")
-                val year = intent.getIntExtra("year", 2022)
+                val year = admissionYear
                 val nickname = binding.nicknameEdit.text.toString()
                 val param = RegisterSocial(access_token, name, email, university, year, nickname)
                 viewModel.socialSignup(param, socialType)

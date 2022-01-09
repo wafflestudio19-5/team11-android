@@ -57,7 +57,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:privateImeOptions="defaultInputmode=English"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +81,8 @@
                 android:id="@+id/password_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:privateImeOptions="defaultInputmode=english"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
