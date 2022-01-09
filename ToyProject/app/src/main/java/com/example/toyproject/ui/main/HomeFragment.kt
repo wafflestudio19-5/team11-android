@@ -2,10 +2,13 @@ package com.example.toyproject.ui.main
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -93,9 +96,10 @@ class HomeFragment : Fragment() {
         val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
         val currentItemHorizontalMarginPx =
             resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
-        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+        val pageTranslationX = nextItemVisiblePx //+ currentItemHorizontalMarginPx
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
-            page.translationX = -pageTranslationX * position
+            val width = Resources.getSystem().displayMetrics.widthPixels
+            page.translationX = (-width * 0.23 * position).toFloat()
         }
         binding.homeTopBanner.setPageTransformer(pageTransformer)
         banner = binding.homeTopBanner

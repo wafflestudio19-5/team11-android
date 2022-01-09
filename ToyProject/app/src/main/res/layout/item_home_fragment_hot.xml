@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
+        android:singleLine="true"
         android:text="안녕하세요~ 와플스튜디오입니다."
         android:textColor="@color/OnBackground" />
 
@@ -28,6 +29,7 @@
             android:id="@+id/article_written_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="4분 전 | "
             android:textSize="10dp" />
 

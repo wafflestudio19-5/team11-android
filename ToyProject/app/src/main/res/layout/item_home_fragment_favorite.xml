@@ -11,12 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
+        android:singleLine="true"
         android:textColor="@color/OnBackground" />
 
     <TextView
         android:id="@+id/home_fragment_favorite_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
 
     <View
         android:layout_width="0dp"
