@@ -97,7 +97,13 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                     holder.binding.itemCommentLikeNum.visibility = View.VISIBLE
                     holder.binding.itemCommentLikeNum.text = data.like_count.toString()
                 }
-                // TODO : 작성자 본인일 시 표기
+                // 첫 댓글은 topBorder 없음
+                if(position==0) {
+                    holder.binding.topBorder.visibility = View.INVISIBLE
+                }
+                if(data.user_nickname=="익명(글쓴이)"){
+                    holder.binding.commentNickname.setTextColor(Color.parseColor(context.getString(R.string.color_my_comment)))
+                }
                 holder.binding.commentSubcommentButton.setOnClickListener {
                     // 댓글에 대댓글 다는 버튼 누를 때
                     commentClickListener.onCommentClick(data.id)

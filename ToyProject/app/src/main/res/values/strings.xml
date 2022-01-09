@@ -39,4 +39,5 @@
     <string name="delete_image">프로필 이미지 삭제</string>
     <string name="set_image">이미지 등록</string>
     <string name="image_note">회원가입 버튼을 누르고 프로필 이미지를 선택해야 가입이 완료됩니다.</string>
+    <string name="color_my_comment">#259BA5</string>
 </resources>
