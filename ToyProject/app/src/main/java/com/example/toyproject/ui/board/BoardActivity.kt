@@ -107,7 +107,9 @@ class BoardActivity : AppCompatActivity() {
                     "글 쓰기" -> {
                         Intent(this@BoardActivity, ArticleMakeActivity::class.java).apply{
                             putExtra("board_id", intent.getIntExtra("board_id", 0))
+                            putExtra("board_name", intent.getStringExtra("board_name"))
                         }.run{startActivity(this)}
+                        finish()
                     }
                     "게시판 삭제" -> {
                         viewModel.deleteBoard(intent.getIntExtra("board_id", 0))
@@ -143,7 +145,9 @@ class BoardActivity : AppCompatActivity() {
         binding.makeArticleButton.setOnClickListener {
             Intent(this@BoardActivity, ArticleMakeActivity::class.java).apply{
                 putExtra("board_id", intent.getIntExtra("board_id", 0))
+                putExtra("board_name", intent.getStringExtra("board_name"))
             }.run{startActivity(this)}
+            finish()
         }
 
         if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20)

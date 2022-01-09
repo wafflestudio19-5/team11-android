@@ -28,6 +28,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
@@ -130,7 +131,6 @@ class ArticleMakeActivity : AppCompatActivity() {
             finish()
         }
 
-
         binding.articleTitle.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -200,6 +200,7 @@ class ArticleMakeActivity : AppCompatActivity() {
                     viewModel.createArticle(boardId, textHashMap, textsList, list)
                     Intent(this@ArticleMakeActivity, BoardActivity::class.java).apply{
                         putExtra("board_id", intent.getIntExtra("board_id", 0))
+                        putExtra("board_name", intent.getStringExtra("board_name"))
                     }.run{startActivity(this)}
                     finish()
                 }
