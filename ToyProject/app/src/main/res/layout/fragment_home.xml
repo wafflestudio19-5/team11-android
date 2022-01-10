@@ -301,712 +301,133 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/home_fragment_favorite_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "즐겨찾는 게시판"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "0"
+                app:preparingVisible="8" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
-                        android:layout_marginTop="15dp"
-                        android:text="즐겨찾는 게시판"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_favorite_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_favorite_board"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    tools:listitem="@layout/item_favorite_board"
-                    android:overScrollMode="never"
-                    android:nestedScrollingEnabled="false"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_issue_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_issue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "실시간 인기 글"
+                app:moreVisible = "8"
+                app:recyclerViewVisible = "0"
+                app:preparingVisible="8"
+                app:titleClickable="false"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="실시간 인기 글"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10sp"
-                        android:textSize="@dimen/home_fragment_more_text_size"
-                        android:visibility="invisible" />
-
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_issue_board"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    tools:listitem="@layout/item_home_fragment_issue"
-                    android:overScrollMode="never"
-                    android:nestedScrollingEnabled="false"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_recommend_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "추천 정보"
+                app:moreVisible = "8"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0"
+                app:titleClickable="false"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="추천 정보"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10sp"
-                        android:textSize="@dimen/home_fragment_more_text_size"
-                        android:visibility="invisible" />
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_hot_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_hot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "HOT 게시물"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "0"
+                app:preparingVisible="8" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="HOT 게시물"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_hot_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_hot_board"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    tools:listitem="@layout/item_home_fragment_hot"
-                    android:overScrollMode="never"
-                    android:nestedScrollingEnabled="false"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_school_news_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_news"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "교내 소식"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="교내 소식"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_school_career_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_career"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "진로"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="진로"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10sp"
-                        android:layout_marginBottom="10sp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_lecture_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_lecture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "최근 강의평"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="최근 강의평"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_lectures_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10sp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_school_outside_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "공모전 · 대외활동"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="공모전 · 대외활동"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_outside_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10sp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_school_question_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "답변을 기다리는 질문"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="답변을 기다리는 질문"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_question_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10sp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_school_promotion_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_promotion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "교내 홍보"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="교내 홍보"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_school_promotion_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_recruit_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_recruit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "채용 정보"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
-                        android:text="채용 정보"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_recruit_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_book_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_book"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "판매 중인 책"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="판매 중인 책"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/home_fragment_goto_book_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="더 보기 >"
-                        android:textColor="@color/PrimaryVariant"
-                        android:textSize="@dimen/home_fragment_more_text_size" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_event_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
+                app:title = "이벤트"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="이벤트"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/home_fragment_benefit_linearlayout"
+            <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
+                android:id="@+id/home_fragment_cell_benefit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borderline"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="대학생 복지 혜택"
-                        android:textColor="@color/OnBackground"
-                        android:textSize="@dimen/home_fragment_menu_title_text_size"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="준비중입니다..."
-                    android:textAlignment="center"
-                    android:textColor="@color/OnBackground"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                app:title = "대학생 복지 혜택"
+                app:moreVisible = "0"
+                app:recyclerViewVisible = "8"
+                app:preparingVisible="0" />
 
             <TextView
                 android:id="@+id/home_fragment_setting_button"
@@ -1023,7 +444,6 @@
                 android:textSize="15sp" />
 
         </LinearLayout>
-
 
     </androidx.core.widget.NestedScrollView>
 

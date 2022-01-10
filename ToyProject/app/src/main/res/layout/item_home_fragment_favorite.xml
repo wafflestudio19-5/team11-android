@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:gravity="center_vertical">
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:paddingStart="18dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="18dp"
+    android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/home_fragment_favorite_board_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:singleLine="true"
         android:textColor="@color/OnBackground" />
 
@@ -26,9 +32,8 @@
         android:layout_weight="1" />
 
     <ImageView
-        android:id="@+id/imageView2"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_gravity="right|center_vertical"
+        android:layout_gravity="center_vertical|end"
         app:srcCompat="@drawable/icn_e_new" />
 </LinearLayout>

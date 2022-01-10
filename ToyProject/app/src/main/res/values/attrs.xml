@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HomeFragmentCell">
+        <attr name="title" format="reference|string" />
+        <attr name="titleClickable" format="reference|boolean"/>
+        <attr name="moreVisible" format="reference|integer" />
+        <attr name="recyclerViewVisible" format="reference|integer" />
+
+        <attr name="preparingVisible" format="reference|integer"/>
+    </declare-styleable>
+</resources>
