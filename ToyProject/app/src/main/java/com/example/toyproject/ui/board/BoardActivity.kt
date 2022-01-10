@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -60,6 +61,7 @@ class BoardActivity : AppCompatActivity() {
             }
         })
 
+        binding.boardName.text = intent.getStringExtra("board_name")
         viewModel.getBoardInfo(intent.getIntExtra("board_id", 0))
 
         viewModel.isMine.observe(this, {
@@ -130,15 +132,27 @@ class BoardActivity : AppCompatActivity() {
             dialog.show()
         }
 
-        binding.boardName.text = intent.getStringExtra("board_name")
-
+        // 게시글 아이템 클릭하면 ArticleActivity 시작, 그리고 result 가 "새로고침" 이면 board 새로고침 (글 삭제 등의 경우)
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    page = 0
+                    boardAdapter.resetArticles()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) },
+                        100)
+                    binding.refreshLayout.isRefreshing = false
+                }
+            }
         boardAdapter.setItemClickListener(object: BoardAdapter.OnItemClickListener{
             override fun onItemClick(v: View, data: Article, position: Int) {
                 Intent(this@BoardActivity, ArticleActivity::class.java).apply{
                     putExtra("board_id", intent.getIntExtra("board_id", 0))
                     putExtra("article_id", data.id)
                     putExtra("board_name", intent.getStringExtra("board_name"))
-                }.run{startActivity(this)}
+                }.run{
+                    resultListener.launch(this)
+                }
             }
         })
 

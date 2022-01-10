@@ -253,7 +253,6 @@ class ArticleActivity : AppCompatActivity() {
                             val dialog = mBuilder.create()
                             dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                             dialog.show()
-
                         }
                         // TODO (다른 선택지들)
                     }
@@ -279,11 +278,19 @@ class ArticleActivity : AppCompatActivity() {
                 // TODO (다른 선택지들)
                 when(selected){
                     "삭제" -> {
-                        viewModel.deleteArticle(boardId, articleId)
-                        Handler(Looper.getMainLooper()).postDelayed({finish()}, 1000)
+                        val mBuilder = AlertDialog.Builder(this@ArticleActivity)
+                            .setMessage("삭제하시겠습니까?")
+                            .setNegativeButton("취소") { dialogInterface, i ->
+                                dialogInterface.dismiss()
+                            }
+                            .setPositiveButton("확인") { dialogInterface, i ->
+                                viewModel.deleteArticle(boardId, articleId)
+                            }
+                        val dialog = mBuilder.create()
+                        dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
+                        dialog.show()
                     }
                 }
-                Toast.makeText(this, selected, Toast.LENGTH_SHORT).show()
             }
             val dialog = builder.create()
             dialog.show()
@@ -330,6 +337,18 @@ class ArticleActivity : AppCompatActivity() {
             viewModel.getArticle(boardId, articleId)
             if(it!="success") {
                 // 에러 출력
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+        // 게시글 삭제 결과 출력
+        viewModel.deleteArticleResult.observe(this, {
+            if(it=="success") {
+                // 잘 삭제 됐으면 액티비티 종료, 그리고 BoardActvity 가 새로고침 할 수 있게 result 설정
+                setResult(RESULT_OK)
+                finish()
+            }
+            else {
+                // 삭제 과정에 오류가 있으면 출력
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         })

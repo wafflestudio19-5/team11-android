@@ -108,10 +108,10 @@ interface BoardService {
     ) : Success
 
     @DELETE("api/v1/board/{board_id}/article/{article_id}/")
-    suspend fun deleteArticle(
+    fun deleteArticle(
         @Path("board_id") board_id: Int,
         @Path("article_id") article_id: Int
-    ) : Success
+    ) : Call<Success>
 
     @GET("/api/v1/board_favorite/")
     suspend fun searchFavoriteBoard(): FetchAllBoard
