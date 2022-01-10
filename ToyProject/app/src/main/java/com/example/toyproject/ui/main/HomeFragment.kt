@@ -145,24 +145,22 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-
-        // 즐겨찾는 게시판
-        if(setting[0] =="true") binding.homeFragmentFavoriteLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentFavoriteLinearlayout.visibility = View.GONE
-        binding.homeFragmentGotoFavoriteButton.setOnClickListener {
-            // 더보기 버튼
+        // 즐겨찾는 게시판 (커스텀 뷰)
+        if(setting[0] =="true") binding.homeFragmentCellFavorite.visibility = View.VISIBLE
+        else binding.homeFragmentCellFavorite.visibility = View.GONE
+        binding.homeFragmentCellFavorite.topLayout.setOnClickListener {
             (activity as MainActivity).moveToTab(2)
         }
         favorAdapter = HomeFavoriteRecyclerViewAdapter()
         favorLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerViewFavoriteBoard.apply {
+        binding.homeFragmentCellFavorite.recyclerView.apply {
             adapter = favorAdapter
             layoutManager = favorLayoutManager
         }
         // 즐겨찾는 게시판 내용 채우기
         viewModel.loadFavorite()
         viewModel.favorBoards.observe(this, {
-            if(it.isEmpty()) binding.homeFragmentFavoriteLinearlayout.visibility = View.GONE
+            if(it.isEmpty()) binding.homeFragmentCellFavorite.visibility = View.GONE
             else viewModel.loadFavoriteTitles(it)
         })
         viewModel.favorBoardsTitle.observe(this, {
@@ -172,18 +170,17 @@ class HomeFragment : Fragment() {
         favorAdapter.setItemClickListener(object : HomeFavoriteRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int) {
                 // -1 이라는 것은, 즐겨찾기 한 게시판에 아무 글도 없다는 뜻 (HomeFragmentViewModel 의 loadTitle() 참고)
-                    // if(article_id!=-1) (activity as MainActivity).openArticle(board_id, article_id, board_name)
                 if(article_id!=-1) (activity as MainActivity).openBoard(board_id, board_name)
             }
         })
 
 
         // 실시간 인기 글 게시판
-        if(setting[1] =="true") binding.homeFragmentIssueLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentIssueLinearlayout.visibility = View.GONE
+        if(setting[1] =="true") binding.homeFragmentCellIssue.visibility = View.VISIBLE
+        else binding.homeFragmentCellIssue.visibility = View.GONE
         issueAdapter = HomeIssueRecyclerViewAdapter()
         issueLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerViewIssueBoard.apply {
+        binding.homeFragmentCellIssue.recyclerView.apply {
             adapter = issueAdapter
             layoutManager = issueLayoutManager
         }
@@ -204,9 +201,9 @@ class HomeFragment : Fragment() {
 
 
         // 핫게 게시판
-        if(setting[2] =="true") binding.homeFragmentHotLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentHotLinearlayout.visibility = View.GONE
-        binding.homeFragmentGotoHotButton.setOnClickListener {
+        if(setting[2] =="true") binding.homeFragmentCellHot.visibility = View.VISIBLE
+        else binding.homeFragmentCellHot.visibility = View.GONE
+        binding.homeFragmentCellHot.setOnClickListener {
             Intent(activity, HotBestBoardActivity::class.java).apply {
                 putExtra("board_name", "HOT 게시판")
                 putExtra("board_interest", "hot")
@@ -214,7 +211,7 @@ class HomeFragment : Fragment() {
         }
         hotAdapter = HomeHotRecyclerViewAdapter()
         hotLayoutManager = LinearLayoutManager(activity)
-        binding.recyclerViewHotBoard.apply {
+        binding.homeFragmentCellHot.recyclerView.apply {
             adapter = hotAdapter
             layoutManager = hotLayoutManager
         }
@@ -230,33 +227,33 @@ class HomeFragment : Fragment() {
 
 
         // 교내 소식
-        if(setting[3] =="true") binding.homeFragmentSchoolNewsLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentSchoolNewsLinearlayout.visibility = View.GONE
+        if(setting[3] =="true") binding.homeFragmentCellNews.visibility = View.VISIBLE
+        else binding.homeFragmentCellNews.visibility = View.GONE
 
         // 진로
-        if(setting[4] =="true") binding.homeFragmentSchoolCareerLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentSchoolCareerLinearlayout.visibility = View.GONE
+        if(setting[4] =="true") binding.homeFragmentCellCareer.visibility = View.VISIBLE
+        else binding.homeFragmentCellCareer.visibility = View.GONE
 
         // 판매 중인 책
-        if(setting[5] =="true") binding.homeFragmentBookLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentBookLinearlayout.visibility = View.GONE
+        if(setting[5] =="true") binding.homeFragmentCellBook.visibility = View.VISIBLE
+        else binding.homeFragmentCellBook.visibility = View.GONE
 
         // 교내 홍보
-        if(setting[6] =="true") binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.GONE
+        if(setting[6] =="true") binding.homeFragmentCellPromotion.visibility = View.VISIBLE
+        else binding.homeFragmentCellPromotion.visibility = View.GONE
 
         // 최근 강의평
-        if(setting[7] =="true") binding.homeFragmentLectureLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentLectureLinearlayout.visibility = View.GONE
-        binding.homeFragmentGotoLecturesButton.setOnClickListener {
+        if(setting[7] =="true") binding.homeFragmentCellLecture.visibility = View.VISIBLE
+        else binding.homeFragmentCellLecture.visibility = View.GONE
+        binding.homeFragmentCellLecture.setOnClickListener {
             // TODO
             (activity as MainActivity).preparing()
         }
         // 주변 맛집?
 
         // 답변을 기다리는 질문
-        if(setting[9] =="true") binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.VISIBLE
-        else binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.GONE
+        if(setting[9] =="true") binding.homeFragmentCellQuestion.visibility = View.VISIBLE
+        else binding.homeFragmentCellQuestion.visibility = View.GONE
 
 
         // 맨 밑, 홈 화면 설정 버튼
@@ -278,40 +275,40 @@ class HomeFragment : Fragment() {
                     setting2.add(arrJson2.optString(i))
                 }
                 // 즐겨찾는 게시판
-                if(setting2[0] =="true") binding.homeFragmentFavoriteLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentFavoriteLinearlayout.visibility = View.GONE
+                if(setting2[0] =="true") binding.homeFragmentCellFavorite.visibility = View.VISIBLE
+                else binding.homeFragmentCellFavorite.visibility = View.GONE
 
                 // 실시간 인기 글
-                if(setting2[1] =="true") binding.homeFragmentIssueLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentIssueLinearlayout.visibility = View.GONE
+                if(setting2[1] =="true") binding.homeFragmentCellIssue.visibility = View.VISIBLE
+                else binding.homeFragmentCellIssue.visibility = View.GONE
 
                 // 핫게
-                if(setting2[2] =="true") binding.homeFragmentHotLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentHotLinearlayout.visibility = View.GONE
+                if(setting2[2] =="true") binding.homeFragmentCellHot.visibility = View.VISIBLE
+                else binding.homeFragmentCellHot.visibility = View.GONE
 
                 // 교내 소식
-                if(setting2[3] =="true") binding.homeFragmentSchoolNewsLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentSchoolNewsLinearlayout.visibility = View.GONE
+                if(setting2[3] =="true") binding.homeFragmentCellNews.visibility = View.VISIBLE
+                else binding.homeFragmentCellNews.visibility = View.GONE
 
                 // 진로
-                if(setting2[4] =="true") binding.homeFragmentSchoolCareerLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentSchoolCareerLinearlayout.visibility = View.GONE
+                if(setting2[4] =="true") binding.homeFragmentCellCareer.visibility = View.VISIBLE
+                else binding.homeFragmentCellCareer.visibility = View.GONE
 
                 // 판매 중인 책
-                if(setting2[5] =="true") binding.homeFragmentBookLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentBookLinearlayout.visibility = View.GONE
+                if(setting2[5] =="true") binding.homeFragmentCellBook.visibility = View.VISIBLE
+                else binding.homeFragmentCellBook.visibility = View.GONE
 
                 // 교내 홍보
-                if(setting2[6] =="true") binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentSchoolPromotionLinearlayout.visibility = View.GONE
+                if(setting2[6] =="true") binding.homeFragmentCellPromotion.visibility = View.VISIBLE
+                else binding.homeFragmentCellPromotion.visibility = View.GONE
 
                 // 최근 강의평
-                if(setting2[7] =="true") binding.homeFragmentLectureLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentLectureLinearlayout.visibility = View.GONE
+                if(setting2[7] =="true") binding.homeFragmentCellLecture.visibility = View.VISIBLE
+                else binding.homeFragmentCellLecture.visibility = View.GONE
 
                 // 답변을 기다리는 질문
-                if(setting2[9] =="true") binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.VISIBLE
-                else binding.homeFragmentSchoolQuestionLinearlayout.visibility = View.GONE
+                if(setting2[9] =="true") binding.homeFragmentCellQuestion.visibility = View.VISIBLE
+                else binding.homeFragmentCellQuestion.visibility = View.GONE
 
                 binding.homeScroll.scrollTo(0, binding.homeTopBanner.top)
             }
