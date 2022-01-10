@@ -9,6 +9,7 @@ import android.os.Looper
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -29,6 +30,7 @@ import com.example.toyproject.network.dto.CommentCreate
 import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import org.w3c.dom.Text
 import timber.log.Timber
 import java.net.URL
 import java.util.*
@@ -184,7 +186,7 @@ class ArticleActivity : AppCompatActivity() {
             // 대댓글 작성 버튼 누를때
             override fun onCommentClick(parent : Int) {
                 val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                    .setTitle("대댓글을 작성하시겠습니까?")
+                    .setMessage("대댓글을 작성하시겠습니까?")
                    .setNegativeButton("취소") { dialogInterface, i ->
                         dialogInterface.dismiss()
                     }
@@ -199,6 +201,7 @@ class ArticleActivity : AppCompatActivity() {
                         subCommentON = true
                     }
                 val dialog = mBuilder.create()
+                dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                 dialog.show()
             }
             // 댓글&대댓글 좋아요 누를 때
@@ -208,7 +211,7 @@ class ArticleActivity : AppCompatActivity() {
                 }
                 else {
                     val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                        .setTitle("이 댓글을 공감하시겠습니까?")
+                        .setMessage("이 댓글을 공감하시겠습니까?")
                         .setNegativeButton("취소") { dialogInterface, i ->
                             dialogInterface.dismiss()
                         }
@@ -216,6 +219,7 @@ class ArticleActivity : AppCompatActivity() {
                             viewModel.likeComment(id)
                         }
                     val dialog = mBuilder.create()
+                    dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                     dialog.show()
                 }
             }
@@ -239,7 +243,7 @@ class ArticleActivity : AppCompatActivity() {
                     when(array[which]) {
                         "삭제" -> {
                             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                                .setTitle("삭제하시겠습니까?")
+                                .setMessage("삭제하시겠습니까?")
                                 .setNegativeButton("취소") { dialogInterface, i ->
                                     dialogInterface.dismiss()
                                 }
@@ -247,7 +251,9 @@ class ArticleActivity : AppCompatActivity() {
                                     viewModel.deleteComment(boardId, articleId, id)
                                 }
                             val dialog = mBuilder.create()
+                            dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                             dialog.show()
+
                         }
                         // TODO (다른 선택지들)
                     }
@@ -289,7 +295,7 @@ class ArticleActivity : AppCompatActivity() {
             }
             else {
                 val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                    .setTitle("이 글을 공감하시겠습니까?")
+                    .setMessage("이 글을 공감하시겠습니까?")
                     .setNegativeButton("취소") { dialogInterface, i ->
                         dialogInterface.dismiss()
                     }
@@ -297,6 +303,7 @@ class ArticleActivity : AppCompatActivity() {
                         viewModel.likeArticle(articleId)
                     }
                 val dialog = mBuilder.create()
+                dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                 dialog.show()
             }
         }
@@ -307,7 +314,7 @@ class ArticleActivity : AppCompatActivity() {
             if(!hasScraped) title = "이 글을 스크랩하시겠습니까?"
             else title = "스크랩을 취소하시겠습니까"
             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
-                .setTitle(title)
+                .setMessage(title)
                 .setNegativeButton("취소") { dialogInterface, i ->
                     dialogInterface.dismiss()
                 }
@@ -315,6 +322,7 @@ class ArticleActivity : AppCompatActivity() {
                     viewModel.scrapArticle(articleId)
                 }
             val dialog = mBuilder.create()
+            dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
             dialog.show()
         }
         // 댓글 삭제 결과 출력

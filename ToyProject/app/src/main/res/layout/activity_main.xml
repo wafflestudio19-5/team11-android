@@ -19,35 +19,40 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIconTint="@drawable/home_fragment_selector_home"
+        app:tabIndicatorColor="@android:color/transparent"
         app:tabRippleColor="@null">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/outline_home_24" />
+            android:icon="@drawable/icn_tab_home_active" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/outline_table_chart_24" />
+            android:icon="@drawable/icn_tab_timetable_active" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/outline_list_alt_24" />
+            android:icon="@drawable/icn_tab_board_active" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/outline_notifications_24" />
+            android:icon="@drawable/icn_tab_notification_active" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/outline_policy_24" />
+            android:icon="@drawable/icn_tab_campuspick_active" />
 
     </com.google.android.material.tabs.TabLayout>
 

@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:tag="home_fragment">
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:buttonGravity="bottom"
+        android:gravity="bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/toolbar_menu">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="15dp">
@@ -40,11 +40,30 @@
                 android:layout_marginBottom="5dp"
                 android:text="서울대"
                 android:textColor="@color/OnBackground"
-                android:textSize="20sp"
+                android:textSize="21sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-    </androidx.appcompat.widget.Toolbar>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/home_fragment_search"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            app:srcCompat="@drawable/icn_m_search_gray800" />
+
+        <ImageView
+            android:id="@+id/home_fragment_user"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            app:srcCompat="@drawable/icn_m_account_gray800" />
+
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/home_scroll"

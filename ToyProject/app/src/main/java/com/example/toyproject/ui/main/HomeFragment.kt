@@ -76,20 +76,12 @@ class HomeFragment : Fragment() {
                     // (activity as MainActivity).finish()
                 }
             }
-        val toolbar = binding.toolbar
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.search_button -> {
-                    true
-                }
-                R.id.profile_button -> {
-                    val intent = Intent(activity, UserActivity::class.java)
-                    resultListener.launch(intent)
-                    true
-                }
-                else -> false
-            }
+        binding.homeFragmentUser.setOnClickListener {
+            val intent = Intent(activity, UserActivity::class.java)
+            resultListener.launch(intent)
         }
+
+
         // 맨 위 배너 부분
         binding.homeTopBanner.clipToPadding = false
         binding.homeTopBanner.offscreenPageLimit = 1

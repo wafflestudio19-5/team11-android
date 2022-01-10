@@ -53,16 +53,16 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->
             tab.icon = when(i){
-                0-> ResourcesCompat.getDrawable(resources, R.drawable.outline_home_24, null)
-                1-> ResourcesCompat.getDrawable(resources, R.drawable.outline_table_chart_24, null)
-                2-> ResourcesCompat.getDrawable(resources, R.drawable.outline_list_alt_24, null)
-                3-> ResourcesCompat.getDrawable(resources, R.drawable.outline_notifications_24, null)
-                4-> ResourcesCompat.getDrawable(resources, R.drawable.outline_policy_24, null)
+                0-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_home_active, null)
+                1-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_timetable_active, null)
+                2-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_board_active, null)
+                3-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_notification_active, null)
+                4-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_campuspick_active, null)
                 else-> throw IllegalStateException("no tab")
             }
         }.attach()
     }
-    // 홈 화면에서 더보기 눌렀을 때 그곳으로 이동(viewPager)
+    // 홈 화면에서 각 셀의 "더 보기"를 눌렀을 때 그곳으로 이동(viewPager)
     fun moveToTab(idx : Int) {
         viewPager.setCurrentItem(idx, false)
     }
