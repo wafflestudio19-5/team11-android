@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.article
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -16,12 +17,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleMakeBinding
+import com.example.toyproject.databinding.DialogAddDescriptionBinding
 import com.example.toyproject.network.dto.MultiMap
 import com.example.toyproject.ui.board.BoardActivity
+import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -39,6 +43,7 @@ class ArticleMakeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArticleMakeBinding
     private val viewModel: ArticleMakeViewModel by viewModels()
     var uriList: ArrayList<Uri?> = ArrayList()
+    var descriptionList: ArrayList<String> = ArrayList()
 
     private lateinit var articleMakeAdapter: ArticleMakeAdapter
     private lateinit var articleMakeLayoutManager: LinearLayoutManager
@@ -52,70 +57,45 @@ class ArticleMakeActivity : AppCompatActivity() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
 
-            if(result.data?.clipData == null){
+            if(result.data == null){
+                //...
+            }
+            else{
                 val imageUri: Uri? = result.data?.data
                 uriList.add(imageUri)
-                articleMakeAdapter = ArticleMakeAdapter(this)
-                articleMakeLayoutManager = LinearLayoutManager(this).also { it.orientation = LinearLayoutManager.HORIZONTAL }
-                binding.articleImageUploadView.apply {
-                    adapter = articleMakeAdapter
-                    layoutManager = articleMakeLayoutManager
-                }
-                articleMakeAdapter.setImages(uriList)
-                articleMakeAdapter.notifyDataSetChanged()
-                binding.warningView.visibility = View.INVISIBLE
-            }else{
-                val clipData = result.data?.clipData
-                if(clipData?.itemCount!! > 5){
-                    Toast.makeText(this, "사진은 5장 이하까지만 첨부할 수 있습니다.", Toast.LENGTH_SHORT).show()
-                }else{
-                    for (i in 0 until clipData.itemCount) {
-                        val imageUri = clipData.getItemAt(i).uri // 선택한 이미지들의 uri를 가져온다.
-                        try {
-                            uriList.add(imageUri) //uri를 list에 담는다.
-                            articleMakeAdapter = ArticleMakeAdapter(this)
-                            articleMakeLayoutManager = LinearLayoutManager(this).also { it.orientation = LinearLayoutManager.HORIZONTAL }
-                            binding.articleImageUploadView.apply {
-                                adapter = articleMakeAdapter
-                                layoutManager = articleMakeLayoutManager
-                            }
-                            articleMakeAdapter.setImages(uriList)
-                            articleMakeAdapter.notifyDataSetChanged()
-                            binding.warningView.visibility = View.INVISIBLE
-                        } catch (e: Exception) {
-                            //...
+                val dialogBinding = DialogAddDescriptionBinding.inflate(layoutInflater)
+                val dialogBuilder = AlertDialog.Builder(this)
+                    .setTitle("이미지 설명")
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("완료") { _, _ ->
+                        if(dialogBinding.textContent.text != null){
+                            descriptionList.add(dialogBinding.textContent.text.toString())
+                        }else{
+                            descriptionList.add("")
                         }
+                        articleMakeAdapter = ArticleMakeAdapter(this)
+                        articleMakeLayoutManager = LinearLayoutManager(this).also {
+                            it.orientation = LinearLayoutManager.HORIZONTAL
+                        }
+                        binding.articleImageUploadView.apply {
+                            adapter = articleMakeAdapter
+                            layoutManager = articleMakeLayoutManager
+                        }
+                        val list: ArrayList<ArticleImageInfo> = arrayListOf()
+                        if(uriList.size!=0){
+                            for(i in 0 until uriList.size){
+                                list.add(ArticleImageInfo(uriList[i], descriptionList[i]))
+                            }
+                        }
+                        articleMakeAdapter.setImages(list)
+                        articleMakeAdapter.notifyDataSetChanged()
+                        //binding.warningView.visibility = View.GONE
                     }
-                }
+                val dialog = dialogBuilder.create()
+                dialog.show()
             }
-
-/*
-
-            if (uri != null) {
-                val realPath = getFullPathFromUri(uri)
-                if (realPath != null) {
-                    //이미지 데이터를 비트맵으로 받아옴
-                    lateinit var imageBitmap: Bitmap
-                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.P){
-                        imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-                    } else{
-                        imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                    }
-                    val byteArrayOutputStream = ByteArrayOutputStream()
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-                    val requestBody: RequestBody = byteArrayOutputStream.toByteArray()
-                        .toRequestBody()
-
-                    if(imageBitmap.height>4000||imageBitmap.width>4000){
-                        Toast.makeText(this, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
-                    }else{
-                        //upload(requestBody)
-                        //binding.p.setImageURI(result.data?.data)
-                    }
-                }
-            }
-            */
         }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -123,11 +103,17 @@ class ArticleMakeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         articleMakeAdapter = ArticleMakeAdapter(this)
-        articleMakeLayoutManager = LinearLayoutManager(this)
+        articleMakeLayoutManager = LinearLayoutManager(this).also {
+            it.orientation = LinearLayoutManager.HORIZONTAL
+        }
 
         boardId = intent.getIntExtra("board_id", 0)
 
         binding.backButton.setOnClickListener {
+            Intent(this, BoardActivity::class.java).apply{
+                putExtra("board_id", intent.getIntExtra("board_id", 0))
+                putExtra("board_name", intent.getStringExtra("board_name"))
+            }.run{startActivity(this)}
             finish()
         }
 
@@ -153,7 +139,11 @@ class ArticleMakeActivity : AppCompatActivity() {
 
         //image upload
         binding.galleryButton.setOnClickListener {
-            selectGallery()
+            if(articleMakeAdapter.itemCount > 5){
+                Toast.makeText(this, "사진은 5장 이하까지만 첨부할 수 있습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                selectGallery()
+            }
         }
 
         binding.apply{
@@ -190,10 +180,8 @@ class ArticleMakeActivity : AppCompatActivity() {
                     textHashMap["is_anonymous"] = anonymousBody
                     textHashMap["is_question"] = questionBody
                     val textsList = mutableListOf<MultipartBody.Part>()
-                    for(i in 0 until list.size){
-                        val texts = i.toString()
+                    for(texts in descriptionList){
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
-                        list.add(body)
                         textsList.add(body)
                     }
 
@@ -234,46 +222,17 @@ class ArticleMakeActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
         intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         getContent.launch(intent)
 
     }
 
-    private fun getFullPathFromUri(fileUri: Uri): String? {
-        var fullPath: String? = null
-        val column = "_data"
-        var cursor: Cursor? = contentResolver.query(fileUri, null, null, null, null)
-        if (cursor != null) {
-            cursor.moveToFirst()
-            var documentId = cursor.getString(0)
-            if (documentId == null) {
-                for (i in 0 until cursor.columnCount) {
-                    if (column.equals(cursor.getColumnName(i), ignoreCase = true)) {
-                        fullPath = cursor.getString(i)
-                        break
-                    }
-                }
-            } else {
-                documentId = documentId.substring(documentId.lastIndexOf(":") + 1)
-                cursor.close()
-                val projection = arrayOf(column)
-                try {
-                    cursor = contentResolver.query(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        projection,
-                        MediaStore.Images.Media._ID + " = ? ",
-                        arrayOf(documentId),
-                        null
-                    )
-                    if (cursor != null) {
-                        cursor.moveToFirst()
-                        fullPath = cursor.getString(cursor.getColumnIndexOrThrow(column))
-                    }
-                } finally {
-                    cursor.close()
-                }
-            }
-        }
-        return fullPath
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Intent(this, BoardActivity::class.java).apply{
+            putExtra("board_id", intent.getIntExtra("board_id", 0))
+            putExtra("board_name", intent.getStringExtra("board_name"))
+        }.run{startActivity(this)}
+        finish()
     }
 }

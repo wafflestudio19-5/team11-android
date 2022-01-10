@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:windowSoftInputMode="adjustNothing"
         android:requestLegacyExternalStorage="true"
         android:name=".App"
         android:allowBackup="true"
@@ -36,7 +37,7 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.board.BoardMakeActivity" />
         <activity android:name=".ui.board.BoardSearchActivity" />
-        <activity android:name=".ui.article.ArticleMakeActivity" />
+        <activity android:name=".ui.article.ArticleMakeActivity" android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".ui.article.ArticleSearchActivity" />
         <activity android:name=".ui.board.HotBestBoardActivity" />
         <activity android:name=".ui.board.MyArticleBoardActivity" />
