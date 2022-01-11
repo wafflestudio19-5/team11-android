@@ -18,6 +18,9 @@ class ChangeNicknameActivity:AppCompatActivity() {
         binding = ActivityChangeNicknameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         binding.nicknameInputLayout.hint = intent.getStringExtra("nickname")
 
         binding.changeNickButton.setOnClickListener{
@@ -45,6 +48,6 @@ class ChangeNicknameActivity:AppCompatActivity() {
     override fun onBackPressed() {
         setResult(RESULT_OK)
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
     }
 }

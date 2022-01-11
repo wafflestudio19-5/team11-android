@@ -19,6 +19,10 @@ class UnivCertifyActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityUnivCertifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         binding.emailInputLayout.hint = intent.getStringExtra("email")
 
         binding.sendCodeButton.setOnClickListener{
@@ -55,6 +59,7 @@ class UnivCertifyActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        // 끝낼 땐 아래로 내려가기
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
     }
 }

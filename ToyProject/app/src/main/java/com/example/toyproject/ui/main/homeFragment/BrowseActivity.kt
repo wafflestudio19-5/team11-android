@@ -27,11 +27,15 @@ class BrowseActivity :AppCompatActivity(){
         binding = ActivityBrowseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         val toolbar = binding.browserToolbar
         toolbar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.home_setting_exit_button -> {
                     finish()
+                    overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
                     true
                 }
                 else -> {
@@ -84,5 +88,10 @@ class BrowseActivity :AppCompatActivity(){
 
         val url = intent.getStringExtra("url")
         binding.webView.loadUrl(url.toString())
+    }
+
+    override fun onBackPressed() {
+        finish()
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
     }
 }

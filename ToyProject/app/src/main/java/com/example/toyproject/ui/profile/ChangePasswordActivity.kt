@@ -25,6 +25,9 @@ class ChangePasswordActivity:AppCompatActivity() {
         binding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         binding.changePwButton.setOnClickListener{
             if(binding.passwordEdit.text.toString() != binding.passwordConfirm.text.toString()){
                 Toast.makeText(this, "비밀번호가 불일치합니다.", Toast.LENGTH_SHORT).show()
@@ -59,6 +62,6 @@ class ChangePasswordActivity:AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
     }
 }

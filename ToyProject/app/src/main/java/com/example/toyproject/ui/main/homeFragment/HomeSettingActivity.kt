@@ -23,6 +23,9 @@ class HomeSettingActivity : AppCompatActivity() {
         binding = ActivityHomeSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         val defaultJsonArray  = JSONArray()
         for(i in 0..9) defaultJsonArray.put(true)
         val settingArr = sharedPreferences.getString("setting", defaultJsonArray.toString())

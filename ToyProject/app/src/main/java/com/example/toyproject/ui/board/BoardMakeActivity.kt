@@ -32,8 +32,12 @@ class BoardMakeActivity : AppCompatActivity() {
         binding = ActivityBoardMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         binding.backButton.setOnClickListener {
             finish()
+            // 끝낼 떄는 아래로 내려가기
             overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         }
 
@@ -98,7 +102,8 @@ class BoardMakeActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+            // 끝낼 땐 아래로 내려가기
+            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
         }
 
 

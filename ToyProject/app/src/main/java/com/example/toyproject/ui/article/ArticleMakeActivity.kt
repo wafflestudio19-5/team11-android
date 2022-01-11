@@ -102,6 +102,9 @@ class ArticleMakeActivity : AppCompatActivity() {
         binding = ActivityArticleMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+
         articleMakeAdapter = ArticleMakeAdapter(this)
         articleMakeLayoutManager = LinearLayoutManager(this).also {
             it.orientation = LinearLayoutManager.HORIZONTAL
@@ -222,7 +225,7 @@ class ArticleMakeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
         finish()
     }
 }
