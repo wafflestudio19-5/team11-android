@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
 
-
+// 홈프래그먼트의 여러 셀을 위한 Custom View
 class HomeFragmentCell : LinearLayout {
 
     lateinit var topLayout : LinearLayout

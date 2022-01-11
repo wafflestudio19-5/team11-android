@@ -42,6 +42,7 @@ class BoardActivity : AppCompatActivity() {
         // BoardActivity 는 오른쪽에서 나오고, 배경은 까만색으로 fade out
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_hold_fade_out)
 
+
         boardAdapter = BoardAdapter()
         boardLayoutManager = LinearLayoutManager(this)
 
@@ -101,12 +102,14 @@ class BoardActivity : AppCompatActivity() {
         val resultListener =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if(it.resultCode == RESULT_OK) {
+
                     page = 0
                     boardAdapter.resetArticles()
                     Handler(Looper.getMainLooper()).postDelayed({
                         if(page==0) viewModel.getArticleList(intent.getIntExtra("board_id", 0), page++, 20) },
                         100)
                     binding.refreshLayout.isRefreshing = false
+
                 }
             }
 

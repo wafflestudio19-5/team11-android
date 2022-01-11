@@ -94,6 +94,7 @@ class HomeSettingActivity : AppCompatActivity() {
             putString("setting", jsonArray.toString())
         }
         setResult(RESULT_OK)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
         finish()
     }
 

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.databinding.ActivityBoardSearchBinding
 import com.example.toyproject.network.dto.Board
-import com.example.toyproject.ui.main.GeneralRecyclerViewAdapter
+import com.example.toyproject.ui.main.listFragment.GeneralRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.main
+package com.example.toyproject.ui.main.listFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -181,6 +181,7 @@ class ArticleMakeActivity : AppCompatActivity() {
                     viewModel.createArticle(boardId, textHashMap, textsList, list)
                     setResult(RESULT_OK)
                     finish()
+                    overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
                 }
             }
         }

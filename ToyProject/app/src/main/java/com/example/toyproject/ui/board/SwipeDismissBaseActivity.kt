@@ -6,6 +6,7 @@ import android.view.GestureDetector
 
 import android.os.Bundle
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.R
@@ -33,7 +34,8 @@ abstract class SwipeDismissBaseActivity : AppCompatActivity() {
             // Swipe from left to right.
             // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
             // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e2.x - e1.x > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e2.x - e1.x > SWIPE_MIN_DISTANCE) {
+
                 finish()
                 overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
                 return true
@@ -62,3 +64,4 @@ abstract class SwipeDismissBaseActivity : AppCompatActivity() {
         private const val SWIPE_THRESHOLD_VELOCITY = 200
     }
 }
+

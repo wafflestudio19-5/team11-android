@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.main
+package com.example.toyproject.ui.main.listFragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -213,7 +212,7 @@ class ListFragment : Fragment() {
         })
 
         // 사용자가 만든 게시판을 눌러 액티비티를 시작할 경우, 그 안에서 게시판을 삭제할 수도 있으니 새로고침 listener 적용
-        generalAdapter.setItemClickListener(object: GeneralRecyclerViewAdapter.OnItemClickListener{
+        generalAdapter.setItemClickListener(object: GeneralRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
@@ -223,7 +222,7 @@ class ListFragment : Fragment() {
             }
         })
 
-        defaultAdapter.setItemClickListener(object: DefaultRecyclerViewAdapter.OnItemClickListener{
+        defaultAdapter.setItemClickListener(object: DefaultRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
@@ -232,7 +231,7 @@ class ListFragment : Fragment() {
             }
         })
 
-        careerAdapter.setItemClickListener(object: CareerRecyclerViewAdapter.OnItemClickListener{
+        careerAdapter.setItemClickListener(object: CareerRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
@@ -241,7 +240,8 @@ class ListFragment : Fragment() {
             }
         })
 
-        promotionAdapter.setItemClickListener(object: PromotionRecyclerViewAdapter.OnItemClickListener{
+        promotionAdapter.setItemClickListener(object:
+            PromotionRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
@@ -250,7 +250,8 @@ class ListFragment : Fragment() {
             }
         })
 
-        organizationAdapter.setItemClickListener(object: OrganizationRecyclerViewAdapter.OnItemClickListener{
+        organizationAdapter.setItemClickListener(object:
+            OrganizationRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
@@ -259,7 +260,8 @@ class ListFragment : Fragment() {
             }
         })
 
-        departmentAdapter.setItemClickListener(object: DepartmentRecyclerViewAdapter.OnItemClickListener{
+        departmentAdapter.setItemClickListener(object:
+            DepartmentRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: Board, position: Int) {
                 Intent(activity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
