@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,10 +58,17 @@ class BoardSearchActivity: AppCompatActivity() {
 
 
 
-
+        // "RESULT_OK" : 새로고침 (사용처: 게시판 생성 및 삭제 후)
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    setResult(RESULT_OK)
+                    finish()
+                }
+            }
         binding.makeBoardButton.setOnClickListener {
             val intent = Intent(this, BoardMakeActivity::class.java)
-            startActivity(intent)
+            resultListener.launch(intent)
         }
 
         binding.boardSearchBar.addTextChangedListener(object: TextWatcher {
@@ -87,8 +95,7 @@ class BoardSearchActivity: AppCompatActivity() {
                 Intent(this@BoardSearchActivity, BoardActivity::class.java).apply{
                     putExtra("board_name", data.name)
                     putExtra("board_id", data.id)
-                }.run{startActivity(this)}
-
+                }.run{resultListener.launch(this)}
             }
         })
 

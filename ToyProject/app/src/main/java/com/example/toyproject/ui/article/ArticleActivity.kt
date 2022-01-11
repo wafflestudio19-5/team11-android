@@ -28,6 +28,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import com.example.toyproject.ui.board.BoardActivity
+import com.example.toyproject.ui.board.SwipeDismissBaseActivity
 import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.w3c.dom.Text
@@ -35,8 +36,11 @@ import timber.log.Timber
 import java.net.URL
 import java.util.*
 
+
+// 오른쪽으로 밀어서 닫을 수 있는 액티비티. TODO : 애니메이션 적용
+// AppCompatActivity() 지워주고 SwipeDismissBaseActivity()를 상속시켜 주면 된다.
 @AndroidEntryPoint
-class ArticleActivity : AppCompatActivity() {
+class ArticleActivity : SwipeDismissBaseActivity() {
 
     private lateinit var binding: ActivityArticleBinding
     private val viewModel : ArticleViewModel by viewModels()
@@ -264,6 +268,7 @@ class ArticleActivity : AppCompatActivity() {
         // 왼쪽 상단 뒤로가기 버튼
         binding.articleBackButton.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         }
         // 오른쪽 상단 ... 버튼
         binding.articleFullMoreButton.setOnClickListener {
@@ -368,5 +373,6 @@ class ArticleActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
     }
 }

@@ -110,11 +110,8 @@ class ArticleMakeActivity : AppCompatActivity() {
         boardId = intent.getIntExtra("board_id", 0)
 
         binding.backButton.setOnClickListener {
-            Intent(this, BoardActivity::class.java).apply{
-                putExtra("board_id", intent.getIntExtra("board_id", 0))
-                putExtra("board_name", intent.getStringExtra("board_name"))
-            }.run{startActivity(this)}
             finish()
+            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         }
 
         binding.articleTitle.addTextChangedListener(object: TextWatcher{
@@ -186,10 +183,7 @@ class ArticleMakeActivity : AppCompatActivity() {
                     }
 
                     viewModel.createArticle(boardId, textHashMap, textsList, list)
-                    Intent(this@ArticleMakeActivity, BoardActivity::class.java).apply{
-                        putExtra("board_id", intent.getIntExtra("board_id", 0))
-                        putExtra("board_name", intent.getStringExtra("board_name"))
-                    }.run{startActivity(this)}
+                    setResult(RESULT_OK)
                     finish()
                 }
             }
@@ -228,11 +222,7 @@ class ArticleMakeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        Intent(this, BoardActivity::class.java).apply{
-            putExtra("board_id", intent.getIntExtra("board_id", 0))
-            putExtra("board_name", intent.getStringExtra("board_name"))
-        }.run{startActivity(this)}
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         finish()
     }
 }

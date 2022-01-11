@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityChangeNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,9 +31,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
 
         viewModel.response.observe(this, {
             if(it.success==true){
-                val intent = Intent(this, UserActivity::class.java)
-                startActivity(intent)
-                setResult(RESULT_OK, Intent())
+                setResult(RESULT_OK)
                 finish()
             }
         })
@@ -44,10 +43,8 @@ class ChangeNicknameActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
+        setResult(RESULT_OK)
         finish()
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
     }
 }

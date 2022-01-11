@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
         val resultListener =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if(it.resultCode == AppCompatActivity.RESULT_OK) {
-                    // (activity as MainActivity).finish()
+                    (activity as MainActivity).finish()
                 }
             }
         binding.homeFragmentUser.setOnClickListener {

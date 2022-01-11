@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityChangeEmailBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +50,7 @@ class ChangeEmailActivity:AppCompatActivity() {
                        this.remove("token")
                    }
                    startActivity(intent)
+                   setResult(999)
                    finish()
                }
            })
@@ -59,10 +61,7 @@ class ChangeEmailActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
         finish()
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
     }
 }

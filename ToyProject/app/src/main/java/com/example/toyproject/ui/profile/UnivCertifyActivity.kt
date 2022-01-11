@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityUnivCertifyBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,9 +43,7 @@ class UnivCertifyActivity: AppCompatActivity() {
         viewModel.resultComp.observe(this, {
             if(it.Result=="Correct Code"){
                 Toast.makeText(this, "인증되었습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, UserActivity::class.java)
-                startActivity(intent)
-                setResult(RESULT_OK, Intent())
+                setResult(RESULT_OK)
                 finish()
             }
         })
@@ -55,10 +54,7 @@ class UnivCertifyActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
         finish()
+        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
     }
 }

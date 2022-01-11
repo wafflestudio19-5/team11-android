@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityBoardMakeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -33,6 +34,7 @@ class BoardMakeActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         }
 
         binding.newBoardTitle.addTextChangedListener(object : TextWatcher {
@@ -76,6 +78,8 @@ class BoardMakeActivity : AppCompatActivity() {
                     }
                     else {
                         Timber.d("error: " + error)
+                        // TODO : 만든 게시판 바로 띄우기
+                        setResult(RESULT_OK)
                         finish()
                     }}, 1000)
 
@@ -94,6 +98,7 @@ class BoardMakeActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
         }
 
 
