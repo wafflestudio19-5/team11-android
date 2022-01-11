@@ -15,12 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityBoardBinding
 import com.example.toyproject.network.dto.Article
-import com.example.toyproject.network.dto.Detail
 import com.example.toyproject.ui.article.ArticleActivity
 import com.example.toyproject.ui.article.ArticleMakeActivity
 import com.example.toyproject.ui.article.ArticleSearchActivity
-import com.example.toyproject.ui.main.MainActivity
-import com.example.toyproject.ui.profile.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,13 +39,16 @@ class BoardActivity : AppCompatActivity() {
         binding = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // BoardActivity 는 오른쪽에서 나오고, 배경은 까만색으로 fade out
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_hold_fade_out)
+
         boardAdapter = BoardAdapter()
         boardLayoutManager = LinearLayoutManager(this)
 
         // 뒤로가기 화살표 눌렀을 때 슬라이드 애니메이션 적용 + finish()
         binding.backArrow.setOnClickListener {
             finish()
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
         }
 
         binding.recyclerViewArticle.apply {
@@ -205,6 +205,7 @@ class BoardActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        // BoardActivity 는 오른쪽으로 퇴장, 새 창은 fade in
+        overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
     }
 }

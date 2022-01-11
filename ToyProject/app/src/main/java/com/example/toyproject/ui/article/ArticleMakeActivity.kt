@@ -1,8 +1,6 @@
 package com.example.toyproject.ui.article
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -23,18 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleMakeBinding
 import com.example.toyproject.databinding.DialogAddDescriptionBinding
-import com.example.toyproject.network.dto.MultiMap
-import com.example.toyproject.ui.board.BoardActivity
-import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.lang.Exception
 
 
 @AndroidEntryPoint
@@ -102,8 +94,9 @@ class ArticleMakeActivity : AppCompatActivity() {
         binding = ActivityArticleMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // 실행할 때 아래에서 올라오도록
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         articleMakeAdapter = ArticleMakeAdapter(this)
         articleMakeLayoutManager = LinearLayoutManager(this).also {
@@ -114,7 +107,7 @@ class ArticleMakeActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
         }
 
         binding.articleTitle.addTextChangedListener(object: TextWatcher{
@@ -225,7 +218,8 @@ class ArticleMakeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
         finish()
+        // 끝낼 땐 아래로 내려가기
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

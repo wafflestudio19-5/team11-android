@@ -1,6 +1,5 @@
 package com.example.toyproject.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,7 +20,7 @@ class UnivCertifyActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         // 실행할 때 아래에서 올라오도록
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.emailInputLayout.hint = intent.getStringExtra("email")
 
@@ -60,6 +59,6 @@ class UnivCertifyActivity: AppCompatActivity() {
     override fun onBackPressed() {
         finish()
         // 끝낼 땐 아래로 내려가기
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

@@ -35,7 +35,7 @@ abstract class SwipeDismissBaseActivity : AppCompatActivity() {
             // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
             if (e2.x - e1.x > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 finish()
-                overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+                overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
                 return true
             }
             return false

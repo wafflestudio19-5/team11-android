@@ -1,10 +1,8 @@
 package com.example.toyproject.ui.board
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
@@ -33,12 +31,12 @@ class BoardMakeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 실행할 때 아래에서 올라오도록
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.backButton.setOnClickListener {
             finish()
             // 끝낼 떄는 아래로 내려가기
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
         }
 
         binding.newBoardTitle.addTextChangedListener(object : TextWatcher {
@@ -103,11 +101,16 @@ class BoardMakeActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
             // 끝낼 땐 아래로 내려가기
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
         }
 
 
 
+    }
+    override fun onBackPressed() {
+        finish()
+        // 끝낼 땐 아래로 내려가기
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 
 

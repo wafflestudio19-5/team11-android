@@ -1,6 +1,5 @@
 package com.example.toyproject.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -19,7 +18,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
         setContentView(binding.root)
 
         // 실행할 때 아래에서 올라오도록
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.nicknameInputLayout.hint = intent.getStringExtra("nickname")
 
@@ -48,6 +47,6 @@ class ChangeNicknameActivity:AppCompatActivity() {
     override fun onBackPressed() {
         setResult(RESULT_OK)
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

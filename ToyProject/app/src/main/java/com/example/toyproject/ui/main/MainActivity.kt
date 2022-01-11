@@ -42,9 +42,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 로그인 화면에서 진입할 때 페이드 인 효과
+        overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_nothing)
+
         //하단 바
         viewPager = binding.pager
         tabLayout = binding.tabLayout
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab?) { tab?.position?.let { viewPager?.setCurrentItem(it, false) } }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+        })
 
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
@@ -61,8 +69,9 @@ class MainActivity : AppCompatActivity() {
                 else-> throw IllegalStateException("no tab")
             }
         }.attach()
+
     }
-    // 홈 화면에서 각 셀의 "더 보기"를 눌렀을 때 그곳으로 이동(viewPager)
+    // 홈 화면에서 각 셀의 "더 보기"를 눌렀을 때 그 탭으로 이동(viewPager)
     fun moveToTab(idx : Int) {
         viewPager.setCurrentItem(idx, false)
     }
@@ -91,7 +100,9 @@ class MainActivity : AppCompatActivity() {
             putExtra("board_id", board_id)
             putExtra("article_id", article_id)
             putExtra("board_name", board_name)
-        }.run{startActivity(this)}
+        }.run{
+            startActivity(this)
+        }
     }
 
     // homeFragment 에서 즐겨찾는 게시판 item 선택하면 BoardActivity 시작

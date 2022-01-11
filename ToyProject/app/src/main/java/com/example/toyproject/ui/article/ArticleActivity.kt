@@ -1,11 +1,8 @@
 package com.example.toyproject.ui.article
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
@@ -13,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amazonaws.auth.BasicAWSCredentials
@@ -27,12 +23,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
-import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.board.SwipeDismissBaseActivity
 import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import org.w3c.dom.Text
-import timber.log.Timber
 import java.net.URL
 import java.util.*
 
@@ -60,6 +53,7 @@ class ArticleActivity : SwipeDismissBaseActivity() {
 
         binding = ActivityArticleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         articleImageAdapter = ArticleImageAdapter(this)
         articleImageLayoutManager = LinearLayoutManager(this).also { it.orientation = LinearLayoutManager.HORIZONTAL }
@@ -268,7 +262,7 @@ class ArticleActivity : SwipeDismissBaseActivity() {
         // 왼쪽 상단 뒤로가기 버튼
         binding.articleBackButton.setOnClickListener {
             finish()
-            overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
         }
         // 오른쪽 상단 ... 버튼
         binding.articleFullMoreButton.setOnClickListener {
@@ -373,6 +367,6 @@ class ArticleActivity : SwipeDismissBaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
     }
 }

@@ -26,7 +26,7 @@ class WithdrawalActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         // 실행할 때 아래에서 올라오도록
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_fade_away)
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.withdrawalButton.setOnClickListener{
             showDialog()
@@ -67,6 +67,6 @@ class WithdrawalActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_up)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

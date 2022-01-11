@@ -39,9 +39,6 @@ import android.os.Build
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.os.Handler
-import android.os.Looper
-import com.example.toyproject.ui.main.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
@@ -276,6 +273,6 @@ class UserActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
-        overridePendingTransition(R.anim.slide_fade_away, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
     }
 }
