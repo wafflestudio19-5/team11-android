@@ -108,6 +108,7 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                             .fitCenter()
                     )
                     .load(url.toString())
+                    .centerCrop()
                     .into(findViewById(R.id.article_full_writer_profile))
             }
 

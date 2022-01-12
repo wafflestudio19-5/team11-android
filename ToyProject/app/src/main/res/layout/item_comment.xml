@@ -37,7 +37,9 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:layout_gravity="center"
-                android:scaleType="centerInside"
+                android:adjustViewBounds="false"
+                android:cropToPadding="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/anonymous_photo" />
         </androidx.cardview.widget.CardView>
 

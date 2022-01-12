@@ -123,6 +123,7 @@ class UserActivity: AppCompatActivity() {
                             .fitCenter()
                     )
                     .load(url.toString())
+                    .centerCrop()
                     .into(findViewById(R.id.profileImageView))
             }
             nickname = it.nickname.toString()

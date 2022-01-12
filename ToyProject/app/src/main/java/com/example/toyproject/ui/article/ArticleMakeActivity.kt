@@ -147,9 +147,9 @@ class ArticleMakeActivity : AppCompatActivity() {
                 } else if(articleTextTemp.replace(" ", "")==""){
                     Toast.makeText(this@ArticleMakeActivity, "내용을 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else{
+                    var imageSizeCheck = true
                     val list: MutableList<MultipartBody.Part> = mutableListOf()
                     for(uri in uriList){
-                        //val realPath = uri?.let { getFullPathFromUri(it) }
                         lateinit var imageBitmap: Bitmap
                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P){
                             imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri!!))
@@ -158,31 +158,36 @@ class ArticleMakeActivity : AppCompatActivity() {
                         }
                         val byteArrayOutputStream = ByteArrayOutputStream()
                         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-                        val requestBody: RequestBody = byteArrayOutputStream.toByteArray()
-                            .toRequestBody()
+                        if(imageBitmap.height>4000||imageBitmap.width>4000){
+                            Toast.makeText(this@ArticleMakeActivity, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                            imageSizeCheck = false
+                        }
+                        val requestBody: RequestBody = byteArrayOutputStream.toByteArray().toRequestBody()
                         val fileName = System.currentTimeMillis().toString() + ".jpg"
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", fileName, requestBody)
                         list.add(body)
                     }
-                    val titleRequestBody: RequestBody = articleTitleTemp.toPlainRequestBody()
-                    val textRequestBody: RequestBody = articleTextTemp.toPlainRequestBody()
-                    val anonymousBody : RequestBody = isAnonymous.toString().toPlainRequestBody()
-                    val questionBody : RequestBody = isQuestion.toString().toPlainRequestBody()
-                    val textHashMap = hashMapOf<String, RequestBody>()
-                    textHashMap["title"] = titleRequestBody
-                    textHashMap["text"] = textRequestBody
-                    textHashMap["is_anonymous"] = anonymousBody
-                    textHashMap["is_question"] = questionBody
-                    val textsList = mutableListOf<MultipartBody.Part>()
-                    for(texts in descriptionList){
-                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
-                        textsList.add(body)
-                    }
+                    if(imageSizeCheck){
+                        val titleRequestBody: RequestBody = articleTitleTemp.toPlainRequestBody()
+                        val textRequestBody: RequestBody = articleTextTemp.toPlainRequestBody()
+                        val anonymousBody : RequestBody = isAnonymous.toString().toPlainRequestBody()
+                        val questionBody : RequestBody = isQuestion.toString().toPlainRequestBody()
+                        val textHashMap = hashMapOf<String, RequestBody>()
+                        textHashMap["title"] = titleRequestBody
+                        textHashMap["text"] = textRequestBody
+                        textHashMap["is_anonymous"] = anonymousBody
+                        textHashMap["is_question"] = questionBody
+                        val textsList = mutableListOf<MultipartBody.Part>()
+                        for(texts in descriptionList){
+                            val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
+                            textsList.add(body)
+                        }
 
-                    viewModel.createArticle(boardId, textHashMap, textsList, list)
-                    setResult(RESULT_OK)
-                    finish()
-                    overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
+                        viewModel.createArticle(boardId, textHashMap, textsList, list)
+                        setResult(RESULT_OK)
+                        finish()
+                        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
+                    }
                 }
             }
         }

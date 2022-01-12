@@ -56,6 +56,9 @@
                     android:id="@+id/profileImageView"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="true"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/anonymous_photo" />
 
             </androidx.cardview.widget.CardView>

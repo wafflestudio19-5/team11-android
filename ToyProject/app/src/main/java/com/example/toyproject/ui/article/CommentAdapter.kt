@@ -83,6 +83,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                                     .fitCenter()
                             )
                             .load(url.toString())
+                            .centerCrop()
                             .into(itemView.findViewById(R.id.comment_profile_image))
                     }
                 }
@@ -158,6 +159,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                                     .fitCenter()
                             )
                             .load(url.toString())
+                            .centerCrop()
                             .into(itemView.findViewById(R.id.comment_profile_image))
                     }
                 }
