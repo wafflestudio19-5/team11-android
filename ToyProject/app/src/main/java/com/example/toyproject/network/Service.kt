@@ -1,6 +1,8 @@
 package com.example.toyproject.network
 
 import com.example.toyproject.network.dto.*
+import okhttp3.RequestBody
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,8 +22,9 @@ interface Service {
     @GET("api/v1/register/university/")
     suspend fun getUniversityList() : GetUniversity
 
+    @Multipart
     @POST("api/v1/register/")
-    fun register(@Body param : Signup) : Call<SignupResponse>
+    fun register(@PartMap data: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?) : Call<SignupResponse>
 
     @POST("api/v1/login/")
     fun login(@Body param : Login) : Call<SignupResponse>

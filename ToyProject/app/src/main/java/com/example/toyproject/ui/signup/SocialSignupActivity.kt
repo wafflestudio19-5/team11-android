@@ -7,17 +7,11 @@ import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.toyproject.databinding.ActivitySignupBinding
 import com.example.toyproject.databinding.ActivitySocialsignupBinding
 import com.example.toyproject.network.Service
 import com.example.toyproject.network.dto.RegisterSocial
-import com.example.toyproject.network.dto.Signup
 import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint

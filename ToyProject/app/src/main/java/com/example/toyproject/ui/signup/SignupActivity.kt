@@ -1,6 +1,10 @@
 package com.example.toyproject.ui.signup
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -12,19 +16,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.databinding.ActivitySignupBinding
 import com.example.toyproject.network.Service
-import com.example.toyproject.network.dto.Signup
 import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import timber.log.Timber
-import java.io.File
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -32,6 +30,19 @@ import javax.inject.Inject
 class SignupActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private val viewModel : SignupViewModel by viewModels()
+    private var imageUri: Uri? = null
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+
+            if(result.data == null){
+                //
+            }
+            else{
+                imageUri = result.data?.data
+                binding.profileImageView.setImageURI(imageUri)
+            }
+        }
+
 
     @Inject
     lateinit var service: Service
@@ -51,6 +62,7 @@ class SignupActivity: AppCompatActivity() {
         var nicknameTemp = "" // 중복확인 한 후에, 다시 nickname 수정하는 것 탐지 용도
 
         val admissionYear : Int = intent.getIntExtra("admission_year", 2022)
+        val university: String = intent.getStringExtra("university").toString()
         // id editText 변화 탐지
         binding.idEdit.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
@@ -164,6 +176,14 @@ class SignupActivity: AppCompatActivity() {
             }
         })
 
+        //이미지 등록
+        binding.imageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.type = "image/*"
+            getContent.launch(intent)
+        }
+
         // 회원가입 버튼
         binding.loginButton.setOnClickListener {
             if(idChecked && emailChecked && nicknameChecked) {
@@ -172,15 +192,44 @@ class SignupActivity: AppCompatActivity() {
                     Toast.makeText(this,"비밀번호 형식을 지켜주세요.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    val param = Signup(binding.idEdit.text.toString(),
-                        binding.passwordEdit.text.toString(),
-                        binding.emailEdit.text.toString(),
-                        admissionYear,
-                        binding.nicknameEdit.text.toString(),
-                        intent.getStringExtra("university"),
-                        binding.nameEdit.text.toString(),
-                    )
-                    viewModel.signup(param)
+                    val idBody: RequestBody = binding.idEdit.text.toString().toPlainRequestBody()
+                    val nameBody: RequestBody = binding.nameEdit.text.toString().toPlainRequestBody()
+                    val passwordBody: RequestBody = binding.passwordEdit.text.toString().toPlainRequestBody()
+                    val emailBody : RequestBody = binding.emailEdit.text.toString().toPlainRequestBody()
+                    val nicknameBody: RequestBody = binding.nicknameEdit.text.toString().toPlainRequestBody()
+                    val univBody: RequestBody = university.toPlainRequestBody()
+                    val yearBody : RequestBody = admissionYear.toString().toPlainRequestBody()
+                    val textHashMap = hashMapOf<String, RequestBody>()
+                    textHashMap["user_id"] = idBody
+                    textHashMap["name"] = nameBody
+                    textHashMap["password"] = passwordBody
+                    textHashMap["email"] = emailBody
+                    textHashMap["nickname"] = nicknameBody
+                    textHashMap["university"] = univBody
+                    textHashMap["admission_year"] = yearBody
+                    if(imageUri!=null){
+                        lateinit var imageBitmap: Bitmap
+                        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.P){
+                            imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri!!))
+                        } else{
+                            imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                        }
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+
+                        if(imageBitmap.height>4000||imageBitmap.width>4000){
+                            Toast.makeText(this, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                        }else{
+                            val requestBody: RequestBody = byteArrayOutputStream.toByteArray()
+                                .toRequestBody()
+                            val fileName = System.currentTimeMillis().toString() + ".jpg"
+                            val body: MultipartBody.Part = MultipartBody.Part.createFormData("profile_image", fileName, requestBody)
+                            viewModel.signup(textHashMap, body)
+                        }
+                    }else{
+                        viewModel.signup(textHashMap, null)
+                    }
+
                 }
             }
             else {
@@ -210,4 +259,7 @@ class SignupActivity: AppCompatActivity() {
 
 
     }
+
+    private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
+
 }

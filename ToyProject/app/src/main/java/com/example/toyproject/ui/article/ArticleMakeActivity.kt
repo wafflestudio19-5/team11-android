@@ -1,8 +1,6 @@
 package com.example.toyproject.ui.article
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -23,18 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleMakeBinding
 import com.example.toyproject.databinding.DialogAddDescriptionBinding
-import com.example.toyproject.network.dto.MultiMap
 import com.example.toyproject.ui.board.BoardActivity
-import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.lang.Exception
 
 
 @AndroidEntryPoint

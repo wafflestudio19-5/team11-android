@@ -3,7 +3,6 @@ package com.example.toyproject.ui.article
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.BoardService
-import com.example.toyproject.network.dto.MultiMap
 import okhttp3.RequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

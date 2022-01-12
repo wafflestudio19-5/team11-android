@@ -81,7 +81,7 @@ class ArticleActivity : AppCompatActivity() {
             val credentials: BasicAWSCredentials
             val key = getString(R.string.AWS_ACCESS_KEY_ID)
             val secret = getString(R.string.AWS_SECRET_ACCESS_KEY)
-            if(it.user_image!=""){
+            if(it.user_image!=""&&it.user_image!=null){
                 val objectKey = it.user_image.substring(52)
                 credentials = BasicAWSCredentials(key, secret)
                 val s3 = AmazonS3Client(
@@ -120,7 +120,7 @@ class ArticleActivity : AppCompatActivity() {
             // binding.articleFullScrapButton.background = R.drawable.base
             commentAdapter.setComments(it.comments)
             commentAdapter.notifyDataSetChanged()
-            articleImageAdapter.setImages(it.images)
+            it.images?.let { it1 -> articleImageAdapter.setImages(it1) }
             articleImageAdapter.notifyDataSetChanged()
             // 댓글을 새로 쓰면 스크롤 맨 위로. (잘 작동 안하는듯)
             if(viewModel.reload) binding.nestedScroll.fullScroll(ScrollView.FOCUS_UP)

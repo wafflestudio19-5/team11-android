@@ -100,35 +100,37 @@ class UserActivity: AppCompatActivity() {
         })
 
         viewModel.profile.observe(this, {
-            val credentials: BasicAWSCredentials
-            val key = getString(R.string.AWS_ACCESS_KEY_ID)
-            val secret = getString(R.string.AWS_SECRET_ACCESS_KEY)
-            val objectKey = it.profile_image?.substring(52)
-            credentials = BasicAWSCredentials(key, secret)
-            val s3 = AmazonS3Client(
-                credentials, com.amazonaws.regions.Region.getRegion(
-                    Regions.AP_NORTHEAST_2
+            if(it.profile_image!=null){
+                val credentials: BasicAWSCredentials
+                val key = getString(R.string.AWS_ACCESS_KEY_ID)
+                val secret = getString(R.string.AWS_SECRET_ACCESS_KEY)
+                val objectKey = it.profile_image.substring(52)
+                credentials = BasicAWSCredentials(key, secret)
+                val s3 = AmazonS3Client(
+                    credentials, com.amazonaws.regions.Region.getRegion(
+                        Regions.AP_NORTHEAST_2
+                    )
                 )
-            )
-            val expires = Date(Date().getTime() + 1000 * 60) // 1 minute to expire
-            val generatePresignedUrlRequest =
-                GeneratePresignedUrlRequest("team11bucket", objectKey) //generating the signatured url
-            generatePresignedUrlRequest.expiration = expires
-            val url: URL = s3.generatePresignedUrl(generatePresignedUrlRequest)
+                val expires = Date(Date().getTime() + 1000 * 60) // 1 minute to expire
+                val generatePresignedUrlRequest =
+                    GeneratePresignedUrlRequest("team11bucket", objectKey) //generating the signatured url
+                generatePresignedUrlRequest.expiration = expires
+                val url: URL = s3.generatePresignedUrl(generatePresignedUrlRequest)
+                Glide.with(this)
+                    .setDefaultRequestOptions(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .placeholder(R.drawable.anonymous_photo)
+                            .fitCenter()
+                    )
+                    .load(url.toString())
+                    .into(findViewById(R.id.profileImageView))
+            }
             nickname = it.nickname.toString()
             email = it.email.toString()
             binding.userId.text = it.user_id
             binding.userProfile.text = "${it.name} / ${it.nickname}"
             binding.userProfile2.text = "${it.university} ${it.admission_year?.toString()?.substring(2)}학번"
-            Glide.with(this)
-                .setDefaultRequestOptions(
-                    RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .placeholder(R.drawable.anonymous_photo)
-                        .fitCenter()
-                )
-                .load(url.toString())
-                .into(findViewById(R.id.profileImageView))
         })
 
         binding.changeEmail.setOnClickListener{

@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.example.toyproject.network.Service
 import com.example.toyproject.network.dto.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,8 +41,8 @@ class SignupViewModel @Inject constructor(
 
     lateinit var errorMessage : String
 
-    fun signup(param : Signup) {
-        service.register(param).clone().enqueue(object : Callback<SignupResponse> {
+    fun signup(data: HashMap<String, RequestBody>, image: MultipartBody.Part?) {
+        service.register(data, image).clone().enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
                 // TODO : 예상치 못한 에러 처리
             }

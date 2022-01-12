@@ -61,7 +61,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                 val credentials: BasicAWSCredentials
                 val key = holder.itemView.context.getString(R.string.AWS_ACCESS_KEY_ID)
                 val secret = holder.itemView.context.getString(R.string.AWS_SECRET_ACCESS_KEY)
-                if(data.user_image!=""){
+                if(data.user_image!=""&&data.user_image!=null){
                     val objectKey = data.user_image.substring(52)
                     credentials = BasicAWSCredentials(key, secret)
                     val s3 = AmazonS3Client(
@@ -136,7 +136,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                 val credentials: BasicAWSCredentials
                 val key = holder.itemView.context.getString(R.string.AWS_ACCESS_KEY_ID)
                 val secret = holder.itemView.context.getString(R.string.AWS_SECRET_ACCESS_KEY)
-                if(data.user_image!=""){
+                if(data.user_image!=""&&data.user_image!=null){
                     val objectKey = data.user_image.substring(52)
                     credentials = BasicAWSCredentials(key, secret)
                     val s3 = AmazonS3Client(
