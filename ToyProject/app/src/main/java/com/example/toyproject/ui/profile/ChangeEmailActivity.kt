@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityChangeEmailBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,12 @@ class ChangeEmailActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
            binding= ActivityChangeEmailBinding.inflate(layoutInflater)
            setContentView(binding.root)
-           binding.emailInputLayout.hint = intent.getStringExtra("email")
+
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
+
+
+        binding.emailInputLayout.hint = intent.getStringExtra("email")
 
            binding.changeEmailButton.setOnClickListener{
                if(binding.newEmail.text.toString() == binding.emailInputLayout.hint){
@@ -49,6 +55,7 @@ class ChangeEmailActivity:AppCompatActivity() {
                        this.remove("token")
                    }
                    startActivity(intent)
+                   setResult(999)
                    finish()
                }
            })
@@ -59,10 +66,7 @@ class ChangeEmailActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
         finish()
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.main
+package com.example.toyproject.ui.main.listFragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,21 +7,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemNotDefaultBoardBinding
 import com.example.toyproject.network.dto.Board
 
-class OrganizationRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PromotionRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var boards: MutableList<Board> = mutableListOf()
 
-    inner class OrganizationBoardViewHolder(val binding: ItemNotDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class PromotionBoardViewHolder(val binding: ItemNotDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemNotDefaultBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return OrganizationBoardViewHolder(binding)
+        return PromotionBoardViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = boards[position]
         when(holder){
-            is OrganizationBoardViewHolder -> {
+            is PromotionBoardViewHolder -> {
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
                     notDefaultBoardDescription.text = data.description

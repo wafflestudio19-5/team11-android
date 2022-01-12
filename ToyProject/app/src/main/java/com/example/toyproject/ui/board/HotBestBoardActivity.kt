@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityHotBestBoardBinding
 import com.example.toyproject.network.dto.MyArticle
 import com.example.toyproject.ui.article.ArticleActivity
@@ -31,6 +32,9 @@ class HotBestBoardActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // BoardActivity 는 오른쪽에서 나오고, 배경은 까만색으로 fade out
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_hold_fade_out)
+
         binding = ActivityHotBestBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,6 +47,8 @@ class HotBestBoardActivity: AppCompatActivity() {
         }
 
         binding.backArrow.setOnClickListener {
+            // BoardActivity 는 오른쪽으로 퇴장, 새 창은 fade in
+            overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
             finish()
         }
 
@@ -134,6 +140,12 @@ class HotBestBoardActivity: AppCompatActivity() {
             }
         })
 
+    }
+
+    override fun onBackPressed() {
+        finish()
+        // BoardActivity 는 오른쪽으로 퇴장, 새 창은 fade in
+        overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
     }
 
 }

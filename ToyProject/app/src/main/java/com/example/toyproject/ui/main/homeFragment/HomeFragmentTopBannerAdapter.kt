@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.main
+package com.example.toyproject.ui.main.homeFragment
 
 import android.graphics.Color
 import android.os.Build
@@ -12,9 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.toyproject.R
-import java.sql.Time
 import java.time.LocalDate
-import java.util.*
 
 
 class HomeFragmentTopBannerAdapter(fragment : Fragment) : FragmentStateAdapter(fragment) {

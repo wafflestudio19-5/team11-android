@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityChangePasswordBinding
 import com.example.toyproject.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,9 @@ class ChangePasswordActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.changePwButton.setOnClickListener{
             if(binding.passwordEdit.text.toString() != binding.passwordConfirm.text.toString()){
@@ -46,6 +50,7 @@ class ChangePasswordActivity:AppCompatActivity() {
                     this.remove("token")
                 }
                 startActivity(intent)
+                setResult(999)
                 finish()
             }
         })
@@ -56,10 +61,7 @@ class ChangePasswordActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
         finish()
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

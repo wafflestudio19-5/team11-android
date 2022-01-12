@@ -1,31 +1,28 @@
-package com.example.toyproject.ui.main
+package com.example.toyproject.ui.main.listFragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.databinding.ItemNotDefaultBoardBinding
+import com.example.toyproject.databinding.ItemDefaultBoardBinding
 import com.example.toyproject.network.dto.Board
-import java.lang.IllegalStateException
 
-class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DefaultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var boards: MutableList<Board> = mutableListOf()
-
-    inner class GeneralBoardViewHolder(val binding: ItemNotDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
+    private var defaultBoards: MutableList<Board> = mutableListOf()
+    inner class DefaultBoardViewHolder(val binding: ItemDefaultBoardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = ItemNotDefaultBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GeneralBoardViewHolder(binding)
+        val binding = ItemDefaultBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DefaultBoardViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = boards[position]
+        val data = defaultBoards[position]
         when(holder){
-            is GeneralBoardViewHolder -> {
+            is DefaultBoardViewHolder -> {
                 holder.binding.apply {
-                    notDefaultBoardTitle.text = data.name
-                    notDefaultBoardDescription.text = data.description
+                    defaultBoardType.text = data.name
                     root.setOnClickListener {
                         itemClickListener.onItemClick(root, data, position)
                     }
@@ -35,7 +32,12 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     override fun getItemCount(): Int {
-        return boards.size
+        return defaultBoards.size
+    }
+
+    fun setDefaultBoards(defaultBoards: MutableList<Board>){
+        this.defaultBoards = defaultBoards
+        this.notifyDataSetChanged()
     }
 
     private lateinit var itemClickListener: OnItemClickListener
@@ -48,13 +50,8 @@ class GeneralRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.itemClickListener = onItemClickListener
     }
 
-    fun setBoards(boards: MutableList<Board>){
-        this.boards = boards
-        this.notifyDataSetChanged()
-    }
-
     fun resetBoards(){
-        this.boards.clear()
+        this.defaultBoards.clear()
         this.notifyDataSetChanged()
     }
 

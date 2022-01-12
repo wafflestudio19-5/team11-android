@@ -42,9 +42,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 로그인 화면에서 진입할 때 페이드 인 효과
+        overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_nothing)
+
         //하단 바
         viewPager = binding.pager
         tabLayout = binding.tabLayout
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab?) { tab?.position?.let { viewPager?.setCurrentItem(it, false) } }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+        })
 
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
@@ -53,16 +61,17 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->
             tab.icon = when(i){
-                0-> ResourcesCompat.getDrawable(resources, R.drawable.outline_home_24, null)
-                1-> ResourcesCompat.getDrawable(resources, R.drawable.outline_table_chart_24, null)
-                2-> ResourcesCompat.getDrawable(resources, R.drawable.outline_list_alt_24, null)
-                3-> ResourcesCompat.getDrawable(resources, R.drawable.outline_notifications_24, null)
-                4-> ResourcesCompat.getDrawable(resources, R.drawable.outline_policy_24, null)
+                0-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_home_active, null)
+                1-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_timetable_active, null)
+                2-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_board_active, null)
+                3-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_notification_active, null)
+                4-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_campuspick_active, null)
                 else-> throw IllegalStateException("no tab")
             }
         }.attach()
+
     }
-    // 홈 화면에서 더보기 눌렀을 때 그곳으로 이동(viewPager)
+    // 홈 화면에서 각 셀의 "더 보기"를 눌렀을 때 그 탭으로 이동(viewPager)
     fun moveToTab(idx : Int) {
         viewPager.setCurrentItem(idx, false)
     }
@@ -91,7 +100,9 @@ class MainActivity : AppCompatActivity() {
             putExtra("board_id", board_id)
             putExtra("article_id", article_id)
             putExtra("board_name", board_name)
-        }.run{startActivity(this)}
+        }.run{
+            startActivity(this)
+        }
     }
 
     // homeFragment 에서 즐겨찾는 게시판 item 선택하면 BoardActivity 시작

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityMyArticleBoardBinding
 import com.example.toyproject.network.dto.Article
 import com.example.toyproject.network.dto.MyArticle
@@ -34,6 +35,9 @@ class MyArticleBoardActivity : AppCompatActivity() {
         binding = ActivityMyArticleBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // BoardActivity 는 오른쪽에서 나오고, 배경은 까만색으로 fade out
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_hold_fade_out)
+
         boardAdapter = MyArticleBoardAdapter()
         boardLayoutManager = LinearLayoutManager(this)
 
@@ -43,6 +47,8 @@ class MyArticleBoardActivity : AppCompatActivity() {
         }
 
         binding.backArrow.setOnClickListener {
+            // BoardActivity 는 오른쪽으로 퇴장, 새 창은 fade in
+            overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
             finish()
         }
 
@@ -120,11 +126,13 @@ class MyArticleBoardActivity : AppCompatActivity() {
                 }
             }
         })
-
-
-
-
     }
+    override fun onBackPressed() {
+        finish()
+        // BoardActivity 는 오른쪽으로 퇴장, 새 창은 fade in
+        overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
+    }
+
 
 
 }

@@ -100,8 +100,7 @@ class LoginActivity:AppCompatActivity() {
                 FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val param = LoginSocial(task.result.token.toString())
-                        viewModel.googleLogin(param, email) // TODO 디버그 용도!!!!!!!!!!!
-                        // viewModel.googleLogin(param, "abdjfjfhr@naver.com")
+                        viewModel.googleLogin(param, email)
                     }
                 }
             }

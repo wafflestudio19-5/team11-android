@@ -40,6 +40,9 @@ class ArticleViewModel @Inject constructor(
     private val _scrapResult = MutableLiveData<String>()
     val scrapResult : LiveData<String> = _scrapResult
 
+    private val _deleteArticleResult = MutableLiveData<String>()
+    val deleteArticleResult : LiveData<String> = _deleteArticleResult
+
     fun getArticle(boardId : Int, articleId : Int) {
         viewModelScope.launch {
             reload = false
@@ -148,13 +151,32 @@ class ArticleViewModel @Inject constructor(
     }
 
     fun deleteArticle(board_id: Int, article_id: Int){
-        viewModelScope.launch{
-            try{
-                val response: Success = service.deleteArticle(board_id, article_id)
-            } catch(e: IOException){
-                Timber.e(e)
-            }
+
+        try{
+            service.deleteArticle(board_id, article_id).clone().enqueue(object : Callback<Success>{
+                override fun onFailure(call: Call<Success>, t: Throwable) {
+                    _deleteArticleResult.value = "서버와의 통신에 실패하였습니다."
+                }
+
+                override fun onResponse(call: Call<Success>, response: Response<Success>) {
+                    if(response.isSuccessful) {
+                        // 게시글 삭제 성공
+                        _deleteArticleResult.value = "success"
+                    }
+                    else {
+                        // 에러
+                        val error = retrofit.responseBodyConverter<ErrorMessage>(
+                            ErrorMessage::class.java,
+                            ErrorMessage::class.java.annotations
+                        ).convert(response.errorBody())
+                        _deleteArticleResult.value = error!!.detail.toString()
+                    }
+                }
+            })
+        } catch(e: Exception){
+            Timber.e(e)
         }
+
     }
 
 

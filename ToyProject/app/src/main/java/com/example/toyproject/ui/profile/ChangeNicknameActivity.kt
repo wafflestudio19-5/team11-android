@@ -1,10 +1,10 @@
 package com.example.toyproject.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityChangeNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +16,9 @@ class ChangeNicknameActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChangeNicknameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
         binding.nicknameInputLayout.hint = intent.getStringExtra("nickname")
 
@@ -30,9 +33,7 @@ class ChangeNicknameActivity:AppCompatActivity() {
 
         viewModel.response.observe(this, {
             if(it.success==true){
-                val intent = Intent(this, UserActivity::class.java)
-                startActivity(intent)
-                setResult(RESULT_OK, Intent())
+                setResult(RESULT_OK)
                 finish()
             }
         })
@@ -44,10 +45,8 @@ class ChangeNicknameActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
+        setResult(RESULT_OK)
         finish()
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 }

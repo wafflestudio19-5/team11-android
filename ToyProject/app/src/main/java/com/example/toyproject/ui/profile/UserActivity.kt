@@ -39,7 +39,6 @@ import android.os.Build
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import com.example.toyproject.ui.main.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.user.UserApiClient
@@ -133,29 +132,67 @@ class UserActivity: AppCompatActivity() {
             binding.userProfile2.text = "${it.university} ${it.admission_year?.toString()?.substring(2)}학번"
         })
 
+
+        // RESULT_OK : 새로고침 (사용처: 닉네임 재설정)
+        // 999 : 상위 액티비티 싹 종료 (사용처: 비번, 이메일 재설정 완료, 계정 탈퇴)
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) viewModel.getUser()
+                if(it.resultCode == 999) {
+                    setResult(RESULT_OK)
+                    finish()
+                }
+            }
         binding.changeEmail.setOnClickListener{
             val intent = Intent(this, ChangeEmailActivity::class.java)
             intent.putExtra("email", email)
-            startActivity(intent)
-            setResult(RESULT_OK, Intent())
-            finish()
+            resultListener.launch(intent)
         }
 
         binding.changeNick.setOnClickListener{
             val intent = Intent(this, ChangeNicknameActivity::class.java)
             intent.putExtra("nickname", nickname)
-            startActivity(intent)
-            setResult(RESULT_OK, Intent())
-            finish()
+            resultListener.launch(intent)
         }
 
         binding.changePw.setOnClickListener{
             val intent = Intent(this, ChangePasswordActivity::class.java)
-            startActivity(intent)
-            setResult(RESULT_OK, Intent())
-            finish()
+            resultListener.launch(intent)
         }
 
+        binding.deleteAccount.setOnClickListener {
+            val intent = Intent(this, WithdrawalActivity::class.java)
+            resultListener.launch(intent)
+        }
+
+        binding.univCertify.setOnClickListener {
+            val intent = Intent(this, UnivCertifyActivity::class.java)
+            intent.putExtra("email", email)
+            resultListener.launch(intent)
+        }
+
+        binding.changeImage.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.change_image_dialog, null)
+            val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+
+            val  mAlertDialog = mBuilder.show()
+
+            val changeButton = mDialogView.findViewById<Button>(R.id.changeImageButton)
+            changeButton.setOnClickListener {
+                selectGallery()
+                mAlertDialog.dismiss()
+            }
+
+            val deleteButton = mDialogView.findViewById<Button>(R.id.deleteImageButton)
+            deleteButton.setOnClickListener {
+                //viewModel.putImage(null)
+                binding.profileImageView.setImageResource(R.drawable.anonymous_photo)
+                mAlertDialog.dismiss()
+            }
+        }
+
+        // 로그아웃 버튼
         binding.logout.setOnClickListener {
             // 구글 로그아웃
             Firebase.auth.signOut()
@@ -180,42 +217,6 @@ class UserActivity: AppCompatActivity() {
             startActivity(intent)
             setResult(RESULT_OK, Intent())
             finish()
-        }
-
-        binding.deleteAccount.setOnClickListener {
-            val intent = Intent(this, WithdrawalActivity::class.java)
-            startActivity(intent)
-            setResult(RESULT_OK, Intent())
-            finish()
-        }
-
-        binding.univCertify.setOnClickListener {
-            val intent = Intent(this, UnivCertifyActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent)
-            setResult(RESULT_OK, Intent())
-            finish()
-        }
-
-        binding.changeImage.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.change_image_dialog, null)
-            val mBuilder = AlertDialog.Builder(this)
-                .setView(mDialogView)
-
-            val  mAlertDialog = mBuilder.show()
-
-            val changeButton = mDialogView.findViewById<Button>(R.id.changeImageButton)
-            changeButton.setOnClickListener {
-                selectGallery()
-                mAlertDialog.dismiss()
-            }
-
-            val deleteButton = mDialogView.findViewById<Button>(R.id.deleteImageButton)
-            deleteButton.setOnClickListener {
-                //viewModel.putImage(null)
-                binding.profileImageView.setImageResource(R.drawable.anonymous_photo)
-                mAlertDialog.dismiss()
-            }
         }
     }
 
@@ -273,10 +274,7 @@ class UserActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        setResult(RESULT_OK, Intent())
         finish()
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
     }
 }

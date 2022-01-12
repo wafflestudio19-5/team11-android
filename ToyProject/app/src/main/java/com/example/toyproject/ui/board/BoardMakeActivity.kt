@@ -1,15 +1,14 @@
 package com.example.toyproject.ui.board
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityBoardMakeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -31,8 +30,13 @@ class BoardMakeActivity : AppCompatActivity() {
         binding = ActivityBoardMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
+
         binding.backButton.setOnClickListener {
             finish()
+            // 끝낼 떄는 아래로 내려가기
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_left)
         }
 
         binding.newBoardTitle.addTextChangedListener(object : TextWatcher {
@@ -76,6 +80,8 @@ class BoardMakeActivity : AppCompatActivity() {
                     }
                     else {
                         Timber.d("error: " + error)
+                        // TODO : 만든 게시판 바로 띄우기
+                        setResult(RESULT_OK)
                         finish()
                     }}, 1000)
 
@@ -94,10 +100,17 @@ class BoardMakeActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             finish()
+            // 끝낼 땐 아래로 내려가기
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
         }
 
 
 
+    }
+    override fun onBackPressed() {
+        finish()
+        // 끝낼 땐 아래로 내려가기
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
     }
 
 
