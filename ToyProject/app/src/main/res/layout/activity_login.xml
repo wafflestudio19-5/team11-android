@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logo_text2"
-            android:textColor="@color/everytime_red"
+            android:textColor="@color/Primary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -57,7 +57,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:privateImeOptions="defaultInputmode=English"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +70,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:hint="@string/password"
+            app:passwordToggleEnabled="true"
             android:paddingBottom="20dp"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
@@ -77,7 +80,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:privateImeOptions="defaultInputmode=english"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,10 +94,11 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_login"
-            android:backgroundTint="@color/everytime_red"
+            android:backgroundTint="@color/Primary"
             android:text="@string/login"
-            android:textColor="@color/white"
+            android:textColor="@color/OnPrimary"
             android:textSize="16sp" />
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signup_button"
@@ -101,11 +107,63 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:background="#00FFFFFF"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/OnPrimary"
             android:text="@string/signup"
-            android:textColor="@color/black"
+            android:textColor="@color/OnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/borderline"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="10dp"
+                android:text="다른 방법으로 로그인"
+                android:textAlignment="center"
+                android:textColor="@color/OnBackground"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <android.widget.ImageButton
+                    android:id="@+id/googleButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="@drawable/googleg_standard_color_18"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <android.widget.ImageButton
+                    android:id="@+id/kakaoButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:background="@drawable/kakaotalk_icon"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
 

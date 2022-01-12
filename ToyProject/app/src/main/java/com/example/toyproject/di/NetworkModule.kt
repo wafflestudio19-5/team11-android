@@ -3,7 +3,9 @@ package com.example.toyproject.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.toyproject.BuildConfig
+import com.example.toyproject.network.BoardService
 import com.example.toyproject.network.Service
+import com.example.toyproject.network.UserService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -18,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -78,4 +79,15 @@ object NetworkModule {
         }
     }
 
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBoardService(retrofit: Retrofit): BoardService {
+        return retrofit.create(BoardService::class.java)
+    }
 }

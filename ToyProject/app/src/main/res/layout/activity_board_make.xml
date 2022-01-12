@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_close_24" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새 게시판 만들기"
+            android:textColor="@color/OnBackground"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/make_board_button"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_login"
+            android:backgroundTint="@color/Primary"
+            android:text="완료"
+            android:textColor="@color/OnPrimary"
+            android:textSize="14sp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/new_board_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="이름"
+        android:text=""
+        android:layout_margin="10dp"
+        android:singleLine="true"/>
+
+    <EditText
+        android:id="@+id/new_board_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="설명"
+        android:text=""
+        android:layout_margin="10dp"
+        android:singleLine="true"/>
+
+    <LinearLayout
+        android:id="@+id/let_anonymous_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/borderline">
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="익명 허용"
+            android:layout_margin="15dp"
+            android:textSize="16dp"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

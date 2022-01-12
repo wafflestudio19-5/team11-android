@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.profile.UserActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/my_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:text="@string/my_profile"
+            android:textColor="@color/OnBackground"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
+        android:gravity="fill_vertical"
+        android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="25sp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/profileImageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:adjustViewBounds="false"
+                        android:cropToPadding="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/anonymous_photo" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/user_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/user_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@android:color/darker_gray" />
+                    <TextView
+                        android:id="@+id/user_profile2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@android:color/darker_gray" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="@string/account"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/univ_certify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/univ_certify"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/change_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/change_pw"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/change_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/change_email"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/community"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="@string/community"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/change_nick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/change_nick"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/change_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/change_image"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/set_dm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/set_dm"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/set_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/set_notification"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/logout"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+
+                <Button
+                    android:id="@+id/delete_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
+                    android:text="@string/delete_account"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/OnBackground" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

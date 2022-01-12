@@ -1,0 +1,183 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_close_24" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="글 쓰기"
+            android:textColor="@color/OnBackground"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/make_article_button"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_login"
+            android:backgroundTint="@color/Primary"
+            android:text="완료"
+            android:textColor="@color/OnPrimary"
+            android:textSize="14sp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/question_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/borderline_mint"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="질문 글을 작성하면 게시판상단에 일정 기간 동안 노출되어, 더욱 빠르게 답변을 얻을 수 있게 됩니다.
+\n또한, 다른 학우들이 정성껏 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 글을 수정 및 삭제할 수 없습니다. "
+            android:textColor="@color/SecondaryVariant"
+            android:textSize="11dp"
+            android:layout_margin="10dp"/>
+
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="제목"
+        android:text=""
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:singleLine="true"/>
+
+    <EditText
+        android:id="@+id/article_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="100dp"
+        android:background="@null"
+        android:hint="내용을 입력하세요."
+        android:text="" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/article_image_upload_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_article_upload_image" />
+
+    <ScrollView
+        android:id="@+id/warning_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:text="에브리타임은 누구나 기분 좋게 참여할 수 있는 커뮤니티를 만들기 위해 커뮤니티 이용규칙을 제정하여 운영하고 있습니다. 위반 시 게시물이 삭제되고 서비스 이용이 일정 기간 제한될 수 있습니다.\n\n
+
+아래는 이 게시판에 해당하는 핵심 내용에 대한 요약 사항이며, 게시물 작성 전 커뮤니티 이용규칙 전문을 반드시 확인하시기 바랍니다. \n\n
+
+※ 정치, 사회 관련 행위 금지\n
+- 국가 기관, 정치 관련 단체, 언론, 시민단체에 대한 언급 혹은 이와 관련한 행위\n
+- 정채, 외교 또는 정치, 정파에 대한 의견, 주장 및 이념, 가치관을 드러내는 행위\n
+-성별, 종료, 인종, 출신, 지역, 직업, 이념 등 사회적 이슈에 대한 언급 혹은 이와 관련한 행위\n
+- 위와 같은 내용으로 유추될 수 있는 비유, 은어 사용 행위\n
+* 해당 게시물은 시사이슈 게시판에만 작성 가능합니다. \n\n
+
+※ 홍보 및 판매 관련 행위 금지\n
+- 영리 여부와 관계 없이 사업체, 기관, 단체, 개인에게 직간접적으로 영향을 줄 수 있는 게시물 작성 행위\n
+- 위와 관련된 것으로 의심되거나 예상될 수 있는 바이럴 홍보 및 명칭, 단어 언급 행위\n
+* 해당 게시물은 홍보게시판에만 작성 가능합니다. \n\n
+
+※ 그 밖의 규칙 위반\n
+- 타인의 권리를 침해하거나 불쾌감을 주는 행위\n
+- 범죄, 불법 행위 등 법령을 위반하는 행위\n
+- 욕설, 비하, 차별, 혐오, 자살, 폭력 관련 내용을 포함한 게시물 작성 행위\n
+- 음란물, 성적 수치심을 유발하는 행위\n
+- 스포일러, 공포, 속임, 놀라게 하는 행위\n
+"
+            android:textSize="11dp" />
+
+
+    </ScrollView>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/gallery_button"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:background="@drawable/icon_camera" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <CheckBox android:id="@+id/question_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="질문"
+            android:textSize="12dp"
+            android:layout_marginRight="10dp"
+            android:onClick="onCheckboxClicked"/>
+
+        <CheckBox android:id="@+id/anonymous_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:text="익명"
+            android:layout_marginRight="15dp"
+            android:onClick="onCheckboxClicked"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

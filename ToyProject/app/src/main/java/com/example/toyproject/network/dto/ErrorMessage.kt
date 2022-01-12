@@ -9,7 +9,8 @@ data class ErrorMessage(
     val password : List<String>?,
     val name : List<String>?,
     val user_id : List<String>?,
-    val non_field_errors : List<String>?
+    val non_field_errors : List<String>?,
+    val access_token : List<String>?
 )
 
 fun parsing(errorMessage: ErrorMessage?) : String {
@@ -41,7 +42,9 @@ fun parsing(errorMessage: ErrorMessage?) : String {
         errorMessage?.non_field_errors != null -> {
             errorMessage.non_field_errors.toString()
         }
-
+        errorMessage?.access_token != null -> {
+            errorMessage.access_token.toString()
+        }
         else -> {
             "Error"
         }

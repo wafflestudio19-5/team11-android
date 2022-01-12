@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.toyproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--갤러리 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:windowSoftInputMode="adjustNothing"
+        android:requestLegacyExternalStorage="true"
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,17 +19,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
-        android:usesCleartextTraffic="true" >
-        <activity android:name=".UnivCertifyActivity" />
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SignupActivity"/>
+        android:usesCleartextTraffic="true">
+        <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+        <activity android:name=".ui.univsearch.UnivSearchActivity" />
+        <activity android:name=".ui.signup.SocialSignupActivity" />
+        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.signup.SignupActivity"/>
+        <activity android:name=".ui.profile.UserActivity"/>
+        <activity android:name=".ui.profile.ChangeEmailActivity"/>
+        <activity android:name=".ui.profile.ChangeNicknameActivity"/>
+        <activity android:name=".ui.profile.ChangePasswordActivity"/>
+        <activity android:name=".ui.profile.WithdrawalActivity"/>
+        <activity android:name=".ui.profile.UnivCertifyActivity"/>
+        <activity android:name=".ui.board.BoardActivity"/>
+        <activity android:name=".ui.article.ArticleActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".ui.board.BoardMakeActivity" />
+        <activity android:name=".ui.board.BoardSearchActivity" />
+        <activity android:name=".ui.article.ArticleMakeActivity" android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".ui.article.ArticleSearchActivity" />
+        <activity android:name=".ui.board.HotBestBoardActivity" />
+        <activity android:name=".ui.board.MyArticleBoardActivity" />
+        <activity android:name=".ui.main.homeFragment.BrowseActivity"/>
+        <activity android:name=".ui.main.homeFragment.HomeSettingActivity"/>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
+                <data android:host="oauth"
+                    android:scheme="kakao5975fe0b8a162b112ffc1963c2f0f765" />
             </intent-filter>
         </activity>
     </application>
