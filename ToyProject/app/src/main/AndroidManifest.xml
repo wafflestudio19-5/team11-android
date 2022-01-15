@@ -14,9 +14,9 @@
         android:requestLegacyExternalStorage="true"
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_waffle"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_waffle_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyProject"
         android:usesCleartextTraffic="true">

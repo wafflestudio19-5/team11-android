@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">ToyProject</string>
+    <string name="app_name">에브리타임</string>
     <string name="logo_text1">대학 생활을 더 편하고 즐겁게</string>
     <string name="logo_text2">에브리타임</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
-    <string name="login">에브리타임 로그인</string>
+    <string name="login">와브리타임 로그인</string>
     <string name="signup">회원가입</string>
     <string name="name">이름</string>
     <string name="check">중복확인</string>
@@ -40,4 +40,5 @@
     <string name="set_image">이미지 등록</string>
     <string name="color_my_comment">#259BA5</string>
     <string name="image_description">설명을 추가할 수 있어요.</string>
+    <string name="string_lost">아이디/비밀번호 찾기</string>
 </resources>
