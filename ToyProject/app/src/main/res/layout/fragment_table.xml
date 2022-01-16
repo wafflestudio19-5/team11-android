@@ -6,71 +6,81 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/fragment_table_top_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#FFFFFF"
+        android:elevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/fragment_table_semester"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="18dp"
             android:text="2021년 겨울학기"
-            android:textColor="@color/Error"
+            android:textColor="@color/Primary"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/fragment_table_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="11dp"
             android:text="시간표 1"
-            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textSize="22sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_table_semester" />
 
         <ImageButton
             android:id="@+id/table_button_add"
-            android:layout_width="48sp"
-            android:layout_height="36sp"
-            android:backgroundTint="@color/Background"
             style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/Background"
+            android:scaleType="fitEnd"
+            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/table_button_setting"
-            app:srcCompat="@drawable/table_button_add"
-            android:stateListAnimator="@null" />
+            app:srcCompat="@drawable/icn_m_add_black" />
 
         <ImageButton
             android:id="@+id/table_button_setting"
-            android:layout_width="48sp"
-            android:layout_height="36sp"
-            android:backgroundTint="@color/Background"
             style="?android:attr/borderlessButtonStyle"
-            android:scaleType="centerCrop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/Background"
+            android:scaleType="fitEnd"
+            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/table_button_list"
-            app:srcCompat="@drawable/table_button_setting"
-            android:stateListAnimator="@null" />
+            app:srcCompat="@drawable/icn_m_setting_gray800" />
 
         <ImageButton
             android:id="@+id/table_button_list"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="48dp"
-            android:layout_height="36dp"
-            android:layout_marginBottom="1dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="6dp"
             android:backgroundTint="@color/Background"
             android:scaleType="fitEnd"
+            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/table_button_list"
-            android:stateListAnimator="@null" />
+            app:srcCompat="@drawable/icn_m_list_gray800" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,15 +88,220 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
+        android:overScrollMode="never"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_table_top_layout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/fragment_table_default"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="130dp"
+                android:paddingBottom="130dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:srcCompat="@drawable/icn_l_timetable_gray400" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="이번 학기 시간표를 만들어주세요"
+                    android:textAlignment="center"
+                    android:textColor="#A7A7A7"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/fragment_table_make_button"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/btn_login"
+                    android:backgroundTint="#C52A18"
+                    android:text="새 시간표 만들기"
+                    android:textColor="@color/OnPrimary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_table_calculator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="학점계산기"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/icn_m_edit_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="7dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:text="평균 학점"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/fragment_table_average"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="0"
+                        android:textColor="@color/Primary"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/fragment_table_grade_denominator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="30dp"
+                        android:text="/ 4.3"
+                        android:textColor="#B1B1B1"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:text="취득 학점"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/fragment_table_credit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="0"
+                        android:textColor="@color/Primary"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/fragment_table_credit_denominator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/ 150"
+                        android:textColor="#B1B1B1"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_table_friend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/borderline"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="친구 시간표"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/icn_m_add_black" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="66dp"
+                    android:layout_marginBottom="6dp"
+                    app:srcCompat="@drawable/icn_l_friend_gray400" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="등록된 친구가 없습니다"
+                    android:textAlignment="center"
+                    android:textColor="#A6A6A6"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="70dp"
+                    android:text="친구를 추가하면 시간표를 확인할 수 있어요!\n(커뮤니티 활동 내역은 공개되지 않아요.)"
+                    android:textAlignment="center"
+                    android:textColor="#A6A6A6"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

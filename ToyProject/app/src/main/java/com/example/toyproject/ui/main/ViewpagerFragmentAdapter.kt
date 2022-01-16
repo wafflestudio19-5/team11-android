@@ -7,7 +7,7 @@ import com.example.toyproject.ui.main.homeFragment.HomeFragment
 import com.example.toyproject.ui.main.listFragment.ListFragment
 import com.example.toyproject.ui.main.listFragment.NotifyFragment
 import com.example.toyproject.ui.main.listFragment.PolicyFragment
-import com.example.toyproject.ui.main.listFragment.TableFragment
+import com.example.toyproject.ui.main.tableFragment.TableFragment
 
 class ViewpagerFragmentAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
