@@ -73,7 +73,10 @@
                         android:id="@+id/my_article_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -98,7 +101,10 @@
                         android:id="@+id/my_comment_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -123,7 +129,10 @@
                         android:id="@+id/my_scrap_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -148,7 +157,10 @@
                         android:id="@+id/hot_board_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -173,7 +185,10 @@
                         android:id="@+id/best_board_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
