@@ -13,6 +13,7 @@ data class ArticleContent (
     val scrap_count : Int,
     val has_scraped : Boolean,
     val is_mine : Boolean,
+    val is_question: Boolean,
     val comment_count : Int,
     val image_count : Int,
     val created_at : String,

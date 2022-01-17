@@ -80,6 +80,9 @@ class ArticleActivity : SwipeDismissBaseActivity(){
         var hasScraped = false
         // 게시글 내용물들 다 불러왔으면 채워넣기
         viewModel.result.observe(this, {
+            if(it.is_question){
+                binding.questionLayout.visibility = View.VISIBLE
+            }
             //게시글 작성자 프로필 이미지 불러오기
             val credentials: BasicAWSCredentials
             val key = getString(R.string.AWS_ACCESS_KEY_ID)
