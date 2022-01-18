@@ -20,4 +20,59 @@
         <item>2007</item>
         <item>2006</item>
     </string-array>
+
+    <string-array name="semesters">
+        <item>2022년 겨울학기</item>
+        <item>2022년 2학기</item>
+        <item>2022년 여름학기</item>
+        <item>2022년 1학기</item>
+        <item>2021년 겨울학기</item>
+        <item>2021년 2학기</item>
+        <item>2021년 여름학기</item>
+        <item>2021년 1학기</item>
+        <item>2020년 겨울학기</item>
+        <item>2020년 2학기</item>
+        <item>2020년 여름학기</item>
+        <item>2020년 1학기</item>
+        <item>2019년 겨울학기</item>
+        <item>2019년 2학기</item>
+        <item>2019년 여름학기</item>
+        <item>2019년 1학기</item>
+        <item>2018년 겨울학기</item>
+        <item>2018년 2학기</item>
+        <item>2018년 여름학기</item>
+        <item>2018년 1학기</item>
+        <item>2017년 겨울학기</item>
+        <item>2017년 2학기</item>
+        <item>2017년 여름학기</item>
+        <item>2017년 1학기</item>
+        <item>2016년 겨울학기</item>
+        <item>2016년 2학기</item>
+        <item>2016년 여름학기</item>
+        <item>2016년 1학기</item>
+        <item>2015년 겨울학기</item>
+        <item>2015년 2학기</item>
+        <item>2015년 여름학기</item>
+        <item>2015년 1학기</item>
+        <item>2014년 겨울학기</item>
+        <item>2014년 2학기</item>
+        <item>2014년 여름학기</item>
+        <item>2014년 1학기</item>
+        <item>2013년 겨울학기</item>
+        <item>2013년 2학기</item>
+        <item>2013년 여름학기</item>
+        <item>2013년 1학기</item>
+        <item>2012년 겨울학기</item>
+        <item>2012년 2학기</item>
+        <item>2012년 여름학기</item>
+        <item>2012년 1학기</item>
+        <item>2011년 겨울학기</item>
+        <item>2011년 2학기</item>
+        <item>2011년 여름학기</item>
+        <item>2011년 1학기</item>
+        <item>2010년 겨울학기</item>
+        <item>2010년 2학기</item>
+        <item>2010년 여름학기</item>
+        <item>2010년 1학기</item>
+    </string-array>
 </resources>

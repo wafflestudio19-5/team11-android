@@ -34,7 +34,6 @@
             android:textColor="@color/home_fragment_cell_title"
             android:textSize="@dimen/home_fragment_menu_title_text_size"
             android:textStyle="bold" />
-
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"

@@ -83,7 +83,7 @@
                 android:id="@+id/table_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/fragment_table_semester_cell"
+                tools:listitem="@layout/item_table_list_semester_cell"
                 android:overScrollMode="never"
                 android:nestedScrollingEnabled="false"/>
         </LinearLayout>

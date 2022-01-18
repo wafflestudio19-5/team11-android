@@ -6,12 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.databinding.FragmentTableSemesterCellBinding
 import com.example.toyproject.network.dto.table.Semester
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
-import com.example.toyproject.network.dto.table.Schedule
 import java.lang.StringBuilder
 
 
@@ -23,7 +20,7 @@ class TableListAdapter(private val context: Context) :
     private var list: MutableList<Semester> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableListAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.fragment_table_semester_cell, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_table_list_semester_cell, parent, false)
         return Holder(view)
     }
 

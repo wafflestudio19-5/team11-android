@@ -1,6 +1,8 @@
 package com.example.toyproject.ui.main.tableFragment
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +30,6 @@ class TableListActivity : AppCompatActivity() {
         binding = ActivityTableListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         // 시간표 리스트 표시할 recyclerView
         tableListAdapter = TableListAdapter(this)
         tableListLayoutManager = LinearLayoutManager(this)
@@ -42,6 +43,20 @@ class TableListActivity : AppCompatActivity() {
         viewModel.semesterList.observe(this, {
             tableListAdapter.setSemesters(it)
         })
+
+        // "RESULT_OK" : 새로고침 하기
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == AppCompatActivity.RESULT_OK) {
+                    viewModel.loadScheduleList()
+                }
+            }
+
+        // 시간표 생성 버튼
+        binding.tableListAddTable.setOnClickListener {
+            val intent = Intent(this, TableMakeActivity::class.java)
+            resultListener.launch(intent)
+        }
 
 
         // 뒤로가기 버튼
