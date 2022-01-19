@@ -40,6 +40,7 @@ class MyArticleBoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     profileNickname.text = data.user_nickname
                     if(data.image_count==0){
                         articleImageIcon.visibility = View.INVISIBLE
+                        articleImageNumber.visibility = View.INVISIBLE
                     }else{
                         articleImageIcon.visibility = View.VISIBLE
                         articleImageNumber.text = data.image_count.toString()

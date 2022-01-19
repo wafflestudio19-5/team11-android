@@ -111,6 +111,7 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                             .fitCenter()
                     )
                     .load(url.toString())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(findViewById(R.id.article_full_writer_profile))
             }
