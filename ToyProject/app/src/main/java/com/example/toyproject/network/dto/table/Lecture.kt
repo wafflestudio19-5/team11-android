@@ -20,3 +20,21 @@ data class Lecture (
     val location : String,
     val subject_professor : Int
 )
+
+data class CustomLecture (
+    val id : Int,
+    val lecture : Int?,
+    val nickname : String,
+    val professor : String?,
+    val time : String,
+    val location : String?,
+    val memo : String?
+)
+
+data class CustomLectureAdd (
+    val nickname : String,
+    val professor : String?,
+    val time : String,
+    val location : String?,
+    val memo : String?
+)

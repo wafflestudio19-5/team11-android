@@ -45,6 +45,7 @@
         <activity android:name=".ui.main.homeFragment.HomeSettingActivity"/>
         <activity android:name=".ui.main.tableFragment.TableListActivity"/>
         <activity android:name=".ui.main.tableFragment.TableMakeActivity"/>
+        <activity android:name=".ui.main.tableFragment.TableAddLectureDefaultActivity" android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
