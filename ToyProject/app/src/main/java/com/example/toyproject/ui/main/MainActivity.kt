@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +20,15 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import javax.inject.Inject
+import android.util.DisplayMetrics
+import android.view.Display
+import com.example.toyproject.ui.main.tableFragment.Cell
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    public val context_main : Context = this
 
     @Inject
     lateinit var service: Service
@@ -41,6 +48,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         // 로그인 화면에서 진입할 때 페이드 인 효과
         overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_nothing)

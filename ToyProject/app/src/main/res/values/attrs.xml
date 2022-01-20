@@ -8,4 +8,12 @@
 
         <attr name="preparingVisible" format="reference|integer"/>
     </declare-styleable>
+
+    <declare-styleable name="TableAddCustomLectureView">
+        <attr name="day" format="reference|string"/>
+        <attr name="startTime" format="reference|string"/>
+        <attr name="endTime" format="reference|string"/>
+        <attr name="location" format="reference|string"/>
+    </declare-styleable>
+
 </resources>
