@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp" >
+
+    <TextView
+        android:id="@+id/lecture_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:text="과목명 : 교수명"
+        android:layout_gravity="start"
+        android:textColor="@color/OnBackground"
+        android:textSize="16dp" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:progressTint="#FFC107"
+        android:rating="3"
+        android:stepSize="1" />
+
+    <TextView
+        android:id="@+id/lecture_semester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:text="21년 1학기 수강자"
+        android:layout_gravity="start"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/review_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:text="강의평"
+        android:layout_gravity="start"
+        android:textColor="@color/OnBackground"
+        android:textSize="12dp" />
+</LinearLayout>

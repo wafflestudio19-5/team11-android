@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginTop="6dp" >
+
+    <TextView
+        android:id="@+id/lecture_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:text="과목명"
+        android:layout_gravity="center"
+        android:textColor="@color/OnBackground"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/professor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_gravity="center"
+        android:text="교수명"
+        android:textSize="11sp"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_login"
+        android:backgroundTint="@color/Primary"
+        android:layout_gravity="center"
+        android:text="평가하기"
+        android:textColor="@android:color/white"
+        tools:ignore="DuplicateSpeakableTextCheck"
+        android:textSize="11sp" />
+</LinearLayout>
