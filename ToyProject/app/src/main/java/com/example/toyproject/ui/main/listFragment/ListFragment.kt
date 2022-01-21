@@ -19,6 +19,7 @@ import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.board.BoardSearchActivity
 import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.board.MyArticleBoardActivity
+import com.example.toyproject.ui.review.ReviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -149,6 +150,12 @@ class ListFragment : Fragment() {
             Intent(activity, HotBestBoardActivity::class.java).apply{
                 putExtra("board_name", "BEST 게시판")
                 putExtra("board_interest", "best")
+            }.run{resultListener.launch(this)}
+        }
+
+        binding.lectureReviewView.setOnClickListener {
+            Intent(activity, ReviewActivity::class.java).apply {
+
             }.run{resultListener.launch(this)}
         }
 

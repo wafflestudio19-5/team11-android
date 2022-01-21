@@ -21,6 +21,16 @@
         <item>2006</item>
     </string-array>
 
+    <string-array name="exam_type">
+        <item>중간고사</item>
+        <item>기말고사</item>
+        <item>1차</item>
+        <item>2차</item>
+        <item>3차</item>
+        <item>4차</item>
+        <item>기타</item>
+    </string-array>
+
     <string-array name="semesters">
         <item>2022년 겨울학기</item>
         <item>2022년 2학기</item>
