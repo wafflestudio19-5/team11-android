@@ -19,10 +19,6 @@ import android.widget.*
 import java.util.ArrayList
 import kotlin.NullPointerException
 
-
-
-
-
 @AndroidEntryPoint
 class TableFragment : Fragment() {
 
@@ -71,17 +67,29 @@ class TableFragment : Fragment() {
                     val cols = it.data?.getIntegerArrayListExtra("cols")
 
                     titles!!.indices.forEach { i ->
-                        makeCell(titles[i], colors!![i], starts!![i], spans!![i], cols!![i])        // TODO : 임시로 해시코드임
-                        myCells.add(Cell(titles[i], colors[i], starts[i], spans[i], cols[i], titles[i].hashCode(), null))
+                        val newCellView = makeCell(titles[i], colors!![i], starts!![i], spans!![i], cols!![i])
+                                                                                            // TODO : 임시로 해시코드임
+                        val newCellObject = Cell(titles[i], colors[i], starts[i], spans[i], cols[i], titles[i].hashCode(), null)
+                        myCells.add(newCellObject)
                         for(row in starts[i].toInt() until starts[i].toInt()+spans[i].toInt()) {
                             occupyTable[Pair(row, cols[i])] = titles[i]
                         }
+
+                        // TODO : hashcode 는 임시, 저쪽 액티비티에선 .info 에 title.hashcode 저장중
+                        newCellView.info = newCellObject.custom_id.toString()
+                        if(lectureHashMap.containsKey(newCellView.info)){
+                            lectureHashMap[newCellView.info]?.add(newCellView)
+                        }
+                        else {
+                            lectureHashMap[titles[i].hashCode().toString()] = mutableListOf(newCellView)
+                        }
                     }
                     adjustTableHeight(findFastestTime(), findLatestTime())
+                    addBorder(findFastestTime(), findLatestTime())
                 }
             }
 
-        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY로 쓸 것
+        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것 or 객체 자체를?
         // TODO : makeCell 함수의 인자를 lecture 로 바꿔버리기.
         // Grid 의 각 item 을 같은 수업 단위로 묶어서 해시맵에 넣고, 클릭 이벤트 설정
         val grid = view.findViewById(R.id.table_now) as androidx.gridlayout.widget.GridLayout
@@ -94,7 +102,7 @@ class TableFragment : Fragment() {
                     lectureHashMap.get<Any, MutableList<TableCellView>>(container.info)?.add(container)
                 }
                 else {
-                    lectureHashMap[container.info.toString()] = mutableListOf(container)
+                    lectureHashMap[container.info] = mutableListOf(container)
                 }
                 container.setOnClickListener {
                     try {
@@ -117,7 +125,7 @@ class TableFragment : Fragment() {
         // 시간표 없을 때만 보이는, 새 시간표 만들기 창
         binding.fragmentTableMakeButton.setOnClickListener {
             // TODO : 지금 년도, 학기 구해서 Schedule 객체 목록에 추가하기
-            binding.fragmentTableDefault.visibility = GONE
+            binding.fragmentTableDefault.visibility = GONE // TODO : 임시
         }
 
         // 강의 추가 버튼
@@ -196,6 +204,7 @@ class TableFragment : Fragment() {
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
+                if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
                 val item = TextView(activity)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
@@ -212,7 +221,7 @@ class TableFragment : Fragment() {
         // 테두리에 강의가 가려져서 나뉘어 보이지 않도록
         for(c in 0 until binding.tableNow.childCount) {
             val view = binding.tableNow.getChildAt(c)
-            if(view is TableCellView) binding.tableNow.getChildAt(c).bringToFront()
+            if(view is TableCellView) view.bringToFront()
         }
     }
 

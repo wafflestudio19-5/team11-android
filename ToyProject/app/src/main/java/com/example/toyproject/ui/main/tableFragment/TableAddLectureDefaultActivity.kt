@@ -1,7 +1,6 @@
 package com.example.toyproject.ui.main.tableFragment
 
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -13,14 +12,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.widget.*
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
 import androidx.core.view.children
-import com.example.toyproject.ui.main.MainActivity
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.max
@@ -65,7 +61,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         binding = ActivityTableAddLectureBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO 디폴트 강의 정보 추가하기
+        // 디폴트 강의 정보 추가하기
         val titles = intent.getStringArrayListExtra("titles")
         val colors = intent.getStringArrayListExtra("colors")
         val starts = intent.getIntegerArrayListExtra("starts")
@@ -77,13 +73,14 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                 occupyTable[Pair(row, cols[i])] = titles[i]
             }
         }
-
+        
+        // 그림자 점유 테이블 초기화
+        for(row in 1..96) for(col in 2..10 step(2)) shadowOccupyTable[Pair(row, col)] = 0
         // 시간표에 가로 테두리 칠하기
         addBorder(findFastestTime(), findLatestTime())
         // 시간표 세로 길이 동적 조정
         adjustTableHeight(findFastestTime(), findLatestTime())
-        // 그림자 점유 테이블 초기화
-        for(row in 1..96) for(col in 2..10 step(2)) shadowOccupyTable[Pair(row, col)] = 0
+
 
         // 완료 버튼
         binding.addLectureButton.setOnClickListener {
@@ -107,22 +104,17 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                 // 강의 정보 추출
                 val title = binding.addLectureTitle.text.toString()
                 val professor : String = binding.addLectureInstructor.text.toString()
-
-                val times = binding.addLectureScrollBottom.children.iterator()
-
+                val locations : MutableList<String> = mutableListOf()
                 // 일단 color 는 랜덤으로
                 val colorCode = randomColor()
 
-                // 여러 시간대 별 정보 저장할 곳
-                val starts : MutableList<Int> = mutableListOf()
-                val ends : MutableList<Int> = mutableListOf()
-                val cols : MutableList<Int> = mutableListOf()
 
-                val locations : MutableList<String> = mutableListOf()
+                val cells = mutableListOf<Cell>()
 
-                // 각 시간대별로 셀 추가
-                while(times.hasNext()) {
-                    val curr = times.next()
+                val timeLocationLayout = binding.addLectureScrollBottom.children.iterator()
+                // 각 시간대별로 셀 정보 추출 및 중복확인
+                while(timeLocationLayout.hasNext()) {
+                    val curr = timeLocationLayout.next()
                     if(curr is TableAddCustomLectureView) {
                         // 요일 정보 구해서 col 넘버로 변환
                         val dayTextView = curr.findViewById<TextView>(R.id.make_custom_lecture_day_text)
@@ -143,22 +135,22 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                             Toast.makeText(this, "'$isDuplicate'수업과 시간이 겹칩니다.", Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
                         }
-
-                        // TODO 통신해서 id 받아오기
-                        makeCell(title, colorCode, start, span, col)
-
-
-                        // 중복 테이블에 정보 추가
-                        for(row in start until end) occupyTable[Pair(row, col)] = title
-                        // 그림자 점유 테이블에서 정보 삭제
-                        removeShadowOccupy(start, end, col)
+                        // 중복 확인했으면 후보 리스트에 추가                     // TODO : 통신 이후 ID 추가
+                        cells.add(Cell(title, colorCode, start, span, col, title.hashCode(), null))
                     }
                     else {
                         continue
                     }
                 }
-                val time = buildCommunicateTimeString(starts, ends, cols)
-
+                // 중복 확인 다 완료하고, 실제 시간표에 뷰 삽입
+                val cellIterator = cells.iterator()
+                while(cellIterator.hasNext()) {
+                    val oneCell = cellIterator.next()
+                    // TODO 통신해서 id 받아오기
+                    makeCell(oneCell.title, oneCell.color, oneCell.start, oneCell.span, oneCell.col)
+                    // 중복 테이블에 셀 정보 추가
+                    for(row in oneCell.start until (oneCell.start+oneCell.span)) occupyTable[Pair(row, oneCell.col)] = title
+                }
 
                 // editText 초기화, 시간정보 뷰 삭제 -> TODO 통신 추가하면 통신 이후에 할 일
                 binding.addLectureTitle.text.clear()
@@ -171,6 +163,9 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                     shadowHashMap.remove(toDelete)
                     binding.addLectureScrollBottom.removeViewAt(4)
                 }
+                // 그림자 점유 테이블 초기화
+                for(row in 1..96) for(col in 2..10 step(2)) shadowOccupyTable[Pair(row, col)] = 0
+                shadowHashMap.clear()
             }
         }
 
@@ -186,22 +181,6 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             val endTimeSelectText = newCustomLecture.findViewById<TextView>(R.id.make_custom_lecture_end_time_text)
             val deleteButton = newCustomLecture.findViewById<ImageView>(R.id.make_custom_lecture_delete_button)
 
-
-            fun addShadowCell() : TableCellView {
-                // 해당 시간의 그림자도 미리보기 시간표에 추가
-                val col = dayStringToColInt(daySelect.findViewById<TextView>(R.id.make_custom_lecture_day_text).text.toString())
-                val start = timeStringToRowInt(startTimeSelectText.text.toString())
-                val end = timeStringToRowInt(endTimeSelectText.text.toString())
-                val shadow = makeShadowCell(start, end-start, col)
-                shadowHashMap[newCustomLecture] = shadow
-
-                // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
-                binding.addLecturePreview.post {
-                    binding.addLecturePreview.scrollTo(0, shadow.top)
-                }
-                return shadow
-            }
-
             // 요일 선택
             daySelect.setOnClickListener {
                 val builderSingle = AlertDialog.Builder(this)
@@ -215,15 +194,22 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                     val end = timeStringToRowInt(endTimeSelectText.text.toString())
 
                     // 확인 누르면 기존 그림자 삭제
-                    binding.tableNow.removeView(shadowHashMap[newCustomLecture])
+                    val a = shadowHashMap.remove(newCustomLecture)
+                    binding.tableNow.removeView(a)
                     removeShadowOccupy(start, end, col)
 
                     // 선택된 요일 표시 텍스트 바꾸기
                     val selectedDay = arrayAdapter.getItem(which)
                     it.findViewById<TextView>(R.id.make_custom_lecture_day_text).text = selectedDay.toString()
                     // 그림자 새로 생성
-                    val newShadow = addShadowCell()
-                    shadowHashMap[newCustomLecture] = newShadow
+                    val colNew = dayStringToColInt(daySelect.findViewById<TextView>(R.id.make_custom_lecture_day_text).text.toString())
+                    val shadow = makeShadowCell(start, end-start, colNew)
+                    // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+                    binding.addLecturePreview.post {
+                        binding.addLecturePreview.scrollTo(0, shadow.top - 15)
+                    }
+                    shadowHashMap[newCustomLecture] = shadow
+                    shadow.bringToFront()
                 }
                 builderSingle.show()
             }
@@ -257,7 +243,15 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                             else endTimeSelectText.text = buildTimeString(hourOfDay+1, minute)
                         }
                         // 그림자 새로 생성
-                        addShadowCell()
+                        val startNew = timeStringToRowInt(startTimeSelectText.text.toString())
+                        val endNew = timeStringToRowInt(endTimeSelectText.text.toString())
+                        val shadow = makeShadowCell(startNew, endNew-startNew, col)
+                        // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+                        binding.addLecturePreview.post {
+                            binding.addLecturePreview.scrollTo(0, shadow.top - 15)
+                        }
+                        shadowHashMap[newCustomLecture] = shadow
+                        shadow.bringToFront()
                     }
                 val hourMin = startTimeSelectText.text.split(":")
                 // 설정 창 디폴트 값은 기존 값으로. (10시인 상태에서 클릭했으면 스피너도 10시부터 돌게)
@@ -299,7 +293,15 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                             }
                         }
                         // 그림자 새로 생성
-                        addShadowCell()
+                        val startNew = timeStringToRowInt(startTimeSelectText.text.toString())
+                        val endNew = timeStringToRowInt(endTimeSelectText.text.toString())
+                        val shadow = makeShadowCell(startNew, endNew-startNew, col)
+                        // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+                        binding.addLecturePreview.post {
+                            binding.addLecturePreview.scrollTo(0, shadow.top - 15)
+                        }
+                        shadowHashMap[newCustomLecture] = shadow
+                        shadow.bringToFront()
                     }
                 val hourMin = endTimeSelectText.text.split(":")
                 // 설정 창 디폴트 값은 기존 값으로. (10시인 상태에서 클릭했으면 스피너도 10시부터 돌게)
@@ -338,31 +340,41 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
             // 이렇게 완성한 객체를 scrollView 에 추가
             binding.addLectureScrollBottom.addView(newCustomLecture, binding.addLectureScrollBottom.childCount-1)
-            addShadowCell()
+            // 해당 시간의 그림자도 미리보기 시간표에 추가
+            val col = dayStringToColInt(daySelect.findViewById<TextView>(R.id.make_custom_lecture_day_text).text.toString())
+            val start = timeStringToRowInt(startTimeSelectText.text.toString())
+            val end = timeStringToRowInt(endTimeSelectText.text.toString())
+            val shadow = makeShadowCell(start, end-start, col)
+            // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+            binding.addLecturePreview.post {
+                binding.addLecturePreview.scrollTo(0, shadow.top - 15)
+            }
+            shadowHashMap[newCustomLecture] = shadow
+            shadow.bringToFront()
         }
 
         // X 버튼
         binding.tableAddLectureCloseButton.setOnClickListener {
-            val titles : ArrayList<String?> = arrayListOf()
-            val colors : ArrayList<String?> = arrayListOf()
-            val starts : ArrayList<Int> = arrayListOf()
-            val spans : ArrayList<Int> = arrayListOf()
-            val cols : ArrayList<Int> = arrayListOf()
+            val titlesFinal : ArrayList<String?> = arrayListOf()
+            val colorsFinal : ArrayList<String?> = arrayListOf()
+            val startsFinal : ArrayList<Int> = arrayListOf()
+            val spansFinal : ArrayList<Int> = arrayListOf()
+            val colsFinal : ArrayList<Int> = arrayListOf()
 
             val iter = cells.iterator()
             while(iter.hasNext()) {
                 val cell = iter.next()
-                titles.add(cell.title)
-                colors.add(cell.color)
-                starts.add(cell.start)
-                spans.add(cell.span)
-                cols.add(cell.col)
+                titlesFinal.add(cell.title)
+                colorsFinal.add(cell.color)
+                startsFinal.add(cell.start)
+                spansFinal.add(cell.span)
+                colsFinal.add(cell.col)
             }
-            setResult(RESULT_OK, intent.putStringArrayListExtra("titles", titles))
-            setResult(RESULT_OK, intent.putStringArrayListExtra("colors", colors))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("starts", starts))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("spans", spans))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("cols", cols))
+            setResult(RESULT_OK, intent.putStringArrayListExtra("titles", titlesFinal))
+            setResult(RESULT_OK, intent.putStringArrayListExtra("colors", colorsFinal))
+            setResult(RESULT_OK, intent.putIntegerArrayListExtra("starts", startsFinal))
+            setResult(RESULT_OK, intent.putIntegerArrayListExtra("spans", spansFinal))
+            setResult(RESULT_OK, intent.putIntegerArrayListExtra("cols", colsFinal))
             finish()
             // 끝낼 땐 아래로 내려가기
             overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
@@ -447,9 +459,9 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
     // 미리보기 시간표에 그림자 셀 추가하기
     private fun makeShadowCell(start : Int, span: Int, col : Int) : TableCellView {
-        val item = TableCellView(this)
+        val item =  TableCellView(this)
 
-        item.setBackgroundColor(Color.parseColor("#80000000"))
+        item.setBackgroundColor(Color.parseColor("#803C3C3C"))
         item.width = colWidth
         item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
 
@@ -464,6 +476,9 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             val temp = shadowOccupyTable[Pair(row, col)]
             if (temp != null) {
                 shadowOccupyTable[Pair(row, col)] = temp + 1
+            }
+            else {
+                shadowOccupyTable[Pair(row, col)] = 1
             }
         }
 
@@ -492,6 +507,8 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
+                if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
+                if(shadowOccupyTable[Pair(time, col)]!!>0) continue  // 역시, 그림자도 border 로 쪼개지지 않도록
                 val item = TextView(this)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
@@ -506,10 +523,10 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             }
         }
         // 테두리에 강의가 가려져서 나뉘어 보이지 않도록
-        for(c in 0 until binding.tableNow.childCount) {
-            val view = binding.tableNow.getChildAt(c)
-            if(view is TableCellView) binding.tableNow.getChildAt(c).bringToFront()
-        }
+//        for(c in 0 until binding.tableNow.childCount) {
+//            val view = binding.tableNow.getChildAt(c)
+//            if(view is TableCellView) binding.tableNow.getChildAt(c).bringToFront()
+//        }
     }
 
     // 시간표 상 수업 중 가장 나중 시간 row 번호
