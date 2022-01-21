@@ -1343,6 +1343,7 @@
                 android:id="@+id/fragment_table_calculator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/borderline"
                 android:orientation="vertical"

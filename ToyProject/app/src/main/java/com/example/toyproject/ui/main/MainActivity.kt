@@ -28,8 +28,6 @@ import com.example.toyproject.ui.main.tableFragment.Cell
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    public val context_main : Context = this
-
     @Inject
     lateinit var service: Service
 

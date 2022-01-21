@@ -1,6 +1,4 @@
 package com.example.toyproject.ui.main.tableFragment
-
-
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -10,30 +8,33 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.ArrayAdapter
 import androidx.core.view.children
+import kotlinx.parcelize.Parceler
+import kotlinx.parcelize.Parcelize
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.max
 import kotlin.math.min
 
-
-
-
 @AndroidEntryPoint
 class TableAddLectureDefaultActivity : AppCompatActivity() {
-
-
 
     private lateinit var binding : ActivityTableAddLectureBinding
     private val viewModel : TableAddLectureDefaultViewModel by viewModels()
 
-    // TODO : 나중에 key 를 Lecture 로 바꿀 것
+    // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
     private val lectureHashMap : HashMap<String, MutableList<TableCellView>> = hashMapOf()
     private val shadowHashMap : HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 
@@ -44,7 +45,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
     private val cells = mutableListOf<Cell>()
 
-    var colWidth : Int = 0
+    private var colWidth : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,19 +62,12 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         binding = ActivityTableAddLectureBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val cellInfo : ArrayList<Cell> = intent.getParcelableArrayListExtra("cellInfo")!!
         // 디폴트 강의 정보 추가하기
-        val titles = intent.getStringArrayListExtra("titles")
-        val colors = intent.getStringArrayListExtra("colors")
-        val starts = intent.getIntegerArrayListExtra("starts")
-        val spans = intent.getIntegerArrayListExtra("spans")
-        val cols = intent.getIntegerArrayListExtra("cols")
-        for(i in 0 until titles!!.size) {
-            makeCell(titles!![i], colors!![i], starts!![i], spans!![i], cols!![i])
-            for(row in starts[i].toInt() until starts[i].toInt()+spans[i].toInt()) {
-                occupyTable[Pair(row, cols[i])] = titles[i]
-            }
+        cellInfo.forEach { i ->
+            makeCell(i)
         }
-        
+
         // 그림자 점유 테이블 초기화
         for(row in 1..96) for(col in 2..10 step(2)) shadowOccupyTable[Pair(row, col)] = 0
         // 시간표에 가로 테두리 칠하기
@@ -103,31 +97,33 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
                 // 강의 정보 추출
                 val title = binding.addLectureTitle.text.toString()
-                val professor : String = binding.addLectureInstructor.text.toString()
-                val locations : MutableList<String> = mutableListOf()
+                val instructor : String = binding.addLectureInstructor.text.toString()
                 // 일단 color 는 랜덤으로
                 val colorCode = randomColor()
 
 
                 val cells = mutableListOf<Cell>()
 
-                val timeLocationLayout = binding.addLectureScrollBottom.children.iterator()
+                val timeLocationLayout = binding.addLectureScrollBottom.children.iterator().withIndex()
                 // 각 시간대별로 셀 정보 추출 및 중복확인
                 while(timeLocationLayout.hasNext()) {
                     val curr = timeLocationLayout.next()
-                    if(curr is TableAddCustomLectureView) {
+                    if(curr.value is TableAddCustomLectureView) {
                         // 요일 정보 구해서 col 넘버로 변환
-                        val dayTextView = curr.findViewById<TextView>(R.id.make_custom_lecture_day_text)
+                        val dayTextView = curr.value.findViewById<TextView>(R.id.make_custom_lecture_day_text)
                         val col = dayStringToColInt(dayTextView.text.toString())
 
                         // 시작 시간 정보 구해서 start row 넘버로 변환
-                        val startTimeTextView = curr.findViewById<TextView>(R.id.make_custom_lecture_start_time_text)
+                        val startTimeTextView = curr.value.findViewById<TextView>(R.id.make_custom_lecture_start_time_text)
                         val start = timeStringToRowInt(startTimeTextView.text.toString())
 
                         // 시작 ~ 끝 길이 구해서 span 넘버로 전화
-                        val endTimeTextView = curr.findViewById<TextView>(R.id.make_custom_lecture_end_time_text)
+                        val endTimeTextView = curr.value.findViewById<TextView>(R.id.make_custom_lecture_end_time_text)
                         val end = timeStringToRowInt(endTimeTextView.text.toString())
                         val span = end - start
+
+                        // 장소 정보 추출
+                        val location = curr.value.findViewById<EditText>(R.id.make_custom_lecture_location).text.toString()
 
                         // 기존 시간표와 중복 확인
                         val isDuplicate : String? = checkDuplicate(start, end, col)
@@ -136,20 +132,15 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                             return@setOnClickListener
                         }
                         // 중복 확인했으면 후보 리스트에 추가                     // TODO : 통신 이후 ID 추가
-                        cells.add(Cell(title, colorCode, start, span, col, title.hashCode(), null))
+                        cells.add(Cell(title, colorCode, start, span, col, title.hashCode(), null, instructor, location))
                     }
                     else {
                         continue
                     }
                 }
-                // 중복 확인 다 완료하고, 실제 시간표에 뷰 삽입
-                val cellIterator = cells.iterator()
-                while(cellIterator.hasNext()) {
-                    val oneCell = cellIterator.next()
-                    // TODO 통신해서 id 받아오기
-                    makeCell(oneCell.title, oneCell.color, oneCell.start, oneCell.span, oneCell.col)
-                    // 중복 테이블에 셀 정보 추가
-                    for(row in oneCell.start until (oneCell.start+oneCell.span)) occupyTable[Pair(row, oneCell.col)] = title
+                // 중복 확인 다 완료하고, 실제 시간표에 뷰 삽입 TODO : 통신 추가
+                cells.forEach { i ->
+                    makeCell(i)
                 }
 
                 // editText 초기화, 시간정보 뷰 삭제 -> TODO 통신 추가하면 통신 이후에 할 일
@@ -171,6 +162,10 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
         // 시간 및 장소 추가 눌렀을 때 ScrollView 안의 LinearLayout 에 새 View 추가하기
         binding.addLectureTimeLocation.setOnClickListener {
+            // 키보드 내려주기
+            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
             // 추가할 View 객체
             val newCustomLecture= TableAddCustomLectureView(this)
             // 이 객체의 구성 요소들
@@ -355,26 +350,10 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
         // X 버튼
         binding.tableAddLectureCloseButton.setOnClickListener {
-            val titlesFinal : ArrayList<String?> = arrayListOf()
-            val colorsFinal : ArrayList<String?> = arrayListOf()
-            val startsFinal : ArrayList<Int> = arrayListOf()
-            val spansFinal : ArrayList<Int> = arrayListOf()
-            val colsFinal : ArrayList<Int> = arrayListOf()
-
-            val iter = cells.iterator()
-            while(iter.hasNext()) {
-                val cell = iter.next()
-                titlesFinal.add(cell.title)
-                colorsFinal.add(cell.color)
-                startsFinal.add(cell.start)
-                spansFinal.add(cell.span)
-                colsFinal.add(cell.col)
-            }
-            setResult(RESULT_OK, intent.putStringArrayListExtra("titles", titlesFinal))
-            setResult(RESULT_OK, intent.putStringArrayListExtra("colors", colorsFinal))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("starts", startsFinal))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("spans", spansFinal))
-            setResult(RESULT_OK, intent.putIntegerArrayListExtra("cols", colsFinal))
+            // TODO : Parcelable 사용해봄. 문제 안생기나 주의깊게 살펴볼 것
+            val resultIntent = Intent()
+            resultIntent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
+            setResult(RESULT_OK, resultIntent)
             finish()
             // 끝낼 땐 아래로 내려가기
             overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
@@ -385,26 +364,9 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val titles : ArrayList<String?> = arrayListOf()
-        val colors : ArrayList<String?> = arrayListOf()
-        val starts : ArrayList<Int> = arrayListOf()
-        val spans : ArrayList<Int> = arrayListOf()
-        val cols : ArrayList<Int> = arrayListOf()
-
-        val iter = cells.iterator()
-        while(iter.hasNext()) {
-            val cell = iter.next()
-            titles.add(cell.title)
-            colors.add(cell.color)
-            starts.add(cell.start)
-            spans.add(cell.span)
-            cols.add(cell.col)
-        }
-        setResult(RESULT_OK, intent.putStringArrayListExtra("titles", titles))
-        setResult(RESULT_OK, intent.putStringArrayListExtra("colors", colors))
-        setResult(RESULT_OK, intent.putIntegerArrayListExtra("starts", starts))
-        setResult(RESULT_OK, intent.putIntegerArrayListExtra("spans", spans))
-        setResult(RESULT_OK, intent.putIntegerArrayListExtra("cols", cols))
+        val resultIntent = Intent()
+        resultIntent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
+        setResult(RESULT_OK, resultIntent)
         finish()
         // 뒤로 버튼 누르면 아래로 내려가기
         overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
@@ -424,19 +386,19 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     }
 
     // 시간표에 셀 추가하는 함수
-    private fun makeCell(title : String, color : String, start : Int, span: Int, col : Int) : TableCellView {
+    private fun makeCell(cellObject : Cell) : TableCellView {
         val item = TableCellView(this)
-        item.text = title
+        item.text = cellObject.title
         item.setTypeface(item.typeface, Typeface.BOLD)
         item.setTextColor(Color.parseColor("#FFFFFF"))
-        item.setBackgroundColor(Color.parseColor(color))
+        item.setBackgroundColor(Color.parseColor(cellObject.color))
         // item.width = resources.getDimension(R.dimen.table_col_width).toInt()
         item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
         item.gravity = Gravity.TOP
 
-        val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
-        val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(start, span)
+        val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(cellObject.col,1)
+        val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(cellObject.start, cellObject.span)
 
         val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colSpan)
         param.setGravity(Gravity.FILL)
@@ -445,7 +407,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
         // 새로 추가되는 강의는 hashmap 에도 추가
         // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것
-        item.info = title.hashCode().toString()
+        item.info = cellObject.title.hashCode().toString()
         if(lectureHashMap.containsKey(item.info)){
             lectureHashMap[item.info]?.add(item)
         }
@@ -453,7 +415,11 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             lectureHashMap[item.info] = mutableListOf(item)
         }
 
-        cells.add(Cell(title, color, start, span, col, item.info.toInt(), null))
+        for(row in cellObject.start until cellObject.start+cellObject.span) {
+            occupyTable[Pair(row, cellObject.col)] = cellObject.title
+        }
+
+        cells.add(cellObject)
         return item
     }
 
@@ -514,9 +480,9 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                 item.width = colWidth
                 item.height = 1
 
-                val colspan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
+                val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
                 val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(time, 1)
-                val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colspan)
+                val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colSpan)
                 param.setGravity(Gravity.FILL)
 
                 binding.tableNow.addView(item, param)
@@ -789,11 +755,13 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         return stringBuilder.toString()
     }
     private fun colIntToDay(col : Int) : String {
-        if(col==2) return "월"
-        if(col==4) return "화"
-        if(col==6) return "수"
-        if(col==8) return "목"
-        else return "금"
+        return when(col) {
+            2 -> "월"
+            4 -> "화"
+            6 -> "수"
+            8 -> "목"
+            else -> "금"
+        }
     }
 
     private fun randomColor(): String {
@@ -812,6 +780,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
 }
 
+@Parcelize
 data class Cell (
     val title : String,
     val color : String,
@@ -819,7 +788,9 @@ data class Cell (
     val span : Int,
     val col : Int,
     val custom_id : Int,
-    val lecture_id : Int?
-)
+    val lecture_id : Int?,
+    val instructor : String,
+    val location : String
+) : Parcelable
 
 

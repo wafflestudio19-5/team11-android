@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
+    id("kotlin-parcelize")
 }
 
 android {
@@ -126,5 +127,9 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.13.5'
 
+    // 시간표 GridLayout
     implementation "androidx.gridlayout:gridlayout:1.0.0"
+
+    // 하단 알림창
+    implementation "com.google.android.material:material:1.6.0-alpha01"
 }
