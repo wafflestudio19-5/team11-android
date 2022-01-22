@@ -8,7 +8,7 @@ import android.widget.TextView
 class TableCellView : androidx.appcompat.widget.AppCompatTextView {
 
 
-    lateinit var info : String
+    var info : Int = 0
 
 
     constructor(context: Context?) : super(context!!)

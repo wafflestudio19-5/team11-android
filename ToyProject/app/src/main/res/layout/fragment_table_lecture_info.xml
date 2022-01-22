@@ -175,7 +175,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/cell_info_delete"
+        android:id="@+id/cell_info_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
@@ -188,6 +188,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cell_info_nick">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="25dp"
+            app:srcCompat="@drawable/icn_m_edit_background" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="수업 정보 수정"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cell_info_delete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cell_info_edit">
 
         <ImageView
             android:layout_width="24dp"

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.example.toyproject.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.w3c.dom.Text
@@ -36,17 +37,41 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
 
         // TableFragment 에서 전달받은 cellInfo 얻기
         val cell : Cell = arguments!!.getParcelable("cellInfo")!!
+        val friends : ArrayList<Cell> = arguments!!.getParcelableArrayList("friends")!!
 
         // 뷰 내용 채우기
         titleView.text = cell.title
         instructorView.text = cell.instructor
 
-        timeView.text = arguments!!.getString("time")
-        locationView.text = cell.location
+        val allTime = StringBuilder()
+        val allLocation = StringBuilder()
+        friends.withIndex().forEach { piece ->
+            try {
+                allTime.append(makeTimeViewString(
+                    piece.value.start, piece.value.span, piece.value.col))
+                if(piece.index < friends.size-1) allTime.append(", ")
+
+                allLocation.append(piece.value.location)
+                if(piece.index < friends.size-1 && piece.value.location.isNotEmpty()) allLocation.append(", ")
+            } catch (n : NullPointerException) {}
+        }
+        timeView.text = allTime.toString()
+        locationView.text = allLocation.toString()
 
         // 내용 비어 있으면 텅 빈칸으로 남기지 말고 View 를 GONE 으로.
         if(cell.instructor.isEmpty()) instructorView.visibility = View.GONE
         if(cell.location.isEmpty()) locationView.visibility = View.GONE
+
+        // 커스텀 강의이면 강의평, 강의계획서, 약칭 없애기
+        if(cell.lecture_id==-1) {
+            view.findViewById<LinearLayout>(R.id.cell_info_rating).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.cell_info_syllabus).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.cell_info_nick).visibility = View.GONE
+        } // 서버에 있는 강의면 수업 정보 수정 없애기
+        else {
+            view.findViewById<LinearLayout>(R.id.cell_info_edit).visibility = View.GONE
+        }
+
 
         view.findViewById<LinearLayout>(R.id.cell_info_rating).setOnClickListener {
 //            TODO : 여기서 강의평 LectureInfoActivity 로 이동 (필요한 정보 putExtra 로 넣어서 챙겨가기)
@@ -66,6 +91,12 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
             // dismiss()
             // TODO : 약칭 지정하는 다이얼로그 열기
             val intent = Intent()
+        }
+
+        view.findViewById<LinearLayout>(R.id.cell_info_edit).setOnClickListener {
+            // 수정하는 액티비티 열게 하기
+            deleteInterface.edit()
+            dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_delete).setOnClickListener {
@@ -88,9 +119,38 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
     }
     interface DeleteCellInterface {
         fun delete()
+        fun edit()
     }
-    fun deleteCell(deleteInterface : DeleteCellInterface) {
+    fun accessCell(deleteInterface : DeleteCellInterface) {
         this.deleteInterface = deleteInterface
+    }
+
+    private fun makeTimeViewString(start : Int, span : Int, col : Int) : String {
+        val end = start + span
+        val day = when(col) {
+            2 -> "월"
+            4 -> "화"
+            6 -> "수"
+            8 -> "목"
+            else -> "금"
+        }
+        val sBuilder = StringBuilder()
+        val startHour = (start-1)/4
+        val startMin = (start-1)%4 * 15
+        val endHour = (end-1)/4
+        val endMin = (end-1)%4 * 15
+
+        sBuilder.append("$day ")
+        if(startHour<10) sBuilder.append("0$startHour:")
+        else sBuilder.append("$startHour:")
+        if(startMin<10) sBuilder.append("0$startMin-")
+        else sBuilder.append("$startMin-")
+        if(endHour<10) sBuilder.append("0$endHour:")
+        else sBuilder.append("$endHour:")
+        if(endMin<10) sBuilder.append("0$endMin")
+        else sBuilder.append("$endMin")
+
+        return sBuilder.toString()
     }
 
 }
