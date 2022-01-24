@@ -1,6 +1,7 @@
 package com.example.toyproject.ui.main.tableFragment
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -10,10 +11,12 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.max
@@ -23,6 +26,9 @@ import kotlin.math.min
 class TableAddLectureServerActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityTableAddLectureServerBinding
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
     private val lectureHashMap: HashMap<Int, MutableList<TableCellView>> = hashMapOf()
@@ -62,20 +68,22 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
     private val filterResultListener =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
             if(it.resultCode == RESULT_OK) {
+                // 전공/영역 받아온 정보 적용
                 val queryMajor : String? = it.data?.getStringExtra("major")
                 if(queryMajor != null) {
+                    // 선택 항목 정보, 뷰 설정
                     binding.filterMajorText.text = queryMajor
-                    binding.filterMajorText.setTextColor(resources.getColor(R.color.Primary))
+                    binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
                     binding.filterMajorText.setTypeface(null, Typeface.BOLD)
                     binding.filterMajorClear.visibility = View.VISIBLE
-                    val path = it.data!!.getStringArrayListExtra("path")!!
+                    // 선택된 항목 경로 정보
                     majorPath.clear()
-                    path.forEach { item ->
-                        majorPath.add(item)
-                    }
-                    // TODO : 바로 통신 진행
+                    majorPath.addAll(it.data!!.getStringArrayListExtra("path")!!)
+
                 }
+                // TODO : 바로 통신 진행
             }
 
     }
@@ -116,6 +124,11 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
         // Filter 부분
         // 1. 전공/영역 필터
+        if(!sharedPreferences.contains("favorite_major")) {
+            sharedPreferences.edit {
+                this.putStringSet("favorite_major", setOf())
+            }
+        }
         binding.filterMajor.setOnClickListener {
             val intent = Intent(this, TableAddFilterMajorActivity::class.java)
             intent.putExtra("before", binding.filterMajorText.text.toString())

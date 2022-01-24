@@ -1,21 +1,28 @@
 package com.example.toyproject.ui.main.tableFragment
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.edit
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableFilterMajorBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.NullPointerException
+import timber.log.Timber
+import javax.inject.Inject
+import kotlin.NullPointerException
 
 @AndroidEntryPoint
 class TableAddFilterMajorActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityTableFilterMajorBinding
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
 
     private val items : HashMap<String, ArrayList<TableAddFilterItemView>> = hashMapOf()
@@ -606,6 +613,9 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
                         for(idx in 0..folderLevel) path.add(views[idx].text.toString())
                         resultIntent.putStringArrayListExtra("path", path)
 
+                        // 즐겨찾기 정보 저장
+                        updateFavorite()
+
                         setResult(RESULT_OK, resultIntent)
                         finish()
                     }
@@ -662,14 +672,47 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
         intent.getStringArrayListExtra("path")!!.forEachIndexed { index, s ->
             setFolder(s, index, BOLD)
         }
+        items.values.forEach { list ->
+            list.forEach { item ->
+                if(item.title.text.toString() == intent.getStringExtra("before")!!) {
+                    item.setView(item.isFavorite, true)
+                }
+            }
+        }
+
+        // 기존 즐겨찾기 다시 적용
+        try {
+            sharedPreferences.getStringSet("favorite_major", null)!!.forEach { favor ->
+                items.values.forEach { list ->
+                    list.forEach { item ->
+                        if(item.title.text.toString() == favor) item.setView(true, item.checked.visibility==View.VISIBLE) }
+                }
+            }
+        } catch (n : NullPointerException) {}
+
 
         // X 버튼
        binding.tableFilterCloseButton.setOnClickListener {
+           // 즐겨찾기 정보 저장
+           updateFavorite()
+
            setResult(RESULT_CANCELED)
            finish()
            // 뒤로 버튼 누르면 아래로 내려가기
            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
        }
+    }
+
+    private fun updateFavorite() {
+        // 즐겨찾기 정보 저장
+        val favorites = mutableSetOf<String>()
+        items.values.forEach { list ->
+            list.forEach { item ->
+                if(item.isFavorite) favorites.add(item.title.text.toString()) }
+        }
+        sharedPreferences.edit {
+            this.putStringSet("favorite_major", favorites)
+        }
     }
 
     private fun setList(name : String) {
@@ -725,8 +768,11 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
     override fun onBackPressed() {
         when (folderLevel) {
             0 -> {
+                // 즐겨찾기 정보 저장
+                updateFavorite()
                 setResult(RESULT_CANCELED)
                 finish()
+
                 // 뒤로 버튼 누르면 아래로 내려가기
                 overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
             }
