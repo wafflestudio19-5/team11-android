@@ -19,4 +19,7 @@
     <color name="home_fragment_light_gray">#A6A6A6</color>
     <color name="F2">#F2F2F2</color>
     <color name="A6">#A6A6A6</color>
+    <color name="light_yellow">#FDFAF3</color>
+    <color name="color_filter_folder">#737373</color>
+    <color name="color_filter_text_default">#707070</color>
 </resources>

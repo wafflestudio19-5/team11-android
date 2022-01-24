@@ -5,46 +5,51 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
-import android.view.ViewGroup
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import com.example.toyproject.R
-import com.example.toyproject.databinding.FragmentTableBinding
+import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
 import dagger.hilt.android.AndroidEntryPoint
-import android.widget.*
-import kotlin.NullPointerException
+import java.util.*
 import kotlin.collections.ArrayList
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-
-
-
+import kotlin.collections.HashMap
+import kotlin.math.max
+import kotlin.math.min
 
 @AndroidEntryPoint
-class TableFragment : Fragment() {
+class TableAddLectureServerActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentTableBinding
+    lateinit var binding: ActivityTableAddLectureServerBinding
 
-    // 흩어져 있는 여러 다른 셀을 같은 강의로 묶기 위한 해시맵  HashMap<고유번호, MutableList<셀 뷰들>>
-    private val lectureHashMap : HashMap<Int, MutableList<TableCellView>> = hashMapOf()
-    // 시간표 셀들 중복 체크 및 동적 크기 조절을 위한 해시맵  HashMap<Pair<row, col>, title>
-    private val occupyTable : HashMap<Pair<Int, Int>, String> = hashMapOf()
+    // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
+    private val lectureHashMap: HashMap<Int, MutableList<TableCellView>> = hashMapOf()
+    private val shadowHashMap: HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 
-    // Cell 의 View 와 Object 를 매칭시켜 주는 해시맵
-    private val myCells : HashMap<TableCellView, Cell> = hashMapOf()
+    // 시간표를 차지하고 있는 수업의 정보 (중복 체크용)
+    private val occupyTable: HashMap<Pair<Int, Int>, Cell> = hashMapOf()
+    private val shadowOccupyTable: HashMap<Pair<Int, Int>, Int> = hashMapOf()
 
-    private var colWidth : Int = 0
+    // 미리보기 시간표의 셀들
+    private val cells = mutableListOf<Cell>()
 
+    private var colWidth: Int = 0
 
-    // "RESULT_OK" : AddLectureActivity 에서 시간표 정보 가져온 것 적용
+    private var majorPath : ArrayList<String> = arrayListOf("전체")
+
+    // "RESULT_OK" : AddDefaultLectureActivity 에서 시간표 정보 가져온 것 적용
     private val resultListener =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if(it.resultCode == AppCompatActivity.RESULT_OK) {
-                clearCell()
-                val cellInfo : ArrayList<Cell> = it.data!!.getParcelableArrayListExtra("cellInfo")!!
+            if (it.resultCode == RESULT_OK) {
+                cells.clear()
+                lectureHashMap.clear()
+                shadowHashMap.clear()
+                occupyTable.clear()
+                for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+
+                val cellInfo: ArrayList<Cell> = it.data!!.getParcelableArrayListExtra("cellInfo")!!
                 // 불러온 정보로 셀 추가
                 cellInfo.withIndex().forEach { i ->
                     makeCell(i.value)
@@ -55,64 +60,107 @@ class TableFragment : Fragment() {
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentTableBinding.inflate(inflater, container, false)
-        return binding.root
+    private val filterResultListener =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == RESULT_OK) {
+                val queryMajor : String? = it.data?.getStringExtra("major")
+                if(queryMajor != null) {
+                    binding.filterMajorText.text = queryMajor
+                    binding.filterMajorText.setTextColor(resources.getColor(R.color.Primary))
+                    binding.filterMajorText.setTypeface(null, Typeface.BOLD)
+                    binding.filterMajorClear.visibility = View.VISIBLE
+                    val path = it.data!!.getStringArrayListExtra("path")!!
+                    majorPath.clear()
+                    path.forEach { item ->
+                        majorPath.add(item)
+                    }
+                    // TODO : 바로 통신 진행
+                }
+            }
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        // 열 너비 기종마다 일정하게 조정 (수정 필요)
-        val display = activity!!.windowManager.defaultDisplay
+        // 미리보기 시간표의 열 너비 기종마다 일정하게 조정 (수정 필요)
+        val display = windowManager.defaultDisplay
         val stageWidth = display.width
         colWidth = stageWidth/6 + stageWidth/54
 
+        // 전환 이펙트 : 실행할 때 아래에서 올라오도록
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_nothing)
 
+        binding = ActivityTableAddLectureServerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val cellInfo : ArrayList<Cell> = intent.getParcelableArrayListExtra("cellInfo")!!
+        // 기존 강의 정보 추가하기
+        cellInfo.forEach { i ->
+            makeCell(i)
+        }
+
+        // 그림자 점유 테이블 초기화
+        for(row in 1..96) for(col in 2..10 step(2)) shadowOccupyTable[Pair(row, col)] = 0
         // 시간표에 가로 테두리 칠하기
         addBorder(findFastestTime(), findLatestTime())
         // 시간표 세로 길이 동적 조정
         adjustTableHeight(findFastestTime(), findLatestTime())
 
-        // TODO : 통신 해서 default 시간표 셀 정보 받을 때 object 도 같이 생성해서 clickListener 만들어야 함
-        // TODO : 이때도 parcelable 쓸 것
-
-
-
-
-
-        // 시간표 없을 때만 보이는, 새 시간표 만들기 창
-        binding.fragmentTableMakeButton.setOnClickListener {
-            // TODO : 지금 년도, 학기 구해서 Schedule 객체 목록에 추가하기
-            binding.fragmentTableDefault.visibility = GONE // TODO : 임시
-        }
-
-        // 강의 추가 버튼
-        binding.tableButtonAddClass.setOnClickListener {
-            // if(계절학기) {
-            val intent = Intent(activity, TableAddLectureServerActivity::class.java)
-            intent.putParcelableArrayListExtra("cellInfo", ArrayList(myCells.values))
+        // 직접 추가 버튼
+        binding.addDefaultLectureButton.setOnClickListener {
+            val intent = Intent(this, TableAddLectureDefaultActivity::class.java)
+            intent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
             resultListener.launch(intent)
         }
-        // 우상단 설정 버튼
-        binding.tableButtonSetting.setOnClickListener {
-            openSettingBottomSheet()
+
+        // Filter 부분
+        // 1. 전공/영역 필터
+        binding.filterMajor.setOnClickListener {
+            val intent = Intent(this, TableAddFilterMajorActivity::class.java)
+            intent.putExtra("before", binding.filterMajorText.text.toString())
+            intent.putStringArrayListExtra("path", majorPath)
+            filterResultListener.launch(intent)
+        }
+        binding.filterMajorClear.setOnClickListener {
+            binding.filterMajorText.text = "전체"
+            binding.filterMajorClear.visibility = View.GONE
+            majorPath = arrayListOf("전체")
+            binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
         }
 
-        // 우상단 시간표 목록 버튼
-        binding.tableButtonList.setOnClickListener {
-            val intent = Intent(activity, TableListActivity::class.java)
-            resultListener.launch(intent)
+        // X 버튼
+        binding.tableAddServerLectureCloseButton.setOnClickListener {
+            onBackPressed()
         }
+    }
+
+    override fun onBackPressed() {
+        val resultIntent = Intent()
+        resultIntent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
+        setResult(RESULT_OK, resultIntent)
+        finish()
+        // 뒤로 버튼 누르면 아래로 내려가기
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
+    }
+
+    private fun buildTimeString(hour : Int, min : Int) : String {
+        val hourString = if(hour<10) "0$hour"
+        else hour.toString()
+        val minuteString = if(min<10) "0$min"
+        else min.toString()
+
+        val builder = StringBuilder()
+        builder.append(hourString)
+        builder.append(":")
+        builder.append(minuteString)
+
+        return builder.toString()
     }
 
     // 시간표에 셀 추가하는 함수
     private fun makeCell(cellObject : Cell) : TableCellView {
-        val item = TableCellView(activity)
+        val item = TableCellView(this)
         item.text = cellObject.title
         item.setTypeface(item.typeface, Typeface.BOLD)
         item.setTextColor(Color.parseColor("#FFFFFF"))
@@ -141,81 +189,68 @@ class TableFragment : Fragment() {
         }
 
         for(row in cellObject.start until cellObject.start+cellObject.span) {
-            occupyTable[Pair(row, cellObject.col)] = cellObject.title
+            occupyTable[Pair(row, cellObject.col)] = cellObject
         }
 
-        myCells[item] = cellObject
-
-        // 각 뷰마다 클릭 리스너도 적용
-        item.setOnClickListener {
-            // 화면 아래에 뜨는 팝업창
-            val bottomSheet = LectureInfoBottomSheet()
-            // 전달할 강의 정보들 parcelize 해서 포장
-            val args = Bundle()
-            args.putParcelable("cellInfo", cellObject)
-
-            // 같은 강의의 다른 셀 정보도 전달
-            val friendCells = mutableListOf<Cell>()
-            lectureHashMap[item.info]!!.withIndex().forEach { piece ->
-                friendCells.add(myCells[piece.value]!!)
-            }
-            args.putParcelableArrayList("friends", ArrayList(friendCells))
-
-            bottomSheet.arguments = args
-            // BottomSheet 에서 [삭제]를 누르면 작동하는 인터페이스 함수
-            bottomSheet.accessCell(object : LectureInfoBottomSheet.DeleteCellInterface {
-                override fun delete() {
-                    // 해당 셀과 동일한 강의 싹 골라서 view 에서 삭제
-                    lectureHashMap[item.info]!!.forEach { piece ->
-                        val pieceObject = myCells[piece]
-                        binding.tableNow.removeView(piece)
-                        try {
-                            removeFromOccupyTable(pieceObject!!.start, pieceObject.span, pieceObject.col)
-                        } catch ( n : NullPointerException) {
-                            // 설마..
-                        }
-                        myCells.remove(piece)
-                    }
-                    adjustTableHeight(findFastestTime(), findLatestTime())
-                }
-                override fun edit() {
-                    // 수업 정보 수정 (커스텀 강의 한정)
-                    val intent = Intent(activity, TableAddLectureDefaultActivity::class.java)
-                    intent.putParcelableArrayListExtra("cellInfo", ArrayList(myCells.values))
-                    intent.putParcelableArrayListExtra("friends", ArrayList(friendCells))
-                    intent.putExtra("mode", "edit")
-                    intent.putExtra("exception", item.info)
-                    resultListener.launch(intent)
-                }
-
-                override fun nick(nick : String) {
-                    // 약칭 지정 TODO : 통신 필요
-                    cellObject.title = nick
-                    item.text = nick
-                }
-
-                override fun memo(memo: String) {
-                    cellObject.memo = memo
-                }
-            })
-            bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-
-        }
+        cells.add(cellObject)
         return item
     }
 
-    private fun removeFromOccupyTable(start : Int, span : Int, col : Int) {
+    // 미리보기 시간표에 그림자 셀 추가하기
+    private fun makeShadowCell(start : Int, span: Int, col : Int) : TableCellView {
+        val item =  TableCellView(this)
+
+        item.setBackgroundColor(Color.parseColor("#803C3C3C"))
+        item.width = colWidth
+        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+
+        val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
+        val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(start, span)
+
+        val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colSpan)
+        param.setGravity(Gravity.FILL)
+
+        // 그림자 점유 테이블도 갱신
         for(row in start until start+span) {
-            occupyTable.remove(Pair(row, col))
+            val temp = shadowOccupyTable[Pair(row, col)]
+            if (temp != null) {
+                shadowOccupyTable[Pair(row, col)] = temp + 1
+            }
+            else {
+                shadowOccupyTable[Pair(row, col)] = 1
+            }
+        }
+
+        // 시간표 height 조정 (그림자가 범위 밖에 있을 수도 있으니)
+        adjustTableHeight(
+            min(findFastestShadow(), findFastestTime()),
+            max(findLatestShadow(), findLatestTime())
+        )
+
+        addBorder(findFastestShadow(), findLatestShadow())
+
+        // 미리보기 시간표에 그림자 셀 추가
+        binding.tableNow.addView(item, param)
+        return item
+    }
+    // 그림자 점유 표에서 특정 영역 삭제하기
+    private fun removeShadowOccupy(startRow : Int, endRow : Int, col : Int) {
+        for(row in startRow until endRow) {
+            val temp = shadowOccupyTable[Pair(row, col)]
+            if (temp != null) {
+                shadowOccupyTable[Pair(row, col)] = temp - 1
+            }
         }
     }
+
     // 시간표 가로 테두리 추가하는 함수
     private fun addBorder(startTime : Int, endTime : Int) {
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
                 if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
-                val item = TextView(activity)
+                if(shadowOccupyTable[Pair(time, col)]!!>0) continue  // 역시, 그림자도 border 로 쪼개지지 않도록
+                val item = TextView(this)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
                 item.height = 1
@@ -228,13 +263,7 @@ class TableFragment : Fragment() {
                 binding.tableNow.addView(item, param)
             }
         }
-        // 테두리에 강의가 가려져서 나뉘어 보이지 않도록
-        for(c in 0 until binding.tableNow.childCount) {
-            val view = binding.tableNow.getChildAt(c)
-            if(view is TableCellView) view.bringToFront()
-        }
     }
-
 
     // 시간표 상 수업 중 가장 나중 시간 row 번호
     private fun findLatestTime() : Int{
@@ -252,6 +281,29 @@ class TableFragment : Fragment() {
         }
         return min
     }
+    // 시간표 상 그림자 중 가장 빠른 시간 row 번호
+    private fun findFastestShadow() : Int {
+        for(row in 1..37) {
+            for(col in 2..10 step(2)) {
+                if(shadowOccupyTable[Pair(row, col)]!! > 0) {
+                    return row
+                }
+            }
+        }
+        return 37
+    }
+    // 시간표 상 그림자 중 가장 늦은 시간 row 번호
+    private fun findLatestShadow() : Int{
+        for(row in 96 downTo 64) {
+            for(col in 2..10 step(2)) {
+                if(shadowOccupyTable[Pair(row, col)]!! >  0) {
+                    return row
+                }
+            }
+        }
+        return 64
+    }
+
     // 7시부터 21시까지 있으면, startTime = 7*4=28, endTime = 21*4=84
     private fun adjustTableHeight(startTime : Int, endTime : Int) {
         val time0 : List<View> = listOf(binding.tableNow.findViewById(R.id.table_grid_0_1),
@@ -404,40 +456,96 @@ class TableFragment : Fragment() {
 
 
         for(t in 0 until startRow) {
-            times[t][0].visibility = GONE
-            times[t][1].visibility = GONE
-            times[t][2].visibility = GONE
-            times[t][3].visibility = GONE
-            times[t][4].visibility = GONE
+            times[t][0].visibility = View.GONE
+            times[t][1].visibility = View.GONE
+            times[t][2].visibility = View.GONE
+            times[t][3].visibility = View.GONE
+            times[t][4].visibility = View.GONE
         }
         for(t in startRow .. endRow) {
-            times[t][0].visibility = VISIBLE
-            times[t][1].visibility = VISIBLE
-            times[t][2].visibility = VISIBLE
-            times[t][3].visibility = VISIBLE
-            times[t][4].visibility = VISIBLE
+            times[t][0].visibility = View.VISIBLE
+            times[t][1].visibility = View.VISIBLE
+            times[t][2].visibility = View.VISIBLE
+            times[t][3].visibility = View.VISIBLE
+            times[t][4].visibility = View.VISIBLE
         }
         for(t in endRow+1 until 24) {
-            times[t][0].visibility = GONE
-            times[t][1].visibility = GONE
-            times[t][2].visibility = GONE
-            times[t][3].visibility = GONE
-            times[t][4].visibility = GONE
+            times[t][0].visibility = View.GONE
+            times[t][1].visibility = View.GONE
+            times[t][2].visibility = View.GONE
+            times[t][3].visibility = View.GONE
+            times[t][4].visibility = View.GONE
         }
         addBorder(startTime, endTime)
     }
-
-    private fun clearCell() {
-        myCells.keys.forEach { cell ->
-            binding.tableNow.removeView(cell)
+    // 시간표에 중복되는 강의가 있는지 체크
+    private fun checkDuplicate(start : Int, end : Int, col : Int, exception : Int) : String? {
+        for(row in start until end) {
+            if(occupyTable.containsKey(Pair(row, col))) {
+                if(occupyTable[Pair(row, col)]!!.custom_id==exception) continue
+                return  occupyTable[Pair(row, col)]!!.title
+            }
         }
-        myCells.clear()
-        lectureHashMap.clear()
-        occupyTable.clear()
+        return null
+    }
+    // 그림자 간 중복이 있는지 체크
+    private fun checkShadowDuplicate() : Boolean {
+        for(values in shadowOccupyTable.values) if(values > 1) return true
+        return false
+    }
+    private fun dayStringToColInt(day : String) : Int{
+        return when(day) {
+            "월요일" -> MON
+            "화요일" -> TUE
+            "수요일" -> WED
+            "목요일" -> THU
+            else -> FRI
+        }
+    }
+    private fun timeStringToRowInt(time : String) : Int {
+        val hour = time.split(":")[0].toInt()
+        val min = time.split(":")[1].toInt()
+
+        // 자정이 row = 1 이고, 15분 마다 row +1 이니 이렇게 변환
+        return hour*4 + min/15 + 1
+    }
+    private fun buildCommunicateTimeString(starts : MutableList<Int>, ends : MutableList<Int>, cols : MutableList<Int>)  : String{
+        val stringBuilder = StringBuilder()
+        for(i in 0 until starts.size) {
+            val start = starts[i]
+            val end = ends[i]
+            val col = cols[i]
+            stringBuilder.append(colIntToDay(col))
+            stringBuilder.append("(")
+            stringBuilder.append(buildTimeString( (start-1)/4, (start-1)%4*15))
+            stringBuilder.append("~")
+            stringBuilder.append(buildTimeString( (end-1)/4, (end-1)%4*15))
+            stringBuilder.append(")")
+            if(i != starts.size-1) stringBuilder.append("/")
+        }
+        return stringBuilder.toString()
+    }
+    private fun colIntToDay(col : Int) : String {
+        return when(col) {
+            2 -> "월"
+            4 -> "화"
+            6 -> "수"
+            8 -> "목"
+            else -> "금"
+        }
     }
 
-    private fun openSettingBottomSheet() {
-        val bottomSheet = ScheduleSettingBottomSheet()
-        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+    private fun randomColor(): String {
+        val random = Random()
+        val nextInt: Int = random.nextInt(0xD7CFD1 + 1)
+        return String.format("#%06x", nextInt)
+    }
+
+    private companion object {
+        const val MON = 2
+        const val TUE = 4
+        const val WED = 6
+        const val THU = 8
+        const val FRI = 10
     }
 }

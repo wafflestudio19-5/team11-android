@@ -49,6 +49,8 @@
         <activity android:name=".ui.review.ReviewActivity"/>
         <activity android:name=".ui.review.LectureInfoActivity"/>
         <activity android:name=".ui.main.tableFragment.TableAddLectureMemoActivity"/>
+        <activity android:name=".ui.main.tableFragment.TableAddLectureServerActivity"/>
+        <activity android:name=".ui.main.tableFragment.TableAddFilterMajorActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
