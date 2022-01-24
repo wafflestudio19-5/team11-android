@@ -16,8 +16,6 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentTableBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.widget.*
-import androidx.core.view.children
-import timber.log.Timber
 import kotlin.NullPointerException
 import kotlin.collections.ArrayList
 
@@ -34,7 +32,7 @@ class TableFragment : Fragment() {
     // Cell 의 View 와 Object 를 매칭시켜 주는 해시맵
     private val myCells : HashMap<TableCellView, Cell> = hashMapOf()
 
-    var colWidth : Int = 0
+    private var colWidth : Int = 0
 
 
     // "RESULT_OK" : AddLectureActivity 에서 시간표 정보 가져온 것 적용
@@ -185,6 +183,16 @@ class TableFragment : Fragment() {
                     intent.putExtra("exception", item.info)
                     resultListener.launch(intent)
                 }
+
+                override fun nick(nick : String) {
+                    // 약칭 지정 TODO : 통신 필요
+                    cellObject.title = nick
+                    item.text = nick
+                }
+
+                override fun memo(memo: String) {
+                    cellObject.memo = memo
+                }
             })
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
 
@@ -208,9 +216,9 @@ class TableFragment : Fragment() {
                 item.width = colWidth
                 item.height = 1
 
-                val colspan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
+                val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
                 val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(time, 1)
-                val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colspan)
+                val param = androidx.gridlayout.widget.GridLayout.LayoutParams(rowSpan, colSpan)
                 param.setGravity(Gravity.FILL)
 
                 binding.tableNow.addView(item, param)

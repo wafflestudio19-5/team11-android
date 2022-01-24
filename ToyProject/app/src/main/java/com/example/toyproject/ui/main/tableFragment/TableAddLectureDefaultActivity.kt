@@ -36,7 +36,6 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     private val shadowHashMap : HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 
     // 시간표를 차지하고 있는 수업의 정보 (중복 체크용)
-    // TODO : 시간표에서 셀 삭제하는 거 만들면 여기서도 지워줘야함
     private val occupyTable : HashMap<Pair<Int, Int>, Cell> = hashMapOf()
     private val shadowOccupyTable : HashMap<Pair<Int, Int>, Int> = hashMapOf()
 
@@ -370,16 +369,14 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                     val location = curr.value.findViewById<EditText>(R.id.make_custom_lecture_location).text.toString()
 
                     // 기존 시간표와 중복 확인
-                    //                                                              TODO : custom ID 는 통신 후에 받는데...
                     val isDuplicate : String? = if(mode) checkDuplicate(start, end, col, exceptionId)    // edit 모드면 exception 이 있음
                                                 else checkDuplicate(start, end, col, -1)
-
                     if(isDuplicate != null) {
                         Toast.makeText(this, "'$isDuplicate'수업과 시간이 겹칩니다.", Toast.LENGTH_SHORT).show()
                         return
                     }
                     // 중복 확인했으면 후보 리스트에 추가                               // TODO : 통신 이후 ID 추가
-                    cellsTemp.add(Cell(title, colorCode, start, span, col, title.hashCode(), -1, instructor, location))
+                    cellsTemp.add(Cell(title, colorCode, start, span, col, title.hashCode(), -1, instructor, location, memo=""))
                 }
                 else {
                     continue
@@ -397,7 +394,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             for(i in 0 until childCount-5) {
                 val toDelete = binding.addLectureScrollBottom.getChildAt(4)
                 // 각 삭제될 시간정보 뷰에 대응하는 그림자도 삭제
-                binding.tableNow.removeView(shadowHashMap[toDelete])        // TODO 바꿨음
+                binding.tableNow.removeView(shadowHashMap[toDelete])
                 shadowHashMap.remove(toDelete)
                 binding.addLectureScrollBottom.removeViewAt(4)
             }
@@ -814,13 +811,11 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         const val THU = 8
         const val FRI = 10
     }
-
-
 }
 
 @Parcelize
 data class Cell (
-    val title : String,
+    var title : String,
     val color : String,
     val start : Int,
     val span : Int,
@@ -828,27 +823,9 @@ data class Cell (
     val custom_id : Int,
     val lecture_id : Int,
     val instructor : String,
-    val location : String
+    val location : String,
+    var memo : String?
 ) : Parcelable {
-    /*
-    private companion object : Parceler<Cell> {
-        override fun Cell.write(parcel: Parcel, flags: Int) {
-            parcel.writeString(title)
-            parcel.writeString(color)
-            parcel.writeInt(start)
-            parcel.writeInt(span)
-            parcel.writeInt(col)
-            parcel.writeInt(custom_id)
-
-            parcel.writeString(instructor)
-            parcel.writeString(location)
-        }
-        override fun create(parcel: Parcel): Cell {
-            return Cell(parcel.re)
-        }
-    }
-
-     */
 }
 
 

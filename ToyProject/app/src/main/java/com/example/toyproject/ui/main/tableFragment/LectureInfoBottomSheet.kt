@@ -1,21 +1,34 @@
 package com.example.toyproject.ui.main.tableFragment
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.w3c.dom.Text
 
 class LectureInfoBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var deleteInterface : DeleteCellInterface
+
+    private val resultListener =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // "RESULT_OK" : 메모 적용
+            if(it.resultCode == AppCompatActivity.RESULT_OK) {
+                deleteInterface.memo(it.data!!.getStringExtra("memo").toString())
+            }
+
+            dismiss()
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +79,7 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         if(cell.lecture_id==-1) {
             view.findViewById<LinearLayout>(R.id.cell_info_rating).visibility = View.GONE
             view.findViewById<LinearLayout>(R.id.cell_info_syllabus).visibility = View.GONE
-            view.findViewById<LinearLayout>(R.id.cell_info_nick).visibility = View.GONE
+           // view.findViewById<LinearLayout>(R.id.cell_info_nick).visibility = View.GONE
         } // 서버에 있는 강의면 수업 정보 수정 없애기
         else {
             view.findViewById<LinearLayout>(R.id.cell_info_edit).visibility = View.GONE
@@ -84,13 +97,54 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_memo).setOnClickListener {
-            // TODO : 메모 추가하는 액티비티 열기
+            // 메모 추가 액티비티 실행 TODO : 통신
+            val intent = Intent(activity, TableAddLectureMemoActivity::class.java)
+            intent.putExtra("memo", cell.memo)
+            resultListener.launch(intent)
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_nick).setOnClickListener {
-            // dismiss()
-            // TODO : 약칭 지정하는 다이얼로그 열기
-            val intent = Intent()
+            // 약칭 지정 다이얼로그 열기
+            val mBuilder = AlertDialog.Builder(activity)
+                .setTitle("약칭 지정")
+                .setView(R.layout.dialog_lecture_set_nickname)
+                .setPositiveButton("확인", null)
+                .setNegativeButton("취소", null)
+                .setNeutralButton("초기화", null)
+            val dialog = mBuilder.create()
+            dialog.setOnShowListener(object : DialogInterface.OnShowListener {
+                override fun onShow(p0: DialogInterface?) {
+                    val positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    positive.setOnClickListener(object : View.OnClickListener {
+                        // 확인 눌렀을 때
+                        override fun onClick(p0: View?) {
+                            // TODO : 약칭 지정 통신
+                            deleteInterface.nick(dialog.findViewById<EditText>(R.id.lecture_nickname_edit_text).text.toString())
+                            dialog.dismiss()
+                        }
+                    })
+
+                    val negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    negative.setOnClickListener(object : View.OnClickListener {
+                        // 취소 눌렀을 때
+                        override fun onClick(p0: View?) {
+                            dialog.dismiss()
+                        }
+                    })
+
+                    val neutral =  dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                    neutral.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(p0: View?) {
+                            // 초기화 눌렀을 때
+                            dialog.findViewById<EditText>(R.id.lecture_nickname_edit_text).setText(cell.title)
+                            // TODO : 통신 추가하면 로직 바꿔야함
+                            deleteInterface.nick(cell.title)
+                        }
+                    })
+                }
+            })
+            dialog.show()
+            dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_edit).setOnClickListener {
@@ -117,9 +171,12 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
     }
+
     interface DeleteCellInterface {
         fun delete()
         fun edit()
+        fun nick(nick : String)
+        fun memo(memo : String)
     }
     fun accessCell(deleteInterface : DeleteCellInterface) {
         this.deleteInterface = deleteInterface
