@@ -51,6 +51,7 @@
         <activity android:name=".ui.main.tableFragment.TableAddLectureMemoActivity"/>
         <activity android:name=".ui.main.tableFragment.TableAddLectureServerActivity"/>
         <activity android:name=".ui.main.tableFragment.TableAddFilterMajorActivity"/>
+        <activity android:name=".ui.main.tableFragment.TableAddFilterCheckboxActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">

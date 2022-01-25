@@ -49,84 +49,94 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/filter_path"
+    <HorizontalScrollView
+        android:id="@+id/filter_path_scroll_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/table_filter_top_layout">
 
-        <TextView
-            android:id="@+id/folder_level_0_text"
+        <LinearLayout
+            android:id="@+id/filter_path"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="전체"
-            android:textColor="@color/color_filter_folder"
-            android:textSize="14sp"
-            android:textStyle="normal" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/folder_level_1_arrow"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginStart="15dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
+            <TextView
+                android:id="@+id/folder_level_0_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="전체"
+                android:textColor="@color/color_filter_folder"
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
-        <TextView
-            android:id="@+id/folder_level_1_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="개설학과"
-            android:textColor="@color/color_filter_folder"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/folder_level_1_arrow"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
 
-        <ImageView
-            android:id="@+id/folder_level_2_arrow"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginStart="15dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
+            <TextView
+                android:id="@+id/folder_level_1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="개설학과"
+                android:textColor="@color/color_filter_folder"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/folder_level_2_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="인문대학"
-            android:textColor="@color/color_filter_folder"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/folder_level_2_arrow"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
 
-        <ImageView
-            android:id="@+id/folder_level_3_arrow"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginStart="15dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
+            <TextView
+                android:id="@+id/folder_level_2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="인문대학"
+                android:textColor="@color/color_filter_folder"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/folder_level_3_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="국어국문학과"
-            android:textColor="@color/color_filter_folder"
-            android:textSize="14sp"
-            android:textStyle="normal|bold"
-            android:visibility="gone" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/folder_level_3_arrow"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/icn_s_arrow_mini_right_gray500" />
+
+            <TextView
+                android:id="@+id/folder_level_3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="국어국문학과"
+                android:textColor="@color/color_filter_folder"
+                android:textSize="14sp"
+                android:textStyle="normal|bold"
+                android:visibility="gone" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -137,7 +147,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_path">
+        app:layout_constraintTop_toBottomOf="@id/filter_path_scroll_view">
 
         <LinearLayout
             android:layout_width="match_parent"

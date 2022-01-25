@@ -1285,7 +1285,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_major"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1337,7 +1337,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_query"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1389,7 +1389,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_sort"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1441,7 +1441,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_time"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1493,7 +1493,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_year"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1545,7 +1545,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_type"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"
@@ -1597,7 +1597,7 @@
 
             <LinearLayout
                 android:id="@+id/filter_credit"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/background_round_light_gray"

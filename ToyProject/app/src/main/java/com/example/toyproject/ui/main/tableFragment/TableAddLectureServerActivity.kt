@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.main.tableFragment
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -9,11 +10,13 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
+import com.google.common.base.Joiner
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -66,9 +69,9 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             }
         }
 
+    // 필터 적용하기
     private val filterResultListener =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
             if(it.resultCode == RESULT_OK) {
                 // 전공/영역 받아온 정보 적용
                 val queryMajor : String? = it.data?.getStringExtra("major")
@@ -78,14 +81,104 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                     binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
                     binding.filterMajorText.setTypeface(null, Typeface.BOLD)
                     binding.filterMajorClear.visibility = View.VISIBLE
-                    // 선택된 항목 경로 정보
+                    // 선택된 항목 폴더 경로 정보
                     majorPath.clear()
                     majorPath.addAll(it.data!!.getStringArrayListExtra("path")!!)
-
                 }
+                // 학년, 구분, 학점 필터 적용
+                applyFilterWithCheckBox()
                 // TODO : 바로 통신 진행
             }
+        }
 
+    private fun applyFilterWithCheckBox() {
+        // 학년 필터 적용
+        val yearInfoArray = mutableListOf<String>()
+        sharedPreferences.getString("filter_year", null)!!.split("-").forEachIndexed { idx, string ->
+            if (string.toBoolean()) {
+                if (idx == 4) yearInfoArray.add("기타")
+                else yearInfoArray.add((idx + 1).toString())
+            }
+        }
+        if(yearInfoArray.size==5) {
+            binding.filterYearText.text = "전체"
+            binding.filterYearText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
+            binding.filterYearText.setTypeface(null, Typeface.NORMAL)
+            binding.filterYearClear.visibility = View.GONE
+        }
+        else {
+            binding.filterYearText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Primary))
+            binding.filterYearText.setTypeface(null, Typeface.BOLD)
+            binding.filterYearClear.visibility = View.VISIBLE
+            if(yearInfoArray.size<=2) {
+                binding.filterYearText.text = Joiner.on(", ").join(yearInfoArray)
+            }
+            else if(yearInfoArray.size>2) {
+                val etc = yearInfoArray.size - 2
+                val sBuilder = StringBuilder()
+                sBuilder.append(Joiner.on(", ").join(yearInfoArray.subList(0, 2)))
+                sBuilder.append(" 외 ${etc}개")
+                binding.filterYearText.text = sBuilder.toString()
+            }
+        }
+        // 구분 필터 적용
+        val typeArray = arrayOf("전선", "교양", "일선", "논문", "전필", "교직")
+        val typeInfoArray = mutableListOf<String>()
+        sharedPreferences.getString("filter_type", null)!!.split("-").forEachIndexed { idx, str ->
+            if(str.toBoolean()) {
+                typeInfoArray.add(typeArray[idx])
+            }
+        }
+        if(typeInfoArray.size==6) {
+            binding.filterTypeText.text = "전체"
+            binding.filterTypeText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
+            binding.filterTypeText.setTypeface(null, Typeface.NORMAL)
+            binding.filterTypeClear.visibility = View.GONE
+        }
+        else {
+            binding.filterTypeText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Primary))
+            binding.filterTypeText.setTypeface(null, Typeface.BOLD)
+            binding.filterTypeClear.visibility = View.VISIBLE
+            if(typeInfoArray.size<=2) {
+                binding.filterTypeText.text = Joiner.on(", ").join(typeInfoArray)
+            }
+            else if(typeInfoArray.size>2) {
+                val etc = typeInfoArray.size - 2
+                val sBuilder = StringBuilder()
+                sBuilder.append(Joiner.on(", ").join(typeInfoArray.subList(0, 2)))
+                sBuilder.append(" 외 ${etc}개")
+                binding.filterTypeText.text = sBuilder.toString()
+            }
+        }
+        // 학점 필터 적용
+        val creditArray = arrayOf("0", "0,5", "1", "1.5", "2", "2.5", "3", "3.5", "4~")
+        val creditInfoArray = mutableListOf<String>()
+        sharedPreferences.getString("filter_credit", null)!!.split("-").forEachIndexed { idx, str ->
+            if(str.toBoolean()) {
+                creditInfoArray.add(creditArray[idx])
+            }
+        }
+        if(creditInfoArray.size==creditArray.size) {
+            binding.filterCreditText.text = "전체"
+            binding.filterCreditText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
+            binding.filterCreditText.setTypeface(null, Typeface.NORMAL)
+            binding.filterCreditClear.visibility = View.GONE
+        }
+        else {
+            binding.filterCreditText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Primary))
+            binding.filterCreditText.setTypeface(null, Typeface.BOLD)
+            binding.filterCreditClear.visibility = View.VISIBLE
+            if(creditInfoArray.size<=2) {
+                binding.filterCreditText.text = Joiner.on(", ").join(creditInfoArray)
+            }
+            else if(creditInfoArray.size>2) {
+                val etc = creditInfoArray.size - 2
+                val sBuilder = StringBuilder()
+                sBuilder.append(Joiner.on(", ").join(creditInfoArray.subList(0, 2)))
+                sBuilder.append(" 외 ${etc}개")
+                binding.filterCreditText.text = sBuilder.toString()
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,7 +233,99 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterMajorClear.visibility = View.GONE
             majorPath = arrayListOf("전체")
             binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+            // TODO : 즉시 통신
         }
+        // 3. 정렬 필터
+        var queryChecked = 0
+        binding.filterSort.setOnClickListener {
+            val choices = arrayOf("기본", "과목코드", "과목명", "별점 높은 순", "별점 낮은 순", "담은인원 많은순",
+            "담은인원 적은순", "경쟁률 높은순", "경쟁률 낮은순")
+            // TODO : 빨간색 하기
+            val mBuilder = AlertDialog.Builder(this)
+                .setTitle("정렬")
+                .setSingleChoiceItems(choices, queryChecked, object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        binding.filterSortText.text = choices[p1]
+                        binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Primary))
+                        binding.filterSortText.setTypeface(null, Typeface.BOLD)
+                        binding.filterSortClear.visibility = View.VISIBLE
+                        if(choices[p1]=="기본") {
+                            binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
+                            binding.filterSortText.setTypeface(null, Typeface.NORMAL)
+                            binding.filterSortClear.visibility = View.GONE
+                        }
+                        queryChecked = p1
+                        p0!!.dismiss()
+                        // TODO : 즉시 통신
+                    }
+                })
+            val dialog = mBuilder.create()
+            dialog.show()
+        }
+        binding.filterSortClear.setOnClickListener {
+            binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
+            binding.filterSortText.setTypeface(null, Typeface.NORMAL)
+            binding.filterSortClear.visibility = View.GONE
+            // TODO : 즉시 통신
+        }
+        // 5. 학년, 구분, 학점 필터
+        if(!sharedPreferences.contains("filter_year")) {
+            sharedPreferences.edit {
+                this.putString("filter_year", "true-true-true-true-true") }
+        }
+        if(!sharedPreferences.contains("filter_type")) {
+            sharedPreferences.edit {
+                this.putString("filter_type", "true-true-true-true-true-true") }
+        }
+        if(!sharedPreferences.contains("filter_credit")) {
+            sharedPreferences.edit {
+                this.putString("filter_credit", "true-true-true-true-true-true-true-true-true") }
+        }
+        binding.filterYear.setOnClickListener {
+            val intent = Intent(this, TableAddFilterCheckboxActivity::class.java)
+            intent.putExtra("mode", "filter_year")
+            filterResultListener.launch(intent)
+        }
+        binding.filterType.setOnClickListener {
+            val intent = Intent(this, TableAddFilterCheckboxActivity::class.java)
+            intent.putExtra("mode", "filter_type")
+            filterResultListener.launch(intent)
+        }
+        binding.filterCredit.setOnClickListener {
+            val intent = Intent(this, TableAddFilterCheckboxActivity::class.java)
+            intent.putExtra("mode", "filter_credit")
+            filterResultListener.launch(intent)
+        }
+        binding.filterYearClear.setOnClickListener {
+            binding.filterYearText.text = "전체"
+            binding.filterYearClear.visibility = View.GONE
+            sharedPreferences.edit {
+                this.putString("filter_year", "true-true-true-true-true")
+            }
+            binding.filterYearText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+            // TODO : 즉시 통신
+        }
+        binding.filterTypeClear.setOnClickListener {
+            binding.filterTypeText.text = "전체"
+            binding.filterTypeClear.visibility = View.GONE
+            sharedPreferences.edit {
+                this.putString("filter_type", "true-true-true-true-true-true")
+            }
+            binding.filterTypeText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+            // TODO : 즉시 통신
+        }
+        binding.filterCreditClear.setOnClickListener {
+            binding.filterCreditText.text = "전체"
+            binding.filterCreditClear.visibility = View.GONE
+            sharedPreferences.edit {
+                this.putString("filter_credit", "true-true-true-true-true-true-true-true-true")
+            }
+            binding.filterCreditText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+            // TODO : 즉시 통신
+        }
+
+
+        applyFilterWithCheckBox()
 
         // X 버튼
         binding.tableAddServerLectureCloseButton.setOnClickListener {
