@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/table_add_filter_query_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/background_lightgray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="27dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageButton
+                android:id="@+id/table_add_server_lecture_close_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_m_back_background" />
+        </LinearLayout>
+
+        <com.example.toyproject.ui.main.tableFragment.CustomEditTextForQuery
+            android:id="@+id/table_add_filter_query_edittext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:hint="검색어"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="#969696" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageButton
+                android:id="@+id/table_add_server_lecture_clear_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_m_close_background" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/table_add_filter_query_field_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/table_add_filter_query_search_layout">
+
+        <RadioGroup
+            android:id="@+id/table_add_filter_query_radio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@+id/table_add_filter_query_radio_title"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/table_add_filter_query_radio_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/Primary"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="과목명"
+                android:textColor="@drawable/radio_button_text_selector"
+                android:textSize="19sp"
+                android:theme="@style/MyRadioButtonStyle" />
+
+            <RadioButton
+                android:id="@+id/table_add_filter_query_radio_instructor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/Primary"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="교수명"
+                android:textColor="@drawable/radio_button_text_selector"
+                android:textSize="19sp"
+                android:theme="@style/MyRadioButtonStyle" />
+
+            <RadioButton
+                android:id="@+id/table_add_filter_query_radio_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/Primary"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="과목코드"
+                android:textColor="@drawable/radio_button_text_selector"
+                android:textSize="19sp"
+                android:theme="@style/MyRadioButtonStyle" />
+
+            <RadioButton
+                android:id="@+id/table_add_filter_query_radio_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/Primary"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="장소"
+                android:textColor="@drawable/radio_button_text_selector"
+                android:textSize="19sp"
+                android:theme="@style/MyRadioButtonStyle" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/table_add_filter_query_field_layout">
+
+        <LinearLayout
+            android:id="@+id/table_add_filter_query_nothing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="100dp"
+            android:paddingBottom="100dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/icn_m_search_gray400" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="검색 기록이 없습니다"
+                android:textAlignment="center"
+                android:textColor="@color/A6"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/table_add_filter_query_something"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/borderline"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/table_add_filter_query_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp">
+
+                <LinearLayout
+                    android:id="@+id/table_add_filter_query_clear_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:paddingStart="17sp"
+                    android:paddingTop="13dp"
+                    android:paddingEnd="17dp"
+                    android:paddingBottom="13dp">
+
+                    <TextView
+                        android:id="@+id/table_add_filter_delete_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="검색 기록 삭제"
+                        android:textColor="@color/Primary"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

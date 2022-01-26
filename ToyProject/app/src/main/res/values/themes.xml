@@ -42,4 +42,9 @@
         <item name="android:timePickerMode">spinner</item>
     </style>
 
+    <style name="MyRadioButtonStyle">
+        <item name="android:buttonTint">@drawable/radio_button_text_selector</item>
+        <item name="android:textColor">@drawable/radio_button_text_selector</item>
+    </style>
+
 </resources>

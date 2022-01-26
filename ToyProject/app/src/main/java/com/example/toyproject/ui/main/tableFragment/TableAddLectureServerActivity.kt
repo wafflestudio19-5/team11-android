@@ -87,6 +87,14 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 }
                 // 학년, 구분, 학점 필터 적용
                 applyFilterWithCheckBox()
+                // 검색어 필터 적용
+                binding.filterQueryText.text = sharedPreferences.getString("filter_query_text", null)
+                binding.filterQueryText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
+                val mBuilder = StringBuilder()
+                mBuilder.append(sharedPreferences.getString("filter_query_field", null))
+                mBuilder.append(": ")
+                binding.filterQueryField.text = mBuilder.toString()
+                binding.filterQueryClear.visibility = View.VISIBLE
                 // TODO : 바로 통신 진행
             }
         }
@@ -235,6 +243,31 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
             // TODO : 즉시 통신
         }
+        // 2. 검색어 필터
+        if(sharedPreferences.contains("filter_query_text")) {
+            binding.filterQueryText.text = sharedPreferences.getString("filter_query_text", null)
+            binding.filterQueryText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
+            val mBuilder = StringBuilder()
+            mBuilder.append(sharedPreferences.getString("filter_query_field", null))
+            mBuilder.append(": ")
+            binding.filterQueryField.text = mBuilder.toString()
+            binding.filterQueryClear.visibility = View.VISIBLE
+        }
+        binding.filterQuery.setOnClickListener {
+            val intent = Intent(this, TableAddFilterQueryActivity::class.java)
+            filterResultListener.launch(intent)
+        }
+        binding.filterQueryClear.setOnClickListener {
+            binding.filterQueryText.text = "없음"
+            binding.filterQueryText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+            binding.filterQueryField.text = "검색어: "
+            binding.filterQueryClear.visibility = View.GONE
+            sharedPreferences.edit {
+                this.remove("filter_query_text")
+                this.remove("filter_query_field")
+            }
+        }
+
         // 3. 정렬 필터
         var queryChecked = 0
         binding.filterSort.setOnClickListener {
@@ -266,6 +299,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
             binding.filterSortText.setTypeface(null, Typeface.NORMAL)
             binding.filterSortClear.visibility = View.GONE
+            binding.filterSortText.text = "기본"
             // TODO : 즉시 통신
         }
         // 5. 학년, 구분, 학점 필터
