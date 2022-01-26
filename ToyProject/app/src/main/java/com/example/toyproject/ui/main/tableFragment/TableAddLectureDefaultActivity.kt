@@ -509,12 +509,15 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
     // 시간표 가로 테두리 추가하는 함수
     private fun addBorder(startTime : Int, endTime : Int) {
+        binding.tableNow.children.forEach { item ->
+            if(item is TableBorderView) binding.tableNow.removeView(item)
+        }
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
                 if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
                 if(shadowOccupyTable[Pair(time, col)]!!>0) continue  // 역시, 그림자도 border 로 쪼개지지 않도록
-                val item = TextView(this)
+                val item = TableBorderView(this)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
                 item.height = 1
@@ -822,8 +825,8 @@ data class Cell (
     val col : Int,
     val custom_id : Int,
     val lecture_id : Int,
-    val instructor : String,
-    val location : String,
+    val instructor : String?,
+    val location : String?,
     var memo : String?
 ) : Parcelable {
 }

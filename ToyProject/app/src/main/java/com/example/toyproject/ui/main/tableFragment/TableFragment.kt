@@ -16,6 +16,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentTableBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.widget.*
+import androidx.core.view.children
 import kotlin.NullPointerException
 import kotlin.collections.ArrayList
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -211,11 +212,14 @@ class TableFragment : Fragment() {
     }
     // 시간표 가로 테두리 추가하는 함수
     private fun addBorder(startTime : Int, endTime : Int) {
+        binding.tableNow.children.forEach { item ->
+            if(item is TableBorderView) binding.tableNow.removeView(item)
+        }
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
                 if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
-                val item = TextView(activity)
+                val item = TableBorderView(activity)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
                 item.height = 1

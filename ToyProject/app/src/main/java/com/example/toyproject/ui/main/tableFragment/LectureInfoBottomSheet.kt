@@ -65,15 +65,15 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
                 if(piece.index < friends.size-1) allTime.append(", ")
 
                 allLocation.append(piece.value.location)
-                if(piece.index < friends.size-1 && piece.value.location.isNotEmpty()) allLocation.append(", ")
+                if(piece.index < friends.size-1 && piece.value.location!!.isNotEmpty()) allLocation.append(", ")
             } catch (n : NullPointerException) {}
         }
         timeView.text = allTime.toString()
         locationView.text = allLocation.toString()
 
         // 내용 비어 있으면 텅 빈칸으로 남기지 말고 View 를 GONE 으로.
-        if(cell.instructor.isEmpty()) instructorView.visibility = View.GONE
-        if(cell.location.isEmpty()) locationView.visibility = View.GONE
+        if(cell.instructor == null || cell.instructor.isEmpty()) instructorView.visibility = View.GONE
+        if(cell.location==null || cell.location.isEmpty()) locationView.visibility = View.GONE
 
         // 커스텀 강의이면 강의평, 강의계획서, 약칭 없애기
         if(cell.lecture_id==-1) {

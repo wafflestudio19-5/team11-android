@@ -14,8 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import androidx.core.view.children
+import androidx.core.view.get
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
+import com.example.toyproject.network.dto.table.Lecture
 import com.google.common.base.Joiner
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -46,7 +50,12 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
     private var colWidth: Int = 0
 
+    // 검색어 필터 폴더 경로 저장
     private var majorPath : ArrayList<String> = arrayListOf("전체")
+
+    // 서버에서 불러온 강의들 recyclerView
+    private lateinit var lectureListAdapter : TableAddLectureServerAdapter
+    private lateinit var lectureListLayoutManager: LinearLayoutManager
 
     // "RESULT_OK" : AddDefaultLectureActivity 에서 시간표 정보 가져온 것 적용
     private val resultListener =
@@ -88,13 +97,18 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 // 학년, 구분, 학점 필터 적용
                 applyFilterWithCheckBox()
                 // 검색어 필터 적용
-                binding.filterQueryText.text = sharedPreferences.getString("filter_query_text", null)
-                binding.filterQueryText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
-                val mBuilder = StringBuilder()
-                mBuilder.append(sharedPreferences.getString("filter_query_field", null))
-                mBuilder.append(": ")
-                binding.filterQueryField.text = mBuilder.toString()
-                binding.filterQueryClear.visibility = View.VISIBLE
+                try {
+                    binding.filterQueryText.text = sharedPreferences.getString("filter_query_text", null)!!
+                    binding.filterQueryText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
+                    val mBuilder = StringBuilder()
+                    mBuilder.append(sharedPreferences.getString("filter_query_field", null))
+                    mBuilder.append(": ")
+                    binding.filterQueryField.text = mBuilder.toString()
+                    binding.filterQueryClear.visibility = View.VISIBLE
+                } catch(n : NullPointerException) {
+                    binding.filterQueryText.text = "없음"
+                    binding.filterQueryField.text = "검색어: "
+                }
                 // TODO : 바로 통신 진행
             }
         }
@@ -111,7 +125,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         if(yearInfoArray.size==5) {
             binding.filterYearText.text = "전체"
             binding.filterYearText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
-            binding.filterYearText.setTypeface(null, Typeface.NORMAL)
             binding.filterYearClear.visibility = View.GONE
         }
         else {
@@ -140,7 +153,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         if(typeInfoArray.size==6) {
             binding.filterTypeText.text = "전체"
             binding.filterTypeText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
-            binding.filterTypeText.setTypeface(null, Typeface.NORMAL)
             binding.filterTypeClear.visibility = View.GONE
         }
         else {
@@ -169,7 +181,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         if(creditInfoArray.size==creditArray.size) {
             binding.filterCreditText.text = "전체"
             binding.filterCreditText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
-            binding.filterCreditText.setTypeface(null, Typeface.NORMAL)
             binding.filterCreditClear.visibility = View.GONE
         }
         else {
@@ -266,14 +277,22 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 this.remove("filter_query_text")
                 this.remove("filter_query_field")
             }
+            // TODO : 즉시 통신
         }
 
         // 3. 정렬 필터
-        var queryChecked = 0
-        binding.filterSort.setOnClickListener {
-            val choices = arrayOf("기본", "과목코드", "과목명", "별점 높은 순", "별점 낮은 순", "담은인원 많은순",
+        var queryChecked = sharedPreferences.getInt("filter_sort_index", 0)
+        val choices = arrayOf("기본", "과목코드", "과목명", "별점 높은 순", "별점 낮은 순", "담은인원 많은순",
             "담은인원 적은순", "경쟁률 높은순", "경쟁률 낮은순")
+        binding.filterSortText.text = choices[queryChecked]
+        if(choices[queryChecked]=="기본") binding.filterSortText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
+        else {
+            binding.filterSortText.setTextColor(ContextCompat.getColor(this, R.color.Primary))
+            binding.filterSortClear.visibility = View.VISIBLE
+        }
+        binding.filterSort.setOnClickListener {
             // TODO : 빨간색 하기
+            queryChecked = sharedPreferences.getInt("filter_sort_index", 0)
             val mBuilder = AlertDialog.Builder(this)
                 .setTitle("정렬")
                 .setSingleChoiceItems(choices, queryChecked, object : DialogInterface.OnClickListener {
@@ -284,10 +303,11 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         binding.filterSortClear.visibility = View.VISIBLE
                         if(choices[p1]=="기본") {
                             binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
-                            binding.filterSortText.setTypeface(null, Typeface.NORMAL)
                             binding.filterSortClear.visibility = View.GONE
                         }
-                        queryChecked = p1
+                        sharedPreferences.edit {
+                            this.putInt("filter_sort_index", p1)
+                        }
                         p0!!.dismiss()
                         // TODO : 즉시 통신
                     }
@@ -297,9 +317,9 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         }
         binding.filterSortClear.setOnClickListener {
             binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.color_filter_text_default))
-            binding.filterSortText.setTypeface(null, Typeface.NORMAL)
             binding.filterSortClear.visibility = View.GONE
             binding.filterSortText.text = "기본"
+            sharedPreferences.edit { this.remove("filter_sort_index") }
             // TODO : 즉시 통신
         }
         // 5. 학년, 구분, 학점 필터
@@ -358,8 +378,137 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             // TODO : 즉시 통신
         }
 
-
+        // 액티비티 시작할 때 필터 뷰 적용
         applyFilterWithCheckBox()
+
+        // recyclerView 부분
+        lectureListAdapter = TableAddLectureServerAdapter(this)
+        lectureListLayoutManager= LinearLayoutManager(this)
+        binding.addServerLectureRecyclerView.apply {
+            adapter = lectureListAdapter
+            layoutManager = lectureListLayoutManager
+        }
+        val list = arrayListOf(Lecture(
+            5, "컴퓨터프로그래밍1", "이영기",
+            "M101010", 1, 2, "공과대학",
+            "컴퓨터공학부", 2, "학사", 3,
+            "전필", 1, "재밌음", "한국어", "월(12:30~13:15)",
+            "302-106", 1
+        ),Lecture(
+            5, "컴퓨터프로그래밍2", "이영기",
+            "M101010", 1, 2, "공과대학",
+            "컴퓨터공학부", 2, "학사", 3,
+            "전필", 1, "재밌음", "한국어", "수(18:30~21:15)",
+            "302-106", 1
+        ),Lecture(
+            5, "컴퓨터프로그래밍3", "이영기",
+            "M101010", 1, 2, "공과대학",
+            "컴퓨터공학부", 2, "학사", 3,
+            "전필", 1, "재밌음", "한국어", "금(05:30~07:15)",
+            "302-106", 1
+        ))
+        lectureListAdapter.setLectures(list)
+
+        // 강의 아이템들 클릭 이벤트 (노랗게 바꾸고 버튼 3개 등장)
+        var highlighted : Int = -1
+        val shadows = mutableListOf<TableCellView>()
+        lectureListAdapter.setItemClickListener(object : TableAddLectureServerAdapter.OnLectureClickListener {
+            override fun onItemClick(v: View, data: Lecture, position: Int) {
+                if(highlighted != -1) {
+                    val preHighlighted = binding.addServerLectureRecyclerView.getChildAt(highlighted)
+                    preHighlighted.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout).visibility = View.GONE
+                    preHighlighted.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
+
+                    // 있던 그림자 싹 제거
+                    shadows.forEach { shadow ->
+                        binding.tableNow.removeView(shadow)
+                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+                        // 동적 시간표 길이 적용
+                        adjustTableHeight(findFastestTime(), findLatestTime())
+                        addBorder(findFastestTime(), findLatestTime())
+                    }
+                    shadows.clear()
+                }
+                val moreView = v.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout)
+                if(position != highlighted) {
+                    moreView.visibility = View.VISIBLE
+                    v.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.light_yellow))
+                    highlighted = position
+
+                    // 시간 정보로 그림자 추가
+                    val times = parseServerTimeInput(data.time)
+                    times?.forEachIndexed { idx, time ->
+                        val newShadow = makeShadowCell(time.second.first, time.second.second, time.first)
+                        shadows.add(newShadow)
+                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+
+                        if(idx==times.size-1) {
+                            // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+                            binding.addServerLecturePreview.post {
+                                binding.addServerLecturePreview.scrollTo(0, newShadow.top - 15)
+                            }
+                        }
+                        newShadow.bringToFront()
+                    }
+                }
+                else {
+                    moreView.visibility = View.GONE
+                    v.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
+                    highlighted = -1
+
+                    // 있던 그림자 싹 제거
+                    shadows.forEach { shadow ->
+                        binding.tableNow.removeView(shadow)
+                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+                        // 동적 시간표 길이 적용
+                        adjustTableHeight(findFastestTime(), findLatestTime())
+                        addBorder(findFastestTime(), findLatestTime())
+                    }
+                    shadows.clear()
+                }
+            }
+            // 시간표에 추가 버튼
+            override fun addItem(parent : View, v: View, lecture: Lecture, position: Int) {
+                val moreView = parent.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout)
+                moreView.visibility = View.GONE
+                parent.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
+                highlighted = -1
+
+                // 시간대마다 셀 추가
+                val times = parseServerTimeInput(lecture.time)
+                val tempCells = mutableListOf<Cell>()
+                times?.forEach { time ->
+                    // 기존 시간표와 중복 확인
+                    val isDuplicate : String? = checkDuplicate(time.second.first,
+                        time.second.first+time.second.second, time.first, -1)
+                    if(isDuplicate != null) {
+                        Toast.makeText(this@TableAddLectureServerActivity, "'$isDuplicate'수업과 시간이 겹칩니다.", Toast.LENGTH_SHORT).show()
+                        // 있던 그림자 싹 제거
+                        shadows.forEach { shadow ->
+                            binding.tableNow.removeView(shadow)
+                            for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+                            // 동적 시간표 길이 적용
+                            adjustTableHeight(findFastestTime(), findLatestTime())
+                            addBorder(findFastestTime(), findLatestTime())
+                        }
+                        shadows.clear()
+                        return
+                    }
+                    val newItem = Cell(
+                        lecture.subject_name, randomColor(), time.second.first,
+                        time.second.second, time.first, lecture.subject_name.hashCode(), lecture.id,
+                        lecture.professor, lecture.location, memo = "")
+                    tempCells.add(newItem)
+                    // TODO : 통신
+                }
+                tempCells.forEach { newItem ->
+                    makeCell(newItem)
+                }
+                moreView.visibility = View.GONE
+                parent.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
+                highlighted = -1
+            }
+        })
 
         // X 버튼
         binding.tableAddServerLectureCloseButton.setOnClickListener {
@@ -477,12 +626,15 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
     // 시간표 가로 테두리 추가하는 함수
     private fun addBorder(startTime : Int, endTime : Int) {
+        binding.tableNow.children.forEach { item ->
+            if(item is TableBorderView) binding.tableNow.removeView(item)
+        }
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
                 if (occupyTable.containsKey(Pair(time, col))) continue  // 기존 시간표에 있는 사이에는 border 치지 말기
                 if(shadowOccupyTable[Pair(time, col)]!!>0) continue  // 역시, 그림자도 border 로 쪼개지지 않도록
-                val item = TextView(this)
+                val item = TableBorderView(this)
                 item.setBackgroundResource(R.drawable.table_cell_stroke_bottom)
                 item.width = colWidth
                 item.height = 1
@@ -728,9 +880,13 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     private fun dayStringToColInt(day : String) : Int{
         return when(day) {
             "월요일" -> MON
+            "월" -> MON
             "화요일" -> TUE
+            "화" -> TUE
             "수요일" -> WED
+            "수" -> WED
             "목요일" -> THU
+            "목" -> THU
             else -> FRI
         }
     }
@@ -757,6 +913,24 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         }
         return stringBuilder.toString()
     }
+    private fun parseServerTimeInput(input : String?) : MutableList<Pair<Int, Pair<Int, Int>>>? {
+        if(input==null) return null
+        val processedTimes = mutableListOf<Pair<Int, Pair<Int, Int>>>()
+
+        val times = input.split("/")
+        times.forEach { time ->
+            val day: String = time.substring(0, 1)
+            val timeStrings = time.substring(2, time.length - 1).split("~")
+
+
+            val col = dayStringToColInt(day)
+            val startRow = timeStringToRowInt(timeStrings[0])
+            val endRow = timeStringToRowInt(timeStrings[1])
+            processedTimes.add(Pair(col, Pair(startRow, endRow-startRow)))
+        }
+        return processedTimes
+    }
+
     private fun colIntToDay(col : Int) : String {
         return when(col) {
             2 -> "월"

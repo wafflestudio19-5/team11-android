@@ -11,7 +11,9 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.edit
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableFilterMajorBinding
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.NullPointerException
@@ -25,7 +27,7 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
 
-    private val items : HashMap<String, ArrayList<TableAddFilterItemView>> = hashMapOf()
+    private var items : HashMap<String, ArrayList<TableAddFilterItemView>> = hashMapOf()
 
     private var folderLevel : Int = 0
 
@@ -595,6 +597,40 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "데이터사이언스학과", next=false),
             TableAddFilterItemView(this, "데이터사이언스학전공", next=false),
         )
+
+        items["교양영역"] = arrayListOf(
+            TableAddFilterItemView(this, "학문의 기초"),
+            TableAddFilterItemView(this, "학문의 세계"),
+            TableAddFilterItemView(this, "선택교양"),
+            TableAddFilterItemView(this, "전공영역"),
+        )
+        items["학문의 기초"] = arrayListOf(
+            TableAddFilterItemView(this, "사고와 표현", next=false),
+            TableAddFilterItemView(this, "외국어", next=false),
+            TableAddFilterItemView(this, "수량적 분석과 추론", next=false),
+            TableAddFilterItemView(this, "과학적 사고와 실험", next=false),
+            TableAddFilterItemView(this, "컴퓨터와 정보 활용", next=false),
+        )
+        items["학문의 세계"] = arrayListOf(
+            TableAddFilterItemView(this, "언어와 문학", next=false),
+            TableAddFilterItemView(this, "문화와 예출", next=false),
+            TableAddFilterItemView(this, "역사와 철학", next=false),
+            TableAddFilterItemView(this, "정치와 경제", next=false),
+            TableAddFilterItemView(this, "인간과 사회", next=false),
+            TableAddFilterItemView(this, "자연과 기술", next=false),
+            TableAddFilterItemView(this, "생명과 환경", next=false),
+        )
+        items["선택교양"] = arrayListOf(
+            TableAddFilterItemView(this, "체육", next=false),
+            TableAddFilterItemView(this, "예술 실기", next=false),
+            TableAddFilterItemView(this, "대학과 리더십", next=false),
+            TableAddFilterItemView(this, "창의와 융합", next=false),
+            TableAddFilterItemView(this, "한국의 이해", next=false),
+        )
+        items["전공영역"] = arrayListOf(
+            TableAddFilterItemView(this, "교과교육", next=false)
+        )
+
 
         // 각 아이템에 clickListener 적용
         items.values.forEach { array ->

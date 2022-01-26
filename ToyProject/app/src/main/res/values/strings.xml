@@ -42,4 +42,5 @@
     <string name="image_description">설명을 추가할 수 있어요.</string>
     <string name="string_lost">아이디/비밀번호 찾기</string>
     <string name="lecture_review">강의평가</string>
+    <string name="grade">학년</string>
 </resources>
