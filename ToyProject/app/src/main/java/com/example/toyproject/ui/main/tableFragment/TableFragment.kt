@@ -9,19 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.toyproject.R
 import com.example.toyproject.databinding.FragmentTableBinding
 import dagger.hilt.android.AndroidEntryPoint
-import android.widget.*
 import androidx.core.view.children
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.toyproject.network.dto.table.ScheduleCreate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlin.NullPointerException
 import kotlin.collections.ArrayList
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-
-
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashMap
 
 
 @AndroidEntryPoint
@@ -39,6 +45,7 @@ class TableFragment : Fragment() {
 
     private var colWidth : Int = 0
 
+    private val viewModel : TableFragmentViewModel by activityViewModels()
 
     // "RESULT_OK" : AddLectureActivity 에서 시간표 정보 가져온 것 적용
     private val resultListener =
@@ -53,6 +60,17 @@ class TableFragment : Fragment() {
                 // 동적 시간표 길이 적용
                 adjustTableHeight(findFastestTime(), findLatestTime())
                 addBorder(findFastestTime(), findLatestTime())
+            }
+            // "99" : 새 시간표 생성, 바로 적용
+            else if(it.resultCode == 99) {
+                clearCell()
+                // TODO : 시간표 ID 활용
+                val id = it.data!!.getIntExtra("id", 0)
+                val year = it.data!!.getIntExtra("year", 0)
+                val season = intToSeasonString(it.data!!.getIntExtra("season", 0))
+                val title = it.data!!.getStringExtra("title")
+                binding.fragmentTableTitle.text = title
+                binding.fragmentTableSemester.text = "${year}년 ${season}"
             }
         }
 
@@ -79,19 +97,72 @@ class TableFragment : Fragment() {
         // 시간표 세로 길이 동적 조정
         adjustTableHeight(findFastestTime(), findLatestTime())
 
-        // TODO : 통신 해서 default 시간표 셀 정보 받을 때 object 도 같이 생성해서 clickListener 만들어야 함
-        // TODO : 이때도 parcelable 쓸 것
+        // default 시간표 불러오기
+        viewModel.loadDefaultSchedule()
+        lifecycleScope.launch {
+            viewModel.defaultScheduleGetFlow.collect { defaultSchedule ->
+                if(defaultSchedule==null) {
+                    binding.fragmentTableDefault.visibility = VISIBLE
+                    binding.tableNow.visibility = GONE
+                }
+                else {
+                    binding.fragmentTableSemester.text = "${defaultSchedule.year}년 ${defaultSchedule.season}학기"
+                    binding.fragmentTableTitle.text = defaultSchedule.name
+                    binding.fragmentTableDefault.visibility = GONE
+                    binding.tableNow.visibility = VISIBLE
+                }
+            }
+        }
+        // default 시간표 강의 정보 불러오기
+        viewModel.loadDefaultScheduleLectures()
+        lifecycleScope.launch {
+            viewModel.defaultScheduleLecturesFlow.collect { list ->
+                if(list!=null) {
+                    val colorCode = randomColor()
+                    list.custom_lectures.forEach { item ->
+                        if(item.time_location==null) {
+                            // TODO : 시간, 장소 정보 없는 강의
+                        }
+                        else {
+                            item.time_location.forEach { timeLocation ->
+                                val day: String = timeLocation.time.substring(0, 1)
+                                val timeStrings = timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
+                                val col = dayStringToColInt(day)
+                                val startRow = timeStringToRowInt(timeStrings[0])
+                                val endRow = timeStringToRowInt(timeStrings[1])
 
+                                var lecture_id = -1
+                                if(item.lecture != null) lecture_id = item.lecture
 
-
-
-
+                                makeCell(Cell(item.nickname, colorCode, startRow, endRow-startRow, col=col, item.id,
+                                    lecture_id, item.professor, stringListToString(timeLocation.location), ""))
+                            }
+                        }
+                    }
+                    // 동적 시간표 길이 적용
+                    adjustTableHeight(findFastestTime(), findLatestTime())
+                    addBorder(findFastestTime(), findLatestTime())
+                }
+            }
+        }
         // 시간표 없을 때만 보이는, 새 시간표 만들기 창
         binding.fragmentTableMakeButton.setOnClickListener {
-            // TODO : 지금 년도, 학기 구해서 Schedule 객체 목록에 추가하기
-            binding.fragmentTableDefault.visibility = GONE // TODO : 임시
-        }
+            lifecycleScope.launch {
+                viewModel.scheduleCreateFlow.collect { response ->
+                    if(response==null) {
+                        Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        binding.fragmentTableDefault.visibility = GONE
+                        binding.tableNow.visibility = VISIBLE
 
+                        binding.fragmentTableSemester.text = "${response.year}년 ${response.season}학기"
+                        binding.fragmentTableTitle.text = response.name
+                    }
+                }
+            }
+            viewModel.createSchedule(ScheduleCreate("시간표 1", 2022, 1))
+        }
         // 강의 추가 버튼
         binding.tableButtonAddClass.setOnClickListener {
             // if(계절학기) {
@@ -132,8 +203,7 @@ class TableFragment : Fragment() {
         binding.tableNow.addView(item, param)
 
         // 새로 추가되는 강의는 hashmap 에도 추가
-        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것
-        item.info = cellObject.title.hashCode()
+        item.info = cellObject.custom_id
         if(lectureHashMap.containsKey(item.info)){
             lectureHashMap[item.info]?.add(item)
         }
@@ -166,18 +236,29 @@ class TableFragment : Fragment() {
             // BottomSheet 에서 [삭제]를 누르면 작동하는 인터페이스 함수
             bottomSheet.accessCell(object : LectureInfoBottomSheet.DeleteCellInterface {
                 override fun delete() {
-                    // 해당 셀과 동일한 강의 싹 골라서 view 에서 삭제
-                    lectureHashMap[item.info]!!.forEach { piece ->
-                        val pieceObject = myCells[piece]
-                        binding.tableNow.removeView(piece)
-                        try {
-                            removeFromOccupyTable(pieceObject!!.start, pieceObject.span, pieceObject.col)
-                        } catch ( n : NullPointerException) {
-                            // 설마..
+                    viewModel.deleteLecture(item.info)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.scheduleDeleteFlow.collect { result ->
+                            if(result) {
+                                // 해당 셀과 동일한 강의 싹 골라서 view 에서 삭제
+                                lectureHashMap[item.info]!!.forEach { piece ->
+                                    val pieceObject = myCells[piece]
+                                    binding.tableNow.removeView(piece)
+                                    try {
+                                        removeFromOccupyTable(pieceObject!!.start, pieceObject.span, pieceObject.col)
+                                    } catch ( n : NullPointerException) {
+                                        // 설마..
+                                    }
+                                    myCells.remove(piece)
+                                }
+                                adjustTableHeight(findFastestTime(), findLatestTime())
+                            }
+                            else {
+                                // 통신 오류?
+                                Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                            }
                         }
-                        myCells.remove(piece)
                     }
-                    adjustTableHeight(findFastestTime(), findLatestTime())
                 }
                 override fun edit() {
                     // 수업 정보 수정 (커스텀 강의 한정)
@@ -196,11 +277,11 @@ class TableFragment : Fragment() {
                 }
 
                 override fun memo(memo: String) {
+                    // TODO : 통신
                     cellObject.memo = memo
                 }
             })
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-
         }
         return item
     }
@@ -438,6 +519,56 @@ class TableFragment : Fragment() {
         myCells.clear()
         lectureHashMap.clear()
         occupyTable.clear()
+    }
+
+    private fun randomColor(): String {
+        val random = Random()
+        val nextInt: Int = random.nextInt(0xD7CFD1 + 1)
+        return String.format("#%06x", nextInt)
+    }
+    private fun timeStringToRowInt(time : String) : Int {
+        val hour = time.split(":")[0].toInt()
+        val min = time.split(":")[1].toInt()
+
+        // 자정이 row = 1 이고, 15분 마다 row +1 이니 이렇게 변환
+        return hour*4 + min/15 + 1
+    }
+    private fun dayStringToColInt(day : String) : Int{
+        return when(day) {
+            "월요일" -> MON
+            "월" -> MON
+            "화요일" -> TUE
+            "화" -> TUE
+            "수요일" -> WED
+            "수" -> WED
+            "목요일" -> THU
+            "목" -> THU
+            else -> FRI
+        }
+    }
+    private fun stringListToString(list : List<String>) : String {
+        val builder = StringBuilder()
+        list.forEachIndexed { idx, item ->
+            builder.append(item)
+            if(idx!=list.size-1) builder.append(", ")
+        }
+        return builder.toString()
+    }
+    private companion object {
+        const val MON = 2
+        const val TUE = 4
+        const val WED = 6
+        const val THU = 8
+        const val FRI = 10
+    }
+
+    private fun intToSeasonString(i : Int) : String {
+        return when(i) {
+            1 -> "1학기"
+            2 -> "2학기"
+            3 -> "여름학기"
+            else -> "겨울학기"
+        }
     }
 
     private fun openSettingBottomSheet() {

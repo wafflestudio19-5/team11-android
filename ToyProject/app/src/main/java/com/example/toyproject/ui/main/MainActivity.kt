@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
         viewPager.isUserInputEnabled = false
+        viewPager.offscreenPageLimit = 4
 
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->

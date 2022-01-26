@@ -120,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:background="@drawable/borderline"
+                android:visibility="gone"
                 app:alignmentMode="alignMargins"
                 app:columnCount="11"
                 app:orientation="vertical"

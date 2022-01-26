@@ -22,19 +22,34 @@ data class Lecture (
 )
 
 data class CustomLecture (
-    val id : Int?,
+    val id : Int,
     val lecture : Int?,
-    val nickname : String?,
+    val nickname : String,
     val professor : String?,
     val time : String?,
     val location : String?,
-    val memo : String?
+    val memo : String?,
+    val time_location : List<TimeLocationGet>?
 )
 
-data class CustomLectureAdd (
+data class TimeLocationGet(
+    val time : String,
+    val location : List<String>
+)
+data class TimeLocationSend(
+    val time : String,
+    val location : String
+)
+
+// 사용자 추가 강의 서버에 추가할 때
+data class UserMadeLectureAdd (
     val nickname : String,
     val professor : String?,
-    val time : String,
-    val location : String?,
-    val memo : String?
+    val time_location : List<TimeLocationSend>?
+)
+
+data class EditCustomLecture(
+    val nickname : String,
+    val memo : String,
+    val time_location : List<TimeLocationSend>?
 )

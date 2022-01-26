@@ -79,7 +79,7 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         if(cell.lecture_id==-1) {
             view.findViewById<LinearLayout>(R.id.cell_info_rating).visibility = View.GONE
             view.findViewById<LinearLayout>(R.id.cell_info_syllabus).visibility = View.GONE
-           // view.findViewById<LinearLayout>(R.id.cell_info_nick).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.cell_info_nick).visibility = View.GONE
         } // 서버에 있는 강의면 수업 정보 수정 없애기
         else {
             view.findViewById<LinearLayout>(R.id.cell_info_edit).visibility = View.GONE

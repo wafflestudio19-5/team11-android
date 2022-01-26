@@ -37,7 +37,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
     private val lectureHashMap: HashMap<Int, MutableList<TableCellView>> = hashMapOf()
     private val shadowHashMap: HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 

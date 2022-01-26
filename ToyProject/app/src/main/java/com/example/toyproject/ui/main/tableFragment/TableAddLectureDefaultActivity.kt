@@ -1,4 +1,5 @@
 package com.example.toyproject.ui.main.tableFragment
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,7 +19,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.ArrayAdapter
 import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
+import com.example.toyproject.network.dto.table.TimeLocationSend
+import com.example.toyproject.network.dto.table.UserMadeLectureAdd
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -31,7 +40,6 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     private lateinit var binding : ActivityTableAddLectureBinding
     private val viewModel : TableAddLectureDefaultViewModel by viewModels()
 
-    // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
     private val lectureHashMap : HashMap<Int, MutableList<TableCellView>> = hashMapOf()
     private val shadowHashMap : HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 
@@ -321,6 +329,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     }
 
     private fun addLecture(mode : Boolean) {
+        // 로딩창
         // 수업명 비어 있으면 체크
         if(binding.addLectureTitle.text.isEmpty()) {
             Toast.makeText(this, "수업명을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -375,19 +384,47 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                         Toast.makeText(this, "'$isDuplicate'수업과 시간이 겹칩니다.", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    // 중복 확인했으면 후보 리스트에 추가                               // TODO : 통신 이후 ID 추가
+                    // 중복 확인했으면 후보 리스트에 추가
                     cellsTemp.add(Cell(title, colorCode, start, span, col, title.hashCode(), -1, instructor, location, memo=""))
                 }
                 else {
                     continue
                 }
             }
-            // 중복 확인 다 완료하고, 실제 시간표에 뷰 삽입 TODO : 통신 추가
-            cellsTemp.forEach { i ->
-                makeCell(i)
-            }
+            // 통신에 사용할 형태로 가공
+            val timeLocation = buildCommunicateTimeString(cellsTemp)
 
-            // editText 초기화, 시간정보 뷰 삭제 -> TODO 통신 추가하면 통신 이후에 할 일
+            // 수정 모드면 수정, 추가 모드면 추가
+            if(mode) viewModel.editLectureInDefault(exceptionId, title, "", timeLocation)
+            else viewModel.addUserMadeLecture(UserMadeLectureAdd(title, instructor, timeLocation))
+
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.defaultScheduleGetFlow.collect {
+                    if(it==null) {
+                        Toast.makeText(this@TableAddLectureDefaultActivity, "통신에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        // 시간, 장
+                        if(it.time_location==null) {
+                            // TODO : 장소, 시간 없는 강의
+                        }
+                        else {
+                            it.time_location.forEach { timeLocation ->
+
+                                val day: String = timeLocation.time.substring(0, 1)
+                                val timeStrings = timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
+                                val col = dayStringToColInt(day)
+                                val startRow = timeStringToRowInt(timeStrings[0])
+                                val endRow = timeStringToRowInt(timeStrings[1])
+                                makeCell(Cell(title, colorCode, startRow, endRow-startRow, col=col, it.id,
+                                    -1, instructor, stringListToString(timeLocation.location), "" ))
+                            }
+                            onBackPressed()
+                        }
+                    }
+                }
+            }
+            // editText 초기화, 시간정보 뷰 삭제 ->
             binding.addLectureTitle.text.clear()
             binding.addLectureInstructor.text.clear()
             val childCount = binding.addLectureScrollBottom.childCount
@@ -405,7 +442,6 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             // 수정 모드이면, 원래 cell 은 없애고 return
             if(mode) {
                 friends.forEach { friend -> cells.remove(friend) }
-                onBackPressed()
             }
         }
     }
@@ -445,8 +481,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         binding.tableNow.addView(item, param)
 
         // 새로 추가되는 강의는 hashmap 에도 추가
-        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것
-        item.info = cellObject.title.hashCode()
+        item.info = cellObject.custom_id
         if(lectureHashMap.containsKey(item.info)){
             lectureHashMap[item.info]?.add(item)
         }
@@ -509,9 +544,12 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
 
     // 시간표 가로 테두리 추가하는 함수
     private fun addBorder(startTime : Int, endTime : Int) {
+        /*
         binding.tableNow.children.forEach { item ->
             if(item is TableBorderView) binding.tableNow.removeView(item)
         }
+
+         */
         for(time in startTime until endTime) {
             if(time%4!=0) continue
             for(col in 2..10 step(2)) {
@@ -763,11 +801,23 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     private fun dayStringToColInt(day : String) : Int{
         return when(day) {
             "월요일" -> MON
+            "월" -> MON
             "화요일" -> TUE
+            "화" -> TUE
             "수요일" -> WED
+            "수" -> WED
             "목요일" -> THU
+            "목" -> THU
             else -> FRI
         }
+    }
+    private fun stringListToString(list : List<String>) : String {
+        val builder = StringBuilder()
+        list.forEachIndexed { idx, item ->
+            builder.append(item)
+            if(idx!=list.size-1) builder.append(", ")
+        }
+        return builder.toString()
     }
     private fun timeStringToRowInt(time : String) : Int {
         val hour = time.split(":")[0].toInt()
@@ -776,22 +826,22 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         // 자정이 row = 1 이고, 15분 마다 row +1 이니 이렇게 변환
         return hour*4 + min/15 + 1
     }
-    private fun buildCommunicateTimeString(starts : MutableList<Int>, ends : MutableList<Int>, cols : MutableList<Int>)  : String{
-        val stringBuilder = StringBuilder()
-        for(i in 0 until starts.size) {
-            val start = starts[i]
-            val end = ends[i]
-            val col = cols[i]
-            stringBuilder.append(colIntToDay(col))
-            stringBuilder.append("(")
-            stringBuilder.append(buildTimeString( (start-1)/4, (start-1)%4*15))
-            stringBuilder.append("~")
-            stringBuilder.append(buildTimeString( (end-1)/4, (end-1)%4*15))
-            stringBuilder.append(")")
-            if(i != starts.size-1) stringBuilder.append("/")
+    private fun buildCommunicateTimeString(cells : MutableList<Cell>) : List<TimeLocationSend> {
+        val toSend = mutableListOf<TimeLocationSend>()
+        cells.forEach { cell ->
+            val timeStringBuilder = StringBuilder()
+            timeStringBuilder.append(colIntToDay(cell.col))
+            timeStringBuilder.append("(")
+            timeStringBuilder.append(buildTimeString((cell.start-1)/4, ((cell.start-1)%4)*15))
+            timeStringBuilder.append("~")
+            val end = cell.start+cell.span
+            timeStringBuilder.append(buildTimeString((end-1)/4, ((end-1)%4)*15))
+            timeStringBuilder.append(")")
+            toSend.add(TimeLocationSend(timeStringBuilder.toString(), cell.location.toString()))
         }
-        return stringBuilder.toString()
+        return toSend.toList()
     }
+
     private fun colIntToDay(col : Int) : String {
         return when(col) {
             2 -> "월"
