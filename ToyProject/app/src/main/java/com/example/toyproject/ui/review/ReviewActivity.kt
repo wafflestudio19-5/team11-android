@@ -15,6 +15,7 @@ class ReviewActivity: AppCompatActivity() {
         binding = ActivityReviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //임시로 lectureinfoactivity랑 연결해놓음
         binding.backArrow.setOnClickListener {
             Intent(this, LectureInfoActivity::class.java).apply{
 
