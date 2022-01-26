@@ -44,4 +44,12 @@ interface Service {
     @POST("api/v1/login/kakao/")
     fun kakaoLogin(@Body param : LoginSocial) : Call<LoginSocialResponse>
 
+    @FormUrlEncoded
+    @POST("api/v1/fcm_token/")
+    suspend fun fcmToken(
+        @Field("fcm_token") fcm_token : String
+    ) : Success
+
+
+
 }

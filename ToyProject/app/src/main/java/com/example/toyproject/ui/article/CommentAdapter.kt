@@ -124,11 +124,13 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                     // 댓글 ... 눌렀을 때
                     if(data.is_mine) {
                         // 내 댓글의 ... 버튼
-                        commentClickListener.onCommentMore(data.id, mine=true, sub=false)
+                        if(data.has_subscribed) commentClickListener.onCommentMore(data.id, mine=true, sub=false, subscribe = true)
+                        else commentClickListener.onCommentMore(data.id, mine=true, sub=false, subscribe = false)
                     }
                     else {
                         // 남의 댓글의 ... 버튼
-                        commentClickListener.onCommentMore(data.id, mine=false, sub=false)
+                        if(data.has_subscribed) commentClickListener.onCommentMore(data.id, mine=false, sub=false, subscribe = true)
+                        else commentClickListener.onCommentMore(data.id, mine=false, sub=false, subscribe = false)
                     }
                 }
             }
@@ -190,11 +192,13 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                     // 대댓글 ... 눌렀을 때
                     if(data.is_mine) {
                         // 내 대댓글의 ...
-                        commentClickListener.onCommentMore(data.id, mine=true, sub=true)
+                        if(data.has_subscribed) commentClickListener.onCommentMore(data.id, mine=true, sub=true, subscribe=true)
+                        else commentClickListener.onCommentMore(data.id, mine=true, sub=true, subscribe=false)
                     }
                     else {
                         // 남의 대댓글의 ...
-                        commentClickListener.onCommentMore(data.id, mine=false, sub=true)
+                        if(data.has_subscribed) commentClickListener.onCommentMore(data.id, mine=false, sub=true, subscribe=true)
+                        else commentClickListener.onCommentMore(data.id, mine=false, sub=true, subscribe=false)
                     }
                 }
             }
@@ -243,7 +247,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
     interface OnCommentClickListener {
         fun onCommentClick(parent : Int)
         fun onCommentLikeClick(id : Int)
-        fun onCommentMore(id : Int, mine : Boolean, sub : Boolean)
+        fun onCommentMore(id : Int, mine : Boolean, sub : Boolean, subscribe : Boolean)
     }
     fun setItemClickListener(onCommentClickListener : OnCommentClickListener) {
         this.commentClickListener = onCommentClickListener
