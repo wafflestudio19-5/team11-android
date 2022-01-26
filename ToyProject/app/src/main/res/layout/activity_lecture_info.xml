@@ -160,7 +160,7 @@
                         android:isIndicator="true"
                         android:numStars="5"
                         android:progressTint="#FFC107"
-                        android:rating="3"
+                        android:rating="0"
                         android:stepSize="1" />
 
                     <TextView
@@ -179,6 +179,7 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:id="@+id/review_layout"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -303,6 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20sp"
+                        android:layout_marginBottom="10sp"
                         android:textSize="13sp"
                         android:text="아직 등록된 강의평이 없습니다"
                         android:visibility="gone"
