@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.children
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.RuntimeException
-import java.net.URLEncoder
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -264,7 +262,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterMajorClear.visibility = View.GONE
             majorPath = arrayListOf("전체")
             binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
-            // TODO : 즉시 통신
             collectFilterCondition(0, 20)
         }
         // 2. 검색어 필터
@@ -322,7 +319,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                             this.putInt("filter_sort_index", p1)
                         }
                         p0!!.dismiss()
-                        // TODO : 즉시 통신
                         collectFilterCondition(0, 20)
                     }
                 })
@@ -334,7 +330,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterSortClear.visibility = View.GONE
             binding.filterSortText.text = "기본"
             sharedPreferences.edit { this.remove("filter_sort_index") }
-            // TODO : 즉시 통신
             collectFilterCondition(0, 20)
         }
         // 5. 학년, 구분, 학점 필터
@@ -372,7 +367,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 this.putString("filter_year", "true-true-true-true-true")
             }
             binding.filterYearText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
-            // TODO : 즉시 통신
             collectFilterCondition(0, 20)
         }
         binding.filterTypeClear.setOnClickListener {
@@ -382,7 +376,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 this.putString("filter_type", "true-true-true-true-true-true")
             }
             binding.filterTypeText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
-            // TODO : 즉시 통신
             collectFilterCondition(0, 20)
         }
         binding.filterCreditClear.setOnClickListener {
@@ -392,7 +385,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 this.putString("filter_credit", "true-true-true-true-true-true-true-true-true")
             }
             binding.filterCreditText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
-            // TODO : 즉시 통신
             collectFilterCondition(0, 20)
         }
 
@@ -488,8 +480,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         lecture.professor, lecture.location, memo = "")
                     tempCells.add(newItem)
                 }
-                Timber.d("고고고고고ㅗㄱ")
-                Timber.d(tempCells.size.toString())
                 var flag = true
                 CoroutineScope(Dispatchers.Main).launch {
                     viewModel.addLectureById(lecture.id)
@@ -498,10 +488,13 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                             Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
                         }
                         else if(flag) {
-                            val custom_id = it.id
+                            if(it.time_location==null) Toast.makeText(this@TableAddLectureServerActivity,
+                                "시간 정보가 없는 강의입니다.", Toast.LENGTH_SHORT).show()
+
+                            val customId = it.id
                             val memo = it.memo
                             tempCells.forEach { newItem ->
-                                newItem.custom_id = custom_id
+                                newItem.custom_id = customId
                                 newItem.memo = memo
                                 makeCell(newItem)
                             }
@@ -549,7 +542,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             }
         }
 
-        val subject_name = if(binding.filterQueryField.text=="과목명: ") binding.filterQueryText.text.toString()
+        val subjectName = if(binding.filterQueryField.text=="과목명: ") binding.filterQueryText.text.toString()
         else null
 
         val professor = if(binding.filterQueryField.text=="교수명: ") {
@@ -560,7 +553,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         val location = if(binding.filterQueryField.text=="장소:") binding.filterQueryText.text.toString()
         else null
 
-        val subject_code= if(binding.filterQueryField.text=="과목코드: ") binding.filterQueryText.text.toString()
+        val subjectCode= if(binding.filterQueryField.text=="과목코드: ") binding.filterQueryText.text.toString()
         else null
 
         val yearQuery = mutableListOf<String>()
@@ -597,8 +590,8 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         // 서버에서 강의 목록 불러오기
         var flag = true
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.loadServerLecture(offset=offset, limit=limit, subject_name =subject_name, professor = professor,
-            subject_code = subject_code, location = location, department = major, grade=year,
+            viewModel.loadServerLecture(offset=offset, limit=limit, subject_name =subjectName, professor = professor,
+            subject_code = subjectCode, location = location, department = major, grade=year,
             credit=credit, category = category)
             viewModel.serverLectureGetFlow.collect {
                 if(it==null) {
@@ -619,20 +612,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun buildTimeString(hour : Int, min : Int) : String {
-        val hourString = if(hour<10) "0$hour"
-        else hour.toString()
-        val minuteString = if(min<10) "0$min"
-        else min.toString()
-
-        val builder = StringBuilder()
-        builder.append(hourString)
-        builder.append(":")
-        builder.append(minuteString)
-
-        return builder.toString()
     }
 
     // 시간표에 셀 추가하는 함수
@@ -708,15 +687,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         // 미리보기 시간표에 그림자 셀 추가
         binding.tableNow.addView(item, param)
         return item
-    }
-    // 그림자 점유 표에서 특정 영역 삭제하기
-    private fun removeShadowOccupy(startRow : Int, endRow : Int, col : Int) {
-        for(row in startRow until endRow) {
-            val temp = shadowOccupyTable[Pair(row, col)]
-            if (temp != null) {
-                shadowOccupyTable[Pair(row, col)] = temp - 1
-            }
-        }
     }
 
     // 시간표 가로 테두리 추가하는 함수
@@ -967,11 +937,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         }
         return null
     }
-    // 그림자 간 중복이 있는지 체크
-    private fun checkShadowDuplicate() : Boolean {
-        for(values in shadowOccupyTable.values) if(values > 1) return true
-        return false
-    }
     private fun dayStringToColInt(day : String) : Int{
         return when(day) {
             "월요일" -> MON
@@ -991,22 +956,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
         // 자정이 row = 1 이고, 15분 마다 row +1 이니 이렇게 변환
         return hour*4 + min/15 + 1
-    }
-    private fun buildCommunicateTimeString(starts : MutableList<Int>, ends : MutableList<Int>, cols : MutableList<Int>)  : String{
-        val stringBuilder = StringBuilder()
-        for(i in 0 until starts.size) {
-            val start = starts[i]
-            val end = ends[i]
-            val col = cols[i]
-            stringBuilder.append(colIntToDay(col))
-            stringBuilder.append("(")
-            stringBuilder.append(buildTimeString( (start-1)/4, (start-1)%4*15))
-            stringBuilder.append("~")
-            stringBuilder.append(buildTimeString( (end-1)/4, (end-1)%4*15))
-            stringBuilder.append(")")
-            if(i != starts.size-1) stringBuilder.append("/")
-        }
-        return stringBuilder.toString()
     }
     private fun parseServerTimeInput(input : String?) : MutableList<Pair<Int, Pair<Int, Int>>>? {
         if(input==null) return null

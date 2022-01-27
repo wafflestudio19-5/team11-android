@@ -94,7 +94,7 @@ class TableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 열 너비 기종마다 일정하게 조정 (수정 필요)
-        val display = activity!!.windowManager.defaultDisplay
+        val display = requireActivity().windowManager.defaultDisplay
         val stageWidth = display.width
         colWidth = stageWidth/6 + stageWidth/54
 
@@ -109,34 +109,44 @@ class TableFragment : Fragment() {
         // default 시간표 강의 정보 불러오기
         loadDefaultScheduleDetail()
 
-        viewModel.defaultScheduleLectures.observe(this, {
+        viewModel.defaultScheduleLectures.observe(requireActivity()) {
             it.custom_lectures.forEach { item ->
-                Timber.d("각 강의 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
                 val colorCode = randomColor()
-                if(item.time_location==null) {
+                if (item.time_location == null) {
                     // TODO : 시간, 장소 정보 없는 강의
-                }
-                else {
+                } else {
                     item.time_location.forEach { timeLocation ->
-                        Timber.d("        각 셀 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
                         val day: String = timeLocation.time.substring(0, 1)
-                        val timeStrings = timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
+                        val timeStrings =
+                            timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
                         val col = dayStringToColInt(day)
                         val startRow = timeStringToRowInt(timeStrings[0])
                         val endRow = timeStringToRowInt(timeStrings[1])
 
                         var lecture_id = -1
-                        if(item.lecture != null) lecture_id = item.lecture
+                        if (item.lecture != null) lecture_id = item.lecture
 
-                        makeCell(Cell(item.nickname, colorCode, startRow, endRow-startRow, col=col, item.id,
-                            lecture_id, item.professor, stringListToString(timeLocation.location), item.memo))
+                        makeCell(
+                            Cell(
+                                item.nickname,
+                                colorCode,
+                                startRow,
+                                endRow - startRow,
+                                col = col,
+                                item.id,
+                                lecture_id,
+                                item.professor,
+                                stringListToString(timeLocation.location),
+                                item.memo
+                            )
+                        )
                     }
                 }
             }
             // 동적 시간표 길이 적용
             adjustTableHeight(findFastestTime(), findLatestTime())
             addBorder(findFastestTime(), findLatestTime())
-        })
+        }
 
         // 시간표 없을 때만 보이는, 새 시간표 만들기 창
         binding.fragmentTableMakeButton.setOnClickListener {

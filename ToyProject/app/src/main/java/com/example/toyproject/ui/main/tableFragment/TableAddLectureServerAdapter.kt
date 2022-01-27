@@ -82,14 +82,14 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                             serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.light_yellow))
                             lectureClickListener.removeShadow()
                             lectureClickListener.onItemClick(it, lecture, position)
-                            notifyItemChanged(position)
+                            notifyDataSetChanged()
                         }
                         else {
                             highlighted = -1
                             lectureClickListener.removeShadow()
                             serverLectureItemMoreLayout.visibility =View.GONE
                             serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.Background))
-                            notifyItemChanged(position)
+                            notifyDataSetChanged()
                         }
                     }
                     serverLectureItemAdd.setOnClickListener {

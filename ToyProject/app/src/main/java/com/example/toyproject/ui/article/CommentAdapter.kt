@@ -167,7 +167,9 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Recycl
                             .into(itemView.findViewById(R.id.comment_profile_image))
                     }
                 }
-
+                if(data.user_nickname=="익명(글쓴이)"){
+                    holder.binding.commentNickname.setTextColor(Color.parseColor(context.getString(R.string.color_my_comment)))
+                }
 
                 holder.binding.commentWrittenTime.text = data.created_at
                 holder.binding.commentContent.text = data.text
