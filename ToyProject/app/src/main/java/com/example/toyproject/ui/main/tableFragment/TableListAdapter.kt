@@ -55,8 +55,9 @@ class TableListAdapter(private val context: Context) :
             recyclerView.adapter = mAdapter
             recyclerView.layoutManager = layoutManager
             mAdapter.setClicker(object : TableListCellAdapter.Clicker {
-                override fun click(title : String) {
-                    clicker.click(title, semester.year, semester.season)
+                override fun click(title : String, scheduleId : Int) {
+                    clicker.click(title, semester.year, semester.season, scheduleId)
+
                 }
             })
             // recyclerView.setHasFixedSize(true)
@@ -64,7 +65,7 @@ class TableListAdapter(private val context: Context) :
     }
 
     interface Clicker {
-        fun click(title : String, year : Int, season : Int)
+        fun click(title : String, year : Int, season : Int, scheduleId : Int)
     }
     fun setClicker(clicker: Clicker) {
         this.clicker = clicker

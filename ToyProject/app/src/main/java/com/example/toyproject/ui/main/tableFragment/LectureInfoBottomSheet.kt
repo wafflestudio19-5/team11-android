@@ -20,13 +20,13 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var deleteInterface : DeleteCellInterface
 
+
     private val resultListener =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // "RESULT_OK" : 메모 적용
             if(it.resultCode == AppCompatActivity.RESULT_OK) {
                 deleteInterface.memo(it.data!!.getStringExtra("memo").toString())
             }
-
             dismiss()
         }
 
@@ -97,7 +97,7 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_memo).setOnClickListener {
-            // 메모 추가 액티비티 실행 TODO : 통신
+            // 메모 추가 액티비티 실행
             val intent = Intent(activity, TableAddLectureMemoActivity::class.java)
             intent.putExtra("memo", cell.memo)
             resultListener.launch(intent)
@@ -118,8 +118,8 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
                     positive.setOnClickListener(object : View.OnClickListener {
                         // 확인 눌렀을 때
                         override fun onClick(p0: View?) {
-                            // TODO : 약칭 지정 통신
-                            deleteInterface.nick(dialog.findViewById<EditText>(R.id.lecture_nickname_edit_text).text.toString())
+                            val newNick = dialog.findViewById<EditText>(R.id.lecture_nickname_edit_text).text.toString()
+                            deleteInterface.nick(newNick, memo=null)
                             dialog.dismiss()
                         }
                     })
@@ -136,9 +136,8 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
                     neutral.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(p0: View?) {
                             // 초기화 눌렀을 때
-                            dialog.findViewById<EditText>(R.id.lecture_nickname_edit_text).setText(cell.title)
-                            // TODO : 통신 추가하면 로직 바꿔야함
-                            deleteInterface.nick(cell.title)
+                            deleteInterface.nick("", null)
+                            dialog.dismiss()
                         }
                     })
                 }
@@ -175,8 +174,8 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
     interface DeleteCellInterface {
         fun delete()
         fun edit()
-        fun nick(nick : String)
-        fun memo(memo : String)
+        fun nick(nickname : String?, memo : String?="")
+        fun memo(memo : String="")
     }
     fun accessCell(deleteInterface : DeleteCellInterface) {
         this.deleteInterface = deleteInterface

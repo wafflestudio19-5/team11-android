@@ -30,6 +30,8 @@ class TableFragmentViewModel@Inject constructor(
     private val _scheduleDeleteFlow = MutableSharedFlow<Boolean>()
     val scheduleDeleteFlow = _scheduleDeleteFlow.asSharedFlow()
 
+    private val _editLectureMemoNick = MutableSharedFlow<CustomLecture?>()
+    val editLectureMemoNick = _editLectureMemoNick.asSharedFlow()
 
     fun loadDefaultSchedule() {
         viewModelScope.launch {
@@ -77,4 +79,26 @@ class TableFragmentViewModel@Inject constructor(
         }
     }
 
+    fun editMemo(param : EditCustomLecture, id : Int) {
+        viewModelScope.launch {
+            try {
+                _editLectureMemoNick.emit(service.editLectureMemoNick(param, id))
+            } catch (e : HttpException) {
+                errorMessage = e.message()
+                _editLectureMemoNick.emit(null)
+            }
+        }
+    }
+
+    fun loadLecturesById(scheduleId : Int) {
+        viewModelScope.launch {
+            try {
+                _defaultScheduleLecturesFlow.emit(service.loadLecturesById(scheduleId))
+            }catch (e : HttpException) {
+                errorMessage = e.message()
+                _defaultScheduleLecturesFlow.emit(null)
+            }
+
+        }
+    }
 }

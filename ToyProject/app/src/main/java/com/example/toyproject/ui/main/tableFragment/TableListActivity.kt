@@ -40,9 +40,16 @@ class TableListActivity : AppCompatActivity() {
             layoutManager = tableListLayoutManager
         }
         tableListAdapter.setClicker(object : TableListAdapter.Clicker {
-            override fun click(title : String, year : Int, season : Int) {
-                setResult(RESULT_CANCELED)
-                Toast.makeText(this@TableListActivity, "$title $year $season", Toast.LENGTH_SHORT).show()
+            override fun click(title : String, year : Int, season : Int, scheduleId : Int) {
+                val resultIntent = Intent()
+                resultIntent.putExtra("year", year)
+                resultIntent.putExtra("season", season)
+                resultIntent.putExtra("title", title)
+                resultIntent.putExtra("id", scheduleId)
+                setResult(99, resultIntent)
+                finish()
+                // 전환 이펙트 : 오른쪽으로 퇴장, 새 창은 fade in
+                overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_out_left)
             }
         })
 

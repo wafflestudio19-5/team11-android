@@ -20,6 +20,7 @@ import com.example.toyproject.ui.board.BoardAdapter
 class TableAddLectureServerAdapter(private val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var lectureList: MutableList<Lecture> = mutableListOf()
+    var highlighted = -1
 
     inner class Holder(val binding : ItemTableServerLectureBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -48,7 +49,9 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     serverLectureTime.text = lecture.time                // TODO ?
                     serverLectureLocation.text = lecture.location        // TODO ?
 
-                    sBuilder.append(lecture.year)
+                    serverLectureItemDetail.text = lecture.detail
+
+                    sBuilder.append(lecture.grade)
                     sBuilder.append("학년")
                     serverLectureYear.text = sBuilder.toString()
                     sBuilder.clear()
@@ -62,10 +65,29 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
 
                     serverLectureCode.text = lecture.subject_code
 
-                    serverLectureItemMoreLayout.visibility = View.GONE
-                    serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.Background))
+                    if(position==highlighted) {
+                        serverLectureItemMoreLayout.visibility = View.VISIBLE
+                        serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.light_yellow))
+                    }
+                    else {
+                        serverLectureItemMoreLayout.visibility = View.GONE
+                        serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.Background))
+                    }
+
                     serverLectureItemLayout.setOnClickListener {
-                        lectureClickListener.onItemClick(it, lecture, position)
+                        if(serverLectureItemMoreLayout.visibility==View.GONE) {
+                            highlighted = position
+                            serverLectureItemMoreLayout.visibility =View.VISIBLE
+                            serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.light_yellow))
+                            lectureClickListener.removeShadow()
+                            lectureClickListener.onItemClick(it, lecture, position)
+                            notifyDataSetChanged()
+                        }
+                        else {
+                            lectureClickListener.removeShadow()
+                            serverLectureItemMoreLayout.visibility =View.GONE
+                            serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.Background))
+                        }
                     }
                     serverLectureItemAdd.setOnClickListener {
                         lectureClickListener.addItem(serverLectureItemLayout, it, lecture, position)
@@ -74,7 +96,6 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
             }
         }
     }
-
     override fun getItemCount(): Int {
         return lectureList.size
     }
@@ -85,11 +106,13 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
 
     fun setLectures(list : MutableList<Lecture>) {
         this.lectureList = list
+        notifyDataSetChanged()
     }
 
     private lateinit var lectureClickListener: OnLectureClickListener
     interface OnLectureClickListener {
         fun onItemClick(v: View, data: Lecture, position: Int)
+        fun removeShadow()
         fun addItem(parent : View, v: View, lecture: Lecture, position: Int)
     }
 

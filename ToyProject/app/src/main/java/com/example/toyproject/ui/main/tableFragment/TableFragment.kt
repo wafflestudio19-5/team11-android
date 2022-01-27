@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.toyproject.network.dto.table.EditCustomLecture
 import com.example.toyproject.network.dto.table.ScheduleCreate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,13 +65,15 @@ class TableFragment : Fragment() {
             // "99" : 새 시간표 생성, 바로 적용
             else if(it.resultCode == 99) {
                 clearCell()
-                // TODO : 시간표 ID 활용
                 val id = it.data!!.getIntExtra("id", 0)
                 val year = it.data!!.getIntExtra("year", 0)
                 val season = intToSeasonString(it.data!!.getIntExtra("season", 0))
                 val title = it.data!!.getStringExtra("title")
                 binding.fragmentTableTitle.text = title
-                binding.fragmentTableSemester.text = "${year}년 ${season}"
+                binding.fragmentTableSemester.text = "${year}년 $season"
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.loadLecturesById(id)
+                }
             }
         }
 
@@ -118,8 +121,8 @@ class TableFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.defaultScheduleLecturesFlow.collect { list ->
                 if(list!=null) {
-                    val colorCode = randomColor()
                     list.custom_lectures.forEach { item ->
+                        val colorCode = randomColor()
                         if(item.time_location==null) {
                             // TODO : 시간, 장소 정보 없는 강의
                         }
@@ -135,7 +138,7 @@ class TableFragment : Fragment() {
                                 if(item.lecture != null) lecture_id = item.lecture
 
                                 makeCell(Cell(item.nickname, colorCode, startRow, endRow-startRow, col=col, item.id,
-                                    lecture_id, item.professor, stringListToString(timeLocation.location), ""))
+                                    lecture_id, item.professor, stringListToString(timeLocation.location), item.memo))
                             }
                         }
                     }
@@ -223,7 +226,7 @@ class TableFragment : Fragment() {
             val bottomSheet = LectureInfoBottomSheet()
             // 전달할 강의 정보들 parcelize 해서 포장
             val args = Bundle()
-            args.putParcelable("cellInfo", cellObject)
+            args.putParcelable("cellInfo", myCells[item])
 
             // 같은 강의의 다른 셀 정보도 전달
             val friendCells = mutableListOf<Cell>()
@@ -270,15 +273,37 @@ class TableFragment : Fragment() {
                     resultListener.launch(intent)
                 }
 
-                override fun nick(nick : String) {
-                    // 약칭 지정 TODO : 통신 필요
-                    cellObject.title = nick
-                    item.text = nick
+                override fun nick(nickname : String?, memo : String?){
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.editMemo(EditCustomLecture(nickname, memo, null), item.info)
+                        viewModel.editLectureMemoNick.collect {
+                            if(it==null) {
+                                Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                // 친구들도 싹 약칭으로
+                                lectureHashMap[item.info]!!.forEach { piece ->
+                                    val pieceObject = myCells[piece]!!
+                                    piece.text = it.nickname
+                                    pieceObject.title = it.nickname
+                                }
+                            }
+                        }
+                    }
                 }
 
                 override fun memo(memo: String) {
-                    // TODO : 통신
-                    cellObject.memo = memo
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.editMemo(EditCustomLecture(null, memo, null), item.info)
+                        viewModel.editLectureMemoNick.collect {
+                            if(it==null) {
+                                Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                cellObject.memo = it.memo
+                            }
+                        }
+                    }
                 }
             })
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
@@ -546,7 +571,8 @@ class TableFragment : Fragment() {
             else -> FRI
         }
     }
-    private fun stringListToString(list : List<String>) : String {
+    private fun stringListToString(list : List<String>?) : String {
+        if(list==null) return ""
         val builder = StringBuilder()
         list.forEachIndexed { idx, item ->
             builder.append(item)

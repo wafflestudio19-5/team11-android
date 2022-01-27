@@ -44,13 +44,13 @@ class TableListCellAdapter(private val context: Context, private val List: Mutab
             else base?.visibility = GONE
 
             layout!!.setOnClickListener {
-                clicker.click(title!!.text.toString())
+                clicker.click(title!!.text.toString(), schedule.id)
             }
         }
     }
 
     interface Clicker {
-        fun click(title : String)
+        fun click(title : String, scheduleId : Int)
     }
 
     fun setClicker(clicker: Clicker) {

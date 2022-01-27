@@ -385,7 +385,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                         return
                     }
                     // 중복 확인했으면 후보 리스트에 추가
-                    cellsTemp.add(Cell(title, colorCode, start, span, col, title.hashCode(), -1, instructor, location, memo=""))
+                    cellsTemp.add( Cell(title, colorCode, start, span, col, title.hashCode(), -1, instructor, location, memo=""))
                 }
                 else {
                     continue
@@ -811,7 +811,8 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             else -> FRI
         }
     }
-    private fun stringListToString(list : List<String>) : String {
+    private fun stringListToString(list : List<String>?) : String {
+        if(list==null) return ""
         val builder = StringBuilder()
         list.forEachIndexed { idx, item ->
             builder.append(item)
@@ -873,7 +874,7 @@ data class Cell (
     val start : Int,
     val span : Int,
     val col : Int,
-    val custom_id : Int,
+    var custom_id : Int,
     val lecture_id : Int,
     val instructor : String?,
     val location : String?,
