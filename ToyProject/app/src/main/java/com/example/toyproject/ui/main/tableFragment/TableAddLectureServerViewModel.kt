@@ -26,13 +26,13 @@ class TableAddLectureServerViewModel @Inject constructor(
     val addServerLectureFlow = _addServerLectureFlow.asSharedFlow()
 
 
-    fun loadServerLecture(offset : Int=20, limit : Int=20, subject_name : String?=null,
+    fun loadServerLecture(offset : Int=0, limit : Int=20, subject_name : String?=null,
                           professor : String?=null, subject_code : String? =null, location : String? = null,
-                          department : String? = null, grade : Int? = null,
-                          credit : Int? = null, category : String? = null) {
+                          department : String? = null, grade : String? = null,
+                          credit : String? = null, category : String? = null) {
         viewModelScope.launch {
             try {
-                _serverLectureGetFlow.emit(service.loadServerLectures(offset, limit, subject_name, professor, subject_code, location, department,
+                _serverLectureGetFlow.emit(service.loadServerLectures(offset, limit, subject_name, professor=professor, subject_code, location, department,
                     grade, credit, category))
             }catch (e : HttpException) {
                 errorMessage = e.message()

@@ -110,13 +110,13 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "사회복지학과", next=false),
             TableAddFilterItemView(this, "언론정보학과"),
             TableAddFilterItemView(this, "심리학과"),
-            TableAddFilterItemView(this, "협동과정 평화∙통일학전공", next=false)
+            TableAddFilterItemView(this, "협동과정 평화·통일학전공", next=false)
         )
         items["자연과학대학"] = arrayListOf(
             TableAddFilterItemView(this, "자연과학대학", next=false),
             TableAddFilterItemView(this, "수리과학부", next=false),
             TableAddFilterItemView(this, "통계학과", next=false),
-            TableAddFilterItemView(this, "물리∙천문학부"),
+            TableAddFilterItemView(this, "물리·천문학부"),
             TableAddFilterItemView(this, "화학부", next=false),
             TableAddFilterItemView(this, "생명과학부"),
             TableAddFilterItemView(this, "지구환경과학부"),
@@ -139,14 +139,14 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
         items["공과대학"] = arrayListOf(
             TableAddFilterItemView(this, "공과대학", next=false),
             TableAddFilterItemView(this, "재료공학부", next=false),
-            TableAddFilterItemView(this, "전기∙정보공학부"),
+            TableAddFilterItemView(this, "전기·정보공학부"),
             TableAddFilterItemView(this, "에너지자원공학과", next=false),
             TableAddFilterItemView(this, "화학생물공학부"),
             TableAddFilterItemView(this, "건축학과", next=false),
             TableAddFilterItemView(this, "산업공학과"),
             TableAddFilterItemView(this, "원자핵공학과", next=false),
             TableAddFilterItemView(this, "조선해양공학과", next=false),
-            TableAddFilterItemView(this, "협동과정 기술경영∙경제∙정책전공"),
+            TableAddFilterItemView(this, "협동과정 기술경영·경제·정책전공"),
             TableAddFilterItemView(this, "협동과정 도시설계학전공", next=false),
             TableAddFilterItemView(this, "협동과정 바이오엔지니어링전공", next=false),
             TableAddFilterItemView(this, "컴퓨터공학부"),
@@ -163,14 +163,14 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "산림과학부"),
             TableAddFilterItemView(this, "농림생물자원학부"),
             TableAddFilterItemView(this, "응용생물화학부"),
-            TableAddFilterItemView(this, "식품∙동물생명공학부"),
-            TableAddFilterItemView(this, "바이오시스템∙소재학부"),
-            TableAddFilterItemView(this, "바이오시스템∙공학과"),
-            TableAddFilterItemView(this, "조경∙지역시스템공학부"),
+            TableAddFilterItemView(this, "식품·동물생명공학부"),
+            TableAddFilterItemView(this, "바이오시스템·소재학부"),
+            TableAddFilterItemView(this, "바이오시스템·공학과"),
+            TableAddFilterItemView(this, "조경·지역시스템공학부"),
             TableAddFilterItemView(this, "농경제사회학부"),
             TableAddFilterItemView(this, "농생명공학부"),
             TableAddFilterItemView(this, "농산업교육과", next=false),
-            TableAddFilterItemView(this, "생태조경∙지역시스템공학부"),
+            TableAddFilterItemView(this, "생태조경·지역시스템공학부"),
             TableAddFilterItemView(this, "협동과정 농림기상학"),
             TableAddFilterItemView(this, "협동과정 농생명유전체학전공", next=false)
         )
@@ -354,7 +354,7 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "심리학과", next=false),
             TableAddFilterItemView(this, "심리학전공", next=false),
         )
-        items["물리∙천문학부"] = arrayListOf(
+        items["물리·천문학부"] = arrayListOf(
             TableAddFilterItemView(this, "물리학전공", next=false),
             TableAddFilterItemView(this, "천문학전공", next=false),
         )
@@ -370,8 +370,8 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "경영학과", next=false),
             TableAddFilterItemView(this, "연합전공 벤처경영학", next=false),
         )
-        items["전기∙정보공학부"] = arrayListOf(
-            TableAddFilterItemView(this, "전기∙정보공학부", next=false),
+        items["전기·정보공학부"] = arrayListOf(
+            TableAddFilterItemView(this, "전기·정보공학부", next=false),
             TableAddFilterItemView(this, "연합전공 인공지능반도체공학", next=false),
         )
         items["화학생물공학부"] = arrayListOf(
@@ -382,8 +382,8 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "산업공학과", next=false),
             TableAddFilterItemView(this, "연합전공 기술경영", next=false),
         )
-        items["협동과정 기술경영∙경제∙정책전공"] = arrayListOf(
-            TableAddFilterItemView(this, "협동과정 기술경영∙경제∙정책전공", next=false),
+        items["협동과정 기술경영·경제·정책전공"] = arrayListOf(
+            TableAddFilterItemView(this, "협동과정 기술경영·경제·정책전공", next=false),
             TableAddFilterItemView(this, "융합전공 스마트시티 글로벌 융합", next=false),
         )
         items["컴퓨터공학부"] = arrayListOf(
@@ -429,32 +429,32 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "응용생명화학전공", next=false),
             TableAddFilterItemView(this, "응용생물학전공", next=false),
         )
-        items["식품∙동물생명공학부"] = arrayListOf(
+        items["식품·동물생명공학부"] = arrayListOf(
             TableAddFilterItemView(this, "식품생명공학전공", next=false),
             TableAddFilterItemView(this, "동물생명공학전공", next=false)
         )
-        items["바이오시스템∙소재학부"] = arrayListOf(
+        items["바이오시스템·소재학부"] = arrayListOf(
             TableAddFilterItemView(this, "바이오시스템공학전공", next=false),
             TableAddFilterItemView(this, "바이오소재공학전공", next=false)
         )
-        items["바이오시스템∙공학과"] = arrayListOf(
+        items["바이오시스템·공학과"] = arrayListOf(
             TableAddFilterItemView(this, "바이오시스템공학전공", next=false),
             TableAddFilterItemView(this, "융합전공 글로벌 스마트팜", next=false)
         )
-        items["조경∙지역시스템공학부"] = arrayListOf(
+        items["조경·지역시스템공학부"] = arrayListOf(
             TableAddFilterItemView(this, "조경학전공", next=false),
             TableAddFilterItemView(this, "지역시스템공학전공", next=false)
         )
         items["농경제사회학부"] = arrayListOf(
-            TableAddFilterItemView(this, "농업∙자원경제학전공", next=false),
+            TableAddFilterItemView(this, "농업·자원경제학전공", next=false),
             TableAddFilterItemView(this, "지역정보학전공", next=false),
-            TableAddFilterItemView(this, "융합전공 지역∙공간분석학", next=false),
+            TableAddFilterItemView(this, "융합전공 지역·공간분석학", next=false),
         )
         items["농생명공학부"] = arrayListOf(
             TableAddFilterItemView(this, "농생명공학부", next=false),
             TableAddFilterItemView(this, "바이오모듈레이션전공", next=false)
         )
-        items["생태조경∙지역시스템공학부"] = arrayListOf(
+        items["생태조경·지역시스템공학부"] = arrayListOf(
             TableAddFilterItemView(this, "생태조경학전공", next=false),
             TableAddFilterItemView(this, "지역시스템공학전공", next=false)
         )
@@ -471,7 +471,7 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
         items["미술학과"] = arrayListOf(
             TableAddFilterItemView(this, "미술학과", next=false),
             TableAddFilterItemView(this, "동양화전공", next=false),
-            TableAddFilterItemView(this, "서양화∙판화전공", next=false),
+            TableAddFilterItemView(this, "서양화·판화전공", next=false),
             TableAddFilterItemView(this, "조소전공", next=false)
         )
         items["사회교육과"] = arrayListOf(
@@ -517,7 +517,7 @@ class TableAddFilterMajorActivity : AppCompatActivity() {
             TableAddFilterItemView(this, "음악과", next=false),
             TableAddFilterItemView(this, "작곡전공", next=false),
             TableAddFilterItemView(this, "기악전공", next=false),
-            TableAddFilterItemView(this, "작곡∙지휘∙음악학전공", next=false),
+            TableAddFilterItemView(this, "작곡·지휘·음악학전공", next=false),
         )
         items["국악과"] = arrayListOf(
             TableAddFilterItemView(this, "국악과", next=false),

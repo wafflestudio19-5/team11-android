@@ -48,15 +48,15 @@ interface TableService {
 
     @GET("/api/v1/schedule/default/lecture/")
     suspend fun loadServerLectures(
-        @Query("offset") offset : Int = 20,
+        @Query("offset") offset : Int = 0,
         @Query("limit") limit : Int = 20,
         @Query("subject_name") subject_name : String? =null,
         @Query("professor") professor : String? =null,
         @Query("subject_code") subject_code : String? =null,
         @Query("location") location : String? = null,
         @Query("department") department : String? = null,
-        @Query("grade") grade : Int? = null,
-        @Query("credit") credit : Int? = null,
+        @Query("grade") grade : String? = null,
+        @Query("credit") credit : String? = null,
         @Query("category") category : String? = null
     ) : ServerLectureList
 

@@ -420,6 +420,8 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                                     -1, instructor, stringListToString(timeLocation.location), "" ))
                             }
                             flag = false
+
+                            if(mode) onBackPressed()
                         }
                     }
                 }

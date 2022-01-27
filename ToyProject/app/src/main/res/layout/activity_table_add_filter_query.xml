@@ -152,79 +152,89 @@
         </RadioGroup>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/table_add_filter_query_field_layout">
 
         <LinearLayout
-            android:id="@+id/table_add_filter_query_nothing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="100dp"
-            android:paddingBottom="100dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/icn_m_search_gray400" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="검색 기록이 없습니다"
-                android:textAlignment="center"
-                android:textColor="@color/A6"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/table_add_filter_query_something"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/borderline"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/table_add_filter_query_history"
+                android:id="@+id/table_add_filter_query_nothing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="11dp"
-                android:paddingBottom="11dp">
+                android:paddingTop="100dp"
+                android:paddingBottom="100dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/icn_m_search_gray400" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="검색 기록이 없습니다"
+                    android:textAlignment="center"
+                    android:textColor="@color/A6"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/table_add_filter_query_something"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/table_add_filter_query_clear_history"
+                    android:id="@+id/table_add_filter_query_history"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="horizontal"
-                    android:paddingStart="17sp"
-                    android:paddingTop="13dp"
-                    android:paddingEnd="17dp"
-                    android:paddingBottom="13dp">
+                    android:orientation="vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp">
 
-                    <TextView
-                        android:id="@+id/table_add_filter_delete_history"
+                    <LinearLayout
+                        android:id="@+id/table_add_filter_query_clear_history"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="검색 기록 삭제"
-                        android:textColor="@color/Primary"
-                        android:textSize="16sp" />
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:paddingStart="17sp"
+                        android:paddingTop="13dp"
+                        android:paddingEnd="17dp"
+                        android:paddingBottom="13dp">
+
+                        <TextView
+                            android:id="@+id/table_add_filter_delete_history"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="검색 기록 삭제"
+                            android:textColor="@color/Primary"
+                            android:textSize="16sp" />
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
