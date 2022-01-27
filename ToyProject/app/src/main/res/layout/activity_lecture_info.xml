@@ -161,7 +161,7 @@
                         android:numStars="5"
                         android:progressTint="#FFC107"
                         android:rating="0"
-                        android:stepSize="1" />
+                        android:stepSize="0.01" />
 
                     <TextView
                         android:id="@+id/rating_num"
@@ -365,14 +365,14 @@
                     android:layout_height="match_parent">
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/assignment_type_1"
+                        android:id="@+id/assignment_type_2"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#3A3A3A"
                         android:text="많음"/>
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/assignment_type_2"
+                        android:id="@+id/assignment_type_1"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -380,7 +380,7 @@
                         android:checked="true"
                         android:text="보통"/>
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/assignment_type_3"
+                        android:id="@+id/assignment_type_0"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

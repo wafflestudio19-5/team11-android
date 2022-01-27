@@ -23,8 +23,6 @@ interface ReviewService {
     @GET("/api/v1/subject_professor/{subject_professor_id}/information/")
     fun getInformation(
         @Path("subject_professor_id") id: Int,
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int
     ): Call<InformationList>
 
     @POST("/api/v1/subject_professor/{subject_professor_id}/information/")
@@ -48,7 +46,7 @@ data class ReviewAvg(
     val grading: String,
     val attendance: String,
     val test_count: Int,
-    val rating: Int
+    val rating: Float
 )
 
 data class ReviewList(
@@ -100,10 +98,7 @@ data class CreateReview(
 )
 
 data class InformationList(
-    val count: Int,
-    val next: String?,
-    val previous: String?,
-    val results: MutableList<Information>?
+    val informations: MutableList<Information>
 )
 
 data class Information(
@@ -111,7 +106,7 @@ data class Information(
     val subject_professor_id: Int,
     val year: Int,
     val season: String,
-    val test_type: Int,
+    val test_number: Int,
     val test_method: String,
     val strategy: String,
     val problems: List<String>
@@ -120,7 +115,7 @@ data class Information(
 data class CreateInformation(
     val year: Int,
     val season: Int,
-    val test_type: Int,
+    val test_number: Int,
     val test_method: String,
     val strategy: String,
     val problems: List<String>

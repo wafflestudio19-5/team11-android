@@ -13,9 +13,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import androidx.core.view.iterator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ActivityLectureInfoBinding
+import com.example.toyproject.network.CreateReview
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +29,8 @@ class LectureInfoActivity: AppCompatActivity() {
     private lateinit var lectureReviewAdapter: LectureReviewAdapter
     private lateinit var lectureReviewLayoutManager: LinearLayoutManager
 
+    private lateinit var informationAdapter: InformationAdapter
+    private lateinit var informationLayoutManager: LinearLayoutManager
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +40,22 @@ class LectureInfoActivity: AppCompatActivity() {
 
         lectureReviewAdapter = LectureReviewAdapter()
         lectureReviewLayoutManager= LinearLayoutManager(this)
+        informationAdapter = InformationAdapter()
+        informationLayoutManager = LinearLayoutManager(this)
 
         binding.recyclerViewReviews.apply {
             adapter = lectureReviewAdapter
             layoutManager=lectureReviewLayoutManager
         }
 
+        binding.recyclerViewExams.apply {
+            adapter = informationAdapter
+            layoutManager = informationLayoutManager
+        }
+
         viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 10))
         viewModel.getReviews(intent.getIntExtra("id", 10))
+        viewModel.getInformation(intent.getIntExtra("id", 10))
 
 
         viewModel.result.observe(this) {
@@ -61,7 +73,7 @@ class LectureInfoActivity: AppCompatActivity() {
                 binding.notFoundText1.visibility = VISIBLE
             }
             else{
-                binding.ratingBar.rating = it.review.rating.toFloat()
+                binding.ratingBar.rating = it.review.rating
                 binding.ratingNum.text = it.review.rating.toString()
                 binding.assignmentAvg.text = it.review.homework
                 binding.teamAvg.text = it.review.team_activity
@@ -78,8 +90,16 @@ class LectureInfoActivity: AppCompatActivity() {
 
         viewModel.reviewList.observe(this) {
             lectureReviewAdapter.setReviews(it)
-            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
             lectureReviewAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.informationResult.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+
+        viewModel.informationList.observe(this){
+            informationAdapter.setInformation(it)
+            informationAdapter.notifyDataSetChanged()
         }
 
         binding.writeReviewButton.setOnClickListener {
@@ -95,9 +115,10 @@ class LectureInfoActivity: AppCompatActivity() {
         }
 
         binding.postReviewButton.setOnClickListener {
-            val selectedChip = binding.assignmentGroup.children
-                .filter { (it as Chip).isChecked }
-                .map { (it as Chip).text.toString() }
+            val homework = binding.assignmentGroup.checkedChipId.toString().substring(16)
+            Toast.makeText(this, homework, Toast.LENGTH_SHORT).show()
+            //val team = binding.teamGroup.checkedChipId.
+            //viewModel.postReview(binding.ratingUser.rating.toInt(), )
         }
 
         binding.writeExamButton.setOnClickListener {
