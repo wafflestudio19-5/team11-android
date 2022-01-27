@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20sp"
+                android:layout_marginBottom="5sp"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="#FFC107"
@@ -32,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20sp"
+                android:layout_marginBottom="5sp"
                 android:text="21년 1학기 수강자"
                 android:layout_gravity="start"
                 android:textSize="13sp" />
@@ -72,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
+        android:layout_marginBottom="10sp"
         android:text="강의평"
         android:layout_gravity="start"
         android:textColor="@color/OnBackground"

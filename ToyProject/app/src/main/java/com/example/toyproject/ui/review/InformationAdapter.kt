@@ -22,7 +22,7 @@ class InformationAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when(holder){
             is InformationViewHolder -> {
                 holder.binding.apply {
-                    examTitle.text = data.test_number.toString()
+                    examTitle.text = data.test_type.toString()
                     lectureSemester.text = data.year.toString() + "년 " + data.season + " 수강자"
                     examStrategy.text = data.strategy
                     questionType.text = data.test_method

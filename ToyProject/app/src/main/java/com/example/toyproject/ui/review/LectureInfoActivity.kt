@@ -32,7 +32,7 @@ class LectureInfoActivity: AppCompatActivity() {
     private lateinit var informationAdapter: InformationAdapter
     private lateinit var informationLayoutManager: LinearLayoutManager
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLectureInfoBinding.inflate(layoutInflater)
@@ -53,9 +53,9 @@ class LectureInfoActivity: AppCompatActivity() {
             layoutManager = informationLayoutManager
         }
 
-        viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 10))
-        viewModel.getReviews(intent.getIntExtra("id", 10))
-        viewModel.getInformation(intent.getIntExtra("id", 10))
+        viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 1))
+        viewModel.getReviews(intent.getIntExtra("id", 1))
+        viewModel.getInformation(intent.getIntExtra("id", 1))
 
 
         viewModel.result.observe(this) {
@@ -79,7 +79,7 @@ class LectureInfoActivity: AppCompatActivity() {
                 binding.teamAvg.text = it.review.team_activity
                 binding.gradingAvg.text = it.review.grading
                 binding.attendAvg.text = it.review.attendance
-                binding.examAvg.text = it.review.test_count.toString()
+                binding.examAvg.text = it.review.test_count
 
             }
         }
@@ -115,10 +115,56 @@ class LectureInfoActivity: AppCompatActivity() {
         }
 
         binding.postReviewButton.setOnClickListener {
-            val homework = binding.assignmentGroup.checkedChipId.toString().substring(16)
-            Toast.makeText(this, homework, Toast.LENGTH_SHORT).show()
-            //val team = binding.teamGroup.checkedChipId.
-            //viewModel.postReview(binding.ratingUser.rating.toInt(), )
+            val homework = binding.assignmentGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).resources.getResourceName(it.id) }
+                .toList().joinToString()
+            val team = binding.teamGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).resources.getResourceName(it.id) }
+                .toList().joinToString()
+            val grading = binding.gradingGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).resources.getResourceName(it.id) }
+                .toList().joinToString()
+            val attendance = binding.attendanceGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).resources.getResourceName(it.id) }
+                .toList().joinToString()
+            val exam = binding.examGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).resources.getResourceName(it.id) }
+                .toList().joinToString()
+            val year = binding.spinnerSemester.selectedItem.toString().substring(0,4).toInt()
+            val seasonTemp = binding.spinnerSemester.selectedItem.toString().substring(6)
+            var season = 1
+            season = when (seasonTemp) {
+                "1학기" -> {
+                    1
+                }
+                "2학기" -> {
+                    2
+                }
+                "여름학기" -> {
+                    3
+                }
+                else -> {
+                    4
+                }
+            }
+
+            viewModel.postReview(intent.getIntExtra("id", 1),
+                CreateReview(binding.ratingUser.rating.toInt(), getNumber(homework), getNumber(team), getNumber(grading), getNumber(attendance), getNumber(exam), binding.reviewText.text.toString(), year, season))
+        }
+
+        viewModel.postReviewResult.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+
+        viewModel.review.observe(this){
+            binding.createReviewLayout.visibility = GONE
+            viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 1))
+            viewModel.getReviews(intent.getIntExtra("id", 1))
         }
 
         binding.writeExamButton.setOnClickListener {
@@ -128,5 +174,9 @@ class LectureInfoActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private fun getNumber(Str: String): Int{
+        return Str.substring(Str.indexOf("_")+1).toInt()
     }
 }

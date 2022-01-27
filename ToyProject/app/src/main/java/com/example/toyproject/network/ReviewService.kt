@@ -45,7 +45,7 @@ data class ReviewAvg(
     val team_activity: String,
     val grading: String,
     val attendance: String,
-    val test_count: Int,
+    val test_count: String,
     val rating: Float
 )
 
@@ -54,22 +54,6 @@ data class ReviewList(
 )
 
 data class Review(
-    val id: Int,
-    val subject_professor_id: Int,
-    val year: Int,
-    val season: String,
-    //val homework: String,
-   // val team_activity: String,
-    //val grading: String,
-    //val attendance: String,
-    //val test_count: String,
-    val rating: Int,
-    val comment: String,
-    //val subject_professor: Int,
-    //val user: Int
-)
-
-data class ReviewResponse(
     val id: Int,
     val subject_professor_id: Int,
     val year: Int,
@@ -106,7 +90,7 @@ data class Information(
     val subject_professor_id: Int,
     val year: Int,
     val season: String,
-    val test_number: Int,
+    val test_type: String,
     val test_method: String,
     val strategy: String,
     val problems: List<String>
@@ -115,7 +99,7 @@ data class Information(
 data class CreateInformation(
     val year: Int,
     val season: Int,
-    val test_number: Int,
+    val test_type: Int,
     val test_method: String,
     val strategy: String,
     val problems: List<String>
