@@ -27,6 +27,7 @@ import kotlin.NullPointerException
 import kotlin.collections.ArrayList
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -46,6 +47,8 @@ class TableFragment : Fragment() {
 
     private var colWidth : Int = 0
 
+    private var scheduleId : Int = -1
+
     private val viewModel : TableFragmentViewModel by activityViewModels()
 
     // "RESULT_OK" : AddLectureActivity 에서 시간표 정보 가져온 것 적용
@@ -56,6 +59,8 @@ class TableFragment : Fragment() {
                 val cellInfo : ArrayList<Cell> = it.data!!.getParcelableArrayListExtra("cellInfo")!!
                 // 불러온 정보로 셀 추가
                 cellInfo.withIndex().forEach { i ->
+                    Timber.d("가가가가가가가가가가가가가가")
+                    Timber.d(i.value.custom_id.toString())
                     makeCell(i.value)
                 }
                 // 동적 시간표 길이 적용
@@ -65,8 +70,8 @@ class TableFragment : Fragment() {
             // "99" : 새 시간표 생성, 바로 적용
             else if(it.resultCode == 99) {
                 clearCell()
-                val id = it.data!!.getIntExtra("id", 0)
-                val year = it.data!!.getIntExtra("year", 0)
+                val id = it.data!!.getIntExtra("id", -1)
+                val year = it.data!!.getIntExtra("year", -1)
                 val season = intToSeasonString(it.data!!.getIntExtra("season", 0))
                 val title = it.data!!.getStringExtra("title")
                 binding.fragmentTableTitle.text = title
@@ -74,6 +79,7 @@ class TableFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     viewModel.loadLecturesById(id)
                 }
+                scheduleId = id
             }
         }
 
@@ -101,6 +107,48 @@ class TableFragment : Fragment() {
         adjustTableHeight(findFastestTime(), findLatestTime())
 
         // default 시간표 불러오기
+        loadDefaultSchedule()
+        // default 시간표 강의 정보 불러오기
+        loadDefaultScheduleDetail()
+
+        // 시간표 없을 때만 보이는, 새 시간표 만들기 창
+        binding.fragmentTableMakeButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.scheduleCreateFlow.collect { response ->
+                    if(response==null) {
+                        Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        binding.fragmentTableDefault.visibility = GONE
+                        binding.tableNow.visibility = VISIBLE
+
+                        binding.fragmentTableSemester.text = "${response.year}년 ${response.season}학기"
+                        binding.fragmentTableTitle.text = response.name
+                    }
+                }
+            }
+            viewModel.createSchedule(ScheduleCreate("시간표 1", 2022, 1))
+        }
+        // 강의 추가 버튼
+        binding.tableButtonAddClass.setOnClickListener {
+            // if(계절학기) {
+            val intent = Intent(activity, TableAddLectureServerActivity::class.java)
+            intent.putParcelableArrayListExtra("cellInfo", ArrayList(myCells.values))
+            resultListener.launch(intent)
+        }
+        // 우상단 설정 버튼
+        binding.tableButtonSetting.setOnClickListener {
+            val title = binding.fragmentTableTitle.text.toString()
+            openSettingBottomSheet(scheduleId, title)
+        }
+
+        // 우상단 시간표 목록 버튼
+        binding.tableButtonList.setOnClickListener {
+            val intent = Intent(activity, TableListActivity::class.java)
+            resultListener.launch(intent)
+        }
+    }
+    private fun loadDefaultSchedule() {
         viewModel.loadDefaultSchedule()
         lifecycleScope.launch {
             viewModel.defaultScheduleGetFlow.collect { defaultSchedule ->
@@ -116,7 +164,8 @@ class TableFragment : Fragment() {
                 }
             }
         }
-        // default 시간표 강의 정보 불러오기
+    }
+    private fun loadDefaultScheduleDetail() {
         viewModel.loadDefaultScheduleLectures()
         lifecycleScope.launch {
             viewModel.defaultScheduleLecturesFlow.collect { list ->
@@ -147,41 +196,6 @@ class TableFragment : Fragment() {
                     addBorder(findFastestTime(), findLatestTime())
                 }
             }
-        }
-        // 시간표 없을 때만 보이는, 새 시간표 만들기 창
-        binding.fragmentTableMakeButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.scheduleCreateFlow.collect { response ->
-                    if(response==null) {
-                        Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        binding.fragmentTableDefault.visibility = GONE
-                        binding.tableNow.visibility = VISIBLE
-
-                        binding.fragmentTableSemester.text = "${response.year}년 ${response.season}학기"
-                        binding.fragmentTableTitle.text = response.name
-                    }
-                }
-            }
-            viewModel.createSchedule(ScheduleCreate("시간표 1", 2022, 1))
-        }
-        // 강의 추가 버튼
-        binding.tableButtonAddClass.setOnClickListener {
-            // if(계절학기) {
-            val intent = Intent(activity, TableAddLectureServerActivity::class.java)
-            intent.putParcelableArrayListExtra("cellInfo", ArrayList(myCells.values))
-            resultListener.launch(intent)
-        }
-        // 우상단 설정 버튼
-        binding.tableButtonSetting.setOnClickListener {
-            openSettingBottomSheet()
-        }
-
-        // 우상단 시간표 목록 버튼
-        binding.tableButtonList.setOnClickListener {
-            val intent = Intent(activity, TableListActivity::class.java)
-            resultListener.launch(intent)
         }
     }
 
@@ -222,6 +236,7 @@ class TableFragment : Fragment() {
 
         // 각 뷰마다 클릭 리스너도 적용
         item.setOnClickListener {
+            Toast.makeText(activity, item.info.toString(), Toast.LENGTH_SHORT).show()
             // 화면 아래에 뜨는 팝업창
             val bottomSheet = LectureInfoBottomSheet()
             // 전달할 강의 정보들 parcelize 해서 포장
@@ -241,20 +256,20 @@ class TableFragment : Fragment() {
                 override fun delete() {
                     viewModel.deleteLecture(item.info)
                     CoroutineScope(Dispatchers.Main).launch {
-                        viewModel.scheduleDeleteFlow.collect { result ->
+                        viewModel.lectureDeleteFlow.collect { result ->
                             if(result) {
-                                // 해당 셀과 동일한 강의 싹 골라서 view 에서 삭제
-                                lectureHashMap[item.info]!!.forEach { piece ->
-                                    val pieceObject = myCells[piece]
-                                    binding.tableNow.removeView(piece)
-                                    try {
+                                try {
+                                    // 해당 셀과 동일한 강의 싹 골라서 view 에서 삭제
+                                    lectureHashMap[item.info]!!.forEach { piece ->
+                                        val pieceObject = myCells[piece]
+                                        binding.tableNow.removeView(piece)
                                         removeFromOccupyTable(pieceObject!!.start, pieceObject.span, pieceObject.col)
-                                    } catch ( n : NullPointerException) {
-                                        // 설마..
+                                        myCells.remove(piece)
                                     }
-                                    myCells.remove(piece)
+                                    adjustTableHeight(findFastestTime(), findLatestTime())
+                                } catch ( n : NullPointerException) {
+                                    // 설마..
                                 }
-                                adjustTableHeight(findFastestTime(), findLatestTime())
                             }
                             else {
                                 // 통신 오류?
@@ -597,8 +612,51 @@ class TableFragment : Fragment() {
         }
     }
 
-    private fun openSettingBottomSheet() {
+    private fun openSettingBottomSheet(scheduleId : Int, title : String) {
         val bottomSheet = ScheduleSettingBottomSheet()
+        val args = Bundle()
+        args.putInt("id", scheduleId)
+        args.putString("title", title)
+        bottomSheet.arguments = args
+
+        bottomSheet.setInterface(object : ScheduleSettingBottomSheet.ScheduleSettingInterface {
+            override fun delete(scheduleId: Int) {
+                // 디폴트 시간표 삭제
+                if(scheduleId==-1) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.deleteScheduleDefault()
+                        viewModel.deleteScheduleFlow.collect {
+                            if(!it) {
+                                Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                // default 시간표 불러오기
+                                loadDefaultSchedule()
+                                // default 시간표 강의 정보 불러오기
+                                loadDefaultScheduleDetail()
+                            }
+                        }
+                    }
+                }
+                // 아이디로 시간표 삭제
+                else {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.deleteScheduleById(scheduleId)
+                        viewModel.deleteScheduleFlow.collect {
+                            if(!it) {
+                                Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+                                // default 시간표 불러오기
+                                loadDefaultSchedule()
+                                // default 시간표 강의 정보 불러오기
+                                loadDefaultScheduleDetail()
+                            }
+                        }
+                    }
+                }
+            }
+        })
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
     }
 }

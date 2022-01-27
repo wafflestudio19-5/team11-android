@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -472,20 +473,28 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         lecture.professor, lecture.location, memo = "")
                     tempCells.add(newItem)
                 }
+                Timber.d("고고고고고ㅗㄱ")
+                Timber.d(tempCells.size.toString())
+                var flag = true
                 CoroutineScope(Dispatchers.Main).launch {
                     viewModel.addLectureById(lecture.id)
                     viewModel.addServerLectureFlow.collect {
                         if(it==null) {
                             Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
                         }
-                        else {
+                        else if(flag) {
                             val custom_id = it.id
                             val memo = it.memo
+                            Timber.d("고고고고고ㅗㄱ")
+                            Timber.d(tempCells.size.toString())
                             tempCells.forEach { newItem ->
                                 newItem.custom_id = custom_id
                                 newItem.memo = memo
+                                Timber.d("아아아아아아아아")
+                                Timber.d(custom_id.toString())
                                 makeCell(newItem)
                             }
+                            flag = false
                             // 동적 시간표 길이 적용
                             adjustTableHeight(findFastestTime(), findLatestTime())
                             addBorder(findFastestTime(), findLatestTime())
@@ -508,6 +517,8 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val resultIntent = Intent()
         resultIntent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
+
+
         setResult(RESULT_OK, resultIntent)
         finish()
         // 뒤로 버튼 누르면 아래로 내려가기
@@ -549,7 +560,6 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         binding.tableNow.addView(item, param)
 
         // 새로 추가되는 강의는 hashmap 에도 추가
-        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것
         item.info = cellObject.custom_id
         if(lectureHashMap.containsKey(item.info)){
             lectureHashMap[item.info]?.add(item)

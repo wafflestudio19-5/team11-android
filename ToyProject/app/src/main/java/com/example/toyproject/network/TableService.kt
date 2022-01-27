@@ -17,6 +17,12 @@ interface TableService {
     @POST("/api/v1/schedule/")
     suspend fun createSchedule(@Body param : ScheduleCreate) : DefaultSchedule
 
+    @DELETE("/api/v1/schedule/{schedule_id}/")
+    suspend fun deleteScheduleById(@Path("schedule_id") scheduleId: Int)
+
+    @DELETE("/api/v1/schedule/default/")
+    suspend fun deleteScheduleDefault()
+
     @POST("/api/v1/schedule/default/custom_lecture/")
     suspend fun addCustomLectureToDefault(@Body param : UserMadeLectureAdd) : CustomLecture
 

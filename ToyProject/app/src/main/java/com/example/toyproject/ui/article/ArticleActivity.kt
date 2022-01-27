@@ -212,10 +212,10 @@ class ArticleActivity : SwipeDismissBaseActivity(){
             override fun onCommentClick(parent: Int) {
                 val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                     .setMessage("대댓글을 작성하시겠습니까?")
-                    .setNegativeButton("취소") { dialogInterface, i ->
+                    .setNegativeButton("취소") { dialogInterface, _ ->
                         dialogInterface.dismiss()
                     }
-                    .setPositiveButton("확인") { dialogInterface, i ->
+                    .setPositiveButton("확인") { _, _ ->
                         // 원래 빨갰던 댓글은 하얗게 되돌리고,대댓글의 parent 가 될 댓글을 빨갛게 만들고, 키보드 올리기
                         binding.commentView[commentAdapter.getItemPosition(commentParent)].setBackgroundColor(
                             Color.parseColor("#FFFFFF")
@@ -246,10 +246,10 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                 } else {
                     val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                         .setMessage("이 댓글을 공감하시겠습니까?")
-                        .setNegativeButton("취소") { dialogInterface, i ->
+                        .setNegativeButton("취소") { dialogInterface, _ ->
                             dialogInterface.dismiss()
                         }
-                        .setPositiveButton("확인") { dialogInterface, i ->
+                        .setPositiveButton("확인") { _, _ ->
                             viewModel.likeComment(id)
                         }
                     val dialog = mBuilder.create()
@@ -281,10 +281,10 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                         "삭제" -> {
                             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                                 .setMessage("삭제하시겠습니까?")
-                                .setNegativeButton("취소") { dialogInterface, i ->
+                                .setNegativeButton("취소") { dialogInterface, _ ->
                                     dialogInterface.dismiss()
                                 }
-                                .setPositiveButton("확인") { dialogInterface, i ->
+                                .setPositiveButton("확인") { _, _ ->
                                     viewModel.deleteComment(boardId, articleId, id)
                                 }
                             val dialog = mBuilder.create()

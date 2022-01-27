@@ -397,13 +397,13 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
             // 수정 모드면 수정, 추가 모드면 추가
             if(mode) viewModel.editLectureInDefault(exceptionId, title, "", timeLocation)
             else viewModel.addUserMadeLecture(UserMadeLectureAdd(title, instructor, timeLocation))
-
+            var flag = true
             CoroutineScope(Dispatchers.Main).launch {
                 viewModel.defaultScheduleGetFlow.collect {
                     if(it==null) {
                         Toast.makeText(this@TableAddLectureDefaultActivity, "통신에 실패하였습니다", Toast.LENGTH_SHORT).show()
                     }
-                    else {
+                    else if(flag){
                         // 시간, 장
                         if(it.time_location==null) {
                             // TODO : 장소, 시간 없는 강의
@@ -419,7 +419,7 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
                                 makeCell(Cell(title, colorCode, startRow, endRow-startRow, col=col, it.id,
                                     -1, instructor, stringListToString(timeLocation.location), "" ))
                             }
-                            onBackPressed()
+                            flag = false
                         }
                     }
                 }

@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.TableService
 import com.example.toyproject.network.dto.table.*
-import com.google.api.Http
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,11 +27,14 @@ class TableFragmentViewModel@Inject constructor(
     private val _scheduleCreateFlow = MutableSharedFlow<DefaultSchedule?>()
     val scheduleCreateFlow = _scheduleCreateFlow.asSharedFlow()
 
-    private val _scheduleDeleteFlow = MutableSharedFlow<Boolean>()
-    val scheduleDeleteFlow = _scheduleDeleteFlow.asSharedFlow()
+    private val _lectureDeleteFlow = MutableSharedFlow<Boolean>()
+    val lectureDeleteFlow = _lectureDeleteFlow.asSharedFlow()
 
     private val _editLectureMemoNick = MutableSharedFlow<CustomLecture?>()
     val editLectureMemoNick = _editLectureMemoNick.asSharedFlow()
+
+    private val _deleteScheduleFlow = MutableSharedFlow<Boolean>()
+    val deleteScheduleFlow = _deleteScheduleFlow.asSharedFlow()
 
     fun loadDefaultSchedule() {
         viewModelScope.launch {
@@ -56,14 +59,39 @@ class TableFragmentViewModel@Inject constructor(
         }
     }
 
+    fun deleteScheduleById(id : Int) {
+        viewModelScope.launch {
+            try {
+                service.deleteScheduleById(id)
+                _deleteScheduleFlow.emit(true)
+            } catch(e : HttpException) {
+                errorMessage = e.message()
+                _deleteScheduleFlow.emit(false)
+            }
+        }
+    }
+    fun deleteScheduleDefault() {
+        viewModelScope.launch {
+            try {
+                service.deleteScheduleDefault()
+                _deleteScheduleFlow.emit(true)
+                Timber.d("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ")
+            } catch(e : HttpException) {
+                errorMessage = e.message()
+                _deleteScheduleFlow.emit(false)
+            }
+        }
+    }
+
+
     fun deleteLecture(id : Int) {
         viewModelScope.launch {
             try {
                 service.deleteCustomLectureFromDefault(id)
-                _scheduleDeleteFlow.emit(true)
+                _lectureDeleteFlow.emit(true)
             } catch (e : HttpException) {
                 errorMessage = e.message()
-                _scheduleDeleteFlow.emit(false)
+                _lectureDeleteFlow.emit(false)
             }
         }
     }
