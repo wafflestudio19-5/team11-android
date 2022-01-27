@@ -14,8 +14,9 @@ import java.lang.StringBuilder
 
 class TableListAdapter(private val context: Context) :
     RecyclerView.Adapter<TableListAdapter.Holder>() {
+    private lateinit var clicker: Clicker
 
-    private val match = arrayOf("1학기", "2학기", "여름학기", "겨울학기")
+    private val match = arrayOf("","1학기", "2학기", "여름학기", "겨울학기")
 
     private var list: MutableList<Semester> = mutableListOf()
 
@@ -34,6 +35,7 @@ class TableListAdapter(private val context: Context) :
 
     fun setSemesters(list : MutableList<Semester>) {
         this.list = list
+        notifyDataSetChanged()
     }
 
     inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
@@ -52,8 +54,21 @@ class TableListAdapter(private val context: Context) :
             val mAdapter = TableListCellAdapter(context, semester.schedules.toMutableList())
             recyclerView.adapter = mAdapter
             recyclerView.layoutManager = layoutManager
+            mAdapter.setClicker(object : TableListCellAdapter.Clicker {
+                override fun click(title : String, scheduleId : Int) {
+                    clicker.click(title, semester.year, semester.season, scheduleId)
+
+                }
+            })
             // recyclerView.setHasFixedSize(true)
         }
+    }
+
+    interface Clicker {
+        fun click(title : String, year : Int, season : Int, scheduleId : Int)
+    }
+    fun setClicker(clicker: Clicker) {
+        this.clicker = clicker
     }
 
 

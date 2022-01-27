@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.main.listFragment
+package com.example.toyproject.ui.main.notifyFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

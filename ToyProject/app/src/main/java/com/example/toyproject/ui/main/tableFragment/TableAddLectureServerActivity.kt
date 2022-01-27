@@ -10,18 +10,24 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.children
-import androidx.core.view.get
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
 import com.example.toyproject.network.dto.table.Lecture
 import com.google.common.base.Joiner
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -33,11 +39,11 @@ import kotlin.math.min
 class TableAddLectureServerActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityTableAddLectureServerBinding
+    private val viewModel : TableAddLectureServerViewModel by viewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    // TODO : 나중에 key 를 통신에서 받은 ID 로 바꿀 것
     private val lectureHashMap: HashMap<Int, MutableList<TableCellView>> = hashMapOf()
     private val shadowHashMap: HashMap<TableAddCustomLectureView, TableCellView> = hashMapOf()
 
@@ -227,6 +233,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         // 시간표 세로 길이 동적 조정
         adjustTableHeight(findFastestTime(), findLatestTime())
 
+
         // 직접 추가 버튼
         binding.addDefaultLectureButton.setOnClickListener {
             val intent = Intent(this, TableAddLectureDefaultActivity::class.java)
@@ -381,6 +388,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         // 액티비티 시작할 때 필터 뷰 적용
         applyFilterWithCheckBox()
 
+
         // recyclerView 부분
         lectureListAdapter = TableAddLectureServerAdapter(this)
         lectureListLayoutManager= LinearLayoutManager(this)
@@ -388,83 +396,47 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             adapter = lectureListAdapter
             layoutManager = lectureListLayoutManager
         }
-        val list = arrayListOf(Lecture(
-            5, "컴퓨터프로그래밍1", "이영기",
-            "M101010", 1, 2, "공과대학",
-            "컴퓨터공학부", 2, "학사", 3,
-            "전필", 1, "재밌음", "한국어", "월(12:30~13:15)",
-            "302-106", 1
-        ),Lecture(
-            5, "컴퓨터프로그래밍2", "이영기",
-            "M101010", 1, 2, "공과대학",
-            "컴퓨터공학부", 2, "학사", 3,
-            "전필", 1, "재밌음", "한국어", "수(18:30~21:15)",
-            "302-106", 1
-        ),Lecture(
-            5, "컴퓨터프로그래밍3", "이영기",
-            "M101010", 1, 2, "공과대학",
-            "컴퓨터공학부", 2, "학사", 3,
-            "전필", 1, "재밌음", "한국어", "금(05:30~07:15)",
-            "302-106", 1
-        ))
-        lectureListAdapter.setLectures(list)
-
-        // 강의 아이템들 클릭 이벤트 (노랗게 바꾸고 버튼 3개 등장)
-        var highlighted : Int = -1
-        val shadows = mutableListOf<TableCellView>()
-        lectureListAdapter.setItemClickListener(object : TableAddLectureServerAdapter.OnLectureClickListener {
-            override fun onItemClick(v: View, data: Lecture, position: Int) {
-                if(highlighted != -1) {
-                    val preHighlighted = binding.addServerLectureRecyclerView.getChildAt(highlighted)
-                    preHighlighted.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout).visibility = View.GONE
-                    preHighlighted.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
-
-                    // 있던 그림자 싹 제거
-                    shadows.forEach { shadow ->
-                        binding.tableNow.removeView(shadow)
-                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
-                        // 동적 시간표 길이 적용
-                        adjustTableHeight(findFastestTime(), findLatestTime())
-                        addBorder(findFastestTime(), findLatestTime())
-                    }
-                    shadows.clear()
-                }
-                val moreView = v.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout)
-                if(position != highlighted) {
-                    moreView.visibility = View.VISIBLE
-                    v.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.light_yellow))
-                    highlighted = position
-
-                    // 시간 정보로 그림자 추가
-                    val times = parseServerTimeInput(data.time)
-                    times?.forEachIndexed { idx, time ->
-                        val newShadow = makeShadowCell(time.second.first, time.second.second, time.first)
-                        shadows.add(newShadow)
-                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
-
-                        if(idx==times.size-1) {
-                            // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
-                            binding.addServerLecturePreview.post {
-                                binding.addServerLecturePreview.scrollTo(0, newShadow.top - 15)
-                            }
-                        }
-                        newShadow.bringToFront()
-                    }
+        // 서버에서 강의 목록 불러오기
+        lifecycleScope.launch {
+            viewModel.loadServerLecture(subject_name = "컴퓨터")
+            viewModel.serverLectureGetFlow.collect {
+                if(it==null) {
+                    Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    moreView.visibility = View.GONE
-                    v.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
-                    highlighted = -1
+                    lectureListAdapter.setLectures(it.results.toMutableList())
+                }
+            }
+        }
 
-                    // 있던 그림자 싹 제거
-                    shadows.forEach { shadow ->
-                        binding.tableNow.removeView(shadow)
-                        for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
-                        // 동적 시간표 길이 적용
-                        adjustTableHeight(findFastestTime(), findLatestTime())
-                        addBorder(findFastestTime(), findLatestTime())
+        // 강의 아이템들 클릭 이벤트 (노랗게 바꾸고 버튼 3개 등장)
+        val shadows = mutableListOf<TableCellView>()
+        lectureListAdapter.setItemClickListener(object : TableAddLectureServerAdapter.OnLectureClickListener {
+            override fun removeShadow() {
+                // 있던 그림자 싹 제거
+                shadows.forEach { shadow ->
+                    binding.tableNow.removeView(shadow)
+                    for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+                    // 동적 시간표 길이 적용
+                    adjustTableHeight(findFastestTime(), findLatestTime())
+                    addBorder(findFastestTime(), findLatestTime())
+                }
+                shadows.clear()
+            }
+            override fun onItemClick(v: View, data: Lecture, position: Int) {
+                // 시간 정보로 그림자 추가
+                val times = parseServerTimeInput(data.time)
+                times?.forEachIndexed { idx, time ->
+                    val newShadow = makeShadowCell(time.second.first, time.second.second, time.first)
+                    shadows.add(newShadow)
+                    for (row in 1..96) for (col in 2..10 step (2)) shadowOccupyTable[Pair(row, col)] = 0
+                    if(idx==times.size-1) {
+                        // 새로 생성된 섀도우로 스크롤 포커스 가게 하기
+                        binding.addServerLecturePreview.post {
+                            binding.addServerLecturePreview.scrollTo(0, newShadow.top - 15)
+                        }
                     }
-                    shadows.clear()
+                    newShadow.bringToFront()
                 }
             }
             // 시간표에 추가 버튼
@@ -472,11 +444,12 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 val moreView = parent.findViewById<LinearLayout>(R.id.server_lecture_item_more_layout)
                 moreView.visibility = View.GONE
                 parent.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
-                highlighted = -1
 
                 // 시간대마다 셀 추가
                 val times = parseServerTimeInput(lecture.time)
                 val tempCells = mutableListOf<Cell>()
+
+                val colorCode = randomColor()
                 times?.forEach { time ->
                     // 기존 시간표와 중복 확인
                     val isDuplicate : String? = checkDuplicate(time.second.first,
@@ -495,18 +468,43 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         return
                     }
                     val newItem = Cell(
-                        lecture.subject_name, randomColor(), time.second.first,
+                        lecture.subject_name, colorCode, time.second.first,
                         time.second.second, time.first, lecture.subject_name.hashCode(), lecture.id,
                         lecture.professor, lecture.location, memo = "")
                     tempCells.add(newItem)
-                    // TODO : 통신
                 }
-                tempCells.forEach { newItem ->
-                    makeCell(newItem)
+                Timber.d("고고고고고ㅗㄱ")
+                Timber.d(tempCells.size.toString())
+                var flag = true
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.addLectureById(lecture.id)
+                    viewModel.addServerLectureFlow.collect {
+                        if(it==null) {
+                            Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                        else if(flag) {
+                            val custom_id = it.id
+                            val memo = it.memo
+                            Timber.d("고고고고고ㅗㄱ")
+                            Timber.d(tempCells.size.toString())
+                            tempCells.forEach { newItem ->
+                                newItem.custom_id = custom_id
+                                newItem.memo = memo
+                                Timber.d("아아아아아아아아")
+                                Timber.d(custom_id.toString())
+                                makeCell(newItem)
+                            }
+                            flag = false
+                            // 동적 시간표 길이 적용
+                            adjustTableHeight(findFastestTime(), findLatestTime())
+                            addBorder(findFastestTime(), findLatestTime())
+
+                            // 하이라이트 됐던 서버 강의 뷰 원상복구
+                            moreView.visibility = View.GONE
+                            parent.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
+                        }
+                    }
                 }
-                moreView.visibility = View.GONE
-                parent.setBackgroundColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Background))
-                highlighted = -1
             }
         })
 
@@ -519,6 +517,8 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val resultIntent = Intent()
         resultIntent.putParcelableArrayListExtra("cellInfo", ArrayList(cells))
+
+
         setResult(RESULT_OK, resultIntent)
         finish()
         // 뒤로 버튼 누르면 아래로 내려가기
@@ -560,8 +560,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         binding.tableNow.addView(item, param)
 
         // 새로 추가되는 강의는 hashmap 에도 추가
-        // TODO : 강의마다 고유번호 서버에서 ID 받아와서 HASHMAP 의 KEY 로 쓸 것
-        item.info = cellObject.title.hashCode()
+        item.info = cellObject.custom_id
         if(lectureHashMap.containsKey(item.info)){
             lectureHashMap[item.info]?.add(item)
         }

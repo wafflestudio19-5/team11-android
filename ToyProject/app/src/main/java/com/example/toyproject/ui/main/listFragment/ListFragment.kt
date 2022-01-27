@@ -147,7 +147,7 @@ class ListFragment : Fragment() {
         }
 
         binding.bestBoardView.setOnClickListener {
-            Intent(activity, HotBestBoardActivity::class.java).apply{
+            Intent(activity, HotBestBoardActivity::class.java).apply {
                 putExtra("board_name", "BEST 게시판")
                 putExtra("board_interest", "best")
             }.run{resultListener.launch(this)}
@@ -159,15 +159,6 @@ class ListFragment : Fragment() {
             }.run{resultListener.launch(this)}
         }
 
-        binding.refreshButton.setOnClickListener {
-            generalAdapter.resetBoards()
-            promotionAdapter.resetBoards()
-            organizationAdapter.resetBoards()
-            departmentAdapter.resetBoards()
-            careerAdapter.resetBoards()
-            defaultAdapter.resetBoards()
-            viewModel.getBoardList()
-        }
 
 
         // 게시판 검색 후 게시판 생성하고 돌아올 수 있으니, 새로고침 listener 적용

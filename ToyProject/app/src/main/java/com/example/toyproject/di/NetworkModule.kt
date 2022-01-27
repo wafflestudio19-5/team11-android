@@ -97,7 +97,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideReviewService(retrofit: Retrofit): ReviewService{
+    fun provideReviewService(retrofit: Retrofit): ReviewService {
         return retrofit.create(ReviewService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoteService(retrofit: Retrofit): NoteService {
+        return retrofit.create(NoteService::class.java)
     }
 }

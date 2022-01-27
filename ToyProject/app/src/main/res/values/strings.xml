@@ -43,4 +43,6 @@
     <string name="string_lost">아이디/비밀번호 찾기</string>
     <string name="lecture_review">강의평가</string>
     <string name="grade">학년</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="fcm_message">FCM Message</string>
 </resources>

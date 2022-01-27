@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
         viewPager.isUserInputEnabled = false
+        viewPager.offscreenPageLimit = 4
 
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 1-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_timetable_active, null)
                 2-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_board_active, null)
                 3-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_notification_active, null)
-                4-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_campuspick_active, null)
+                4-> ResourcesCompat.getDrawable(resources, R.drawable.outline_send_24, null)
                 else-> throw IllegalStateException("no tab")
             }
         }.attach()
