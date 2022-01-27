@@ -71,7 +71,7 @@
 
     <TextView
         android:id="@+id/review_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="370sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
         android:layout_marginBottom="10sp"

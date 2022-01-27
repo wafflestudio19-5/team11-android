@@ -73,6 +73,8 @@ class LectureInfoActivity: AppCompatActivity() {
                 binding.notFoundText1.visibility = VISIBLE
             }
             else{
+                binding.reviewLayout.visibility = VISIBLE
+                binding.notFoundText1.visibility = GONE
                 binding.ratingBar.rating = it.review.rating
                 binding.ratingNum.text = it.review.rating.toString()
                 binding.assignmentAvg.text = it.review.homework
@@ -98,6 +100,12 @@ class LectureInfoActivity: AppCompatActivity() {
         }
 
         viewModel.informationList.observe(this){
+            if(it.size==0){
+                binding.notFoundText2.visibility= VISIBLE
+            }
+            else{
+                binding.notFoundText2.visibility= GONE
+            }
             informationAdapter.setInformation(it)
             informationAdapter.notifyDataSetChanged()
         }

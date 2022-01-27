@@ -93,7 +93,7 @@
                             android:textSize="13sp" />
                         <TextView
                             android:id="@+id/lecture_semester"
-                            android:layout_width="match_parent"
+                            android:layout_width="200sp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20sp"
                             android:layout_marginBottom="5sp"
@@ -720,6 +720,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20sp"
+                        android:layout_marginBottom="10sp"
                         android:textSize="13sp"
                         android:text="아직 등록된 시험정보가 없습니다."
                         android:visibility="gone"

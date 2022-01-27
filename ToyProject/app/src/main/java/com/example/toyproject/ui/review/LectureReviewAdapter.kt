@@ -23,7 +23,7 @@ class LectureReviewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is ReviewViewHolder -> {
                 holder.binding.apply {
                     ratingBar.rating = data.rating.toFloat()
-                    lectureSemester.text = data.year.toString() + "년"  + data.season + " 수강자"
+                    lectureSemester.text = data.year.toString() + "년 "  + data.season + " 수강자"
                     reviewDetail.text = data.comment
                 }
             }
