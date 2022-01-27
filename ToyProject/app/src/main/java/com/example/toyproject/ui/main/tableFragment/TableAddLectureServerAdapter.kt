@@ -50,6 +50,7 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     serverLectureLocation.text = lecture.location        // TODO ?
 
                     serverLectureItemDetail.text = lecture.detail
+                    serverLectureClassCode.text = buildClassNum(lecture.number)
 
                     sBuilder.append(lecture.grade)
                     sBuilder.append("학년")
@@ -81,12 +82,14 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                             serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.light_yellow))
                             lectureClickListener.removeShadow()
                             lectureClickListener.onItemClick(it, lecture, position)
-                            notifyDataSetChanged()
+                            notifyItemChanged(position)
                         }
                         else {
+                            highlighted = -1
                             lectureClickListener.removeShadow()
                             serverLectureItemMoreLayout.visibility =View.GONE
                             serverLectureItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.Background))
+                            notifyItemChanged(position)
                         }
                     }
                     serverLectureItemAdd.setOnClickListener {
@@ -103,9 +106,25 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
     override fun getItemViewType(position: Int): Int {
         return VIEW_TYPE_LECTURE
     }
+    fun buildClassNum(i : Int) : String{
+        return when {
+            i<10 -> "00$i"
+            i<100 -> "0$i"
+            else -> i.toString()
+        }
+    }
 
     fun setLectures(list : MutableList<Lecture>) {
         this.lectureList = list
+        notifyDataSetChanged()
+    }
+    fun clearLectures() {
+        this.lectureList.clear()
+        notifyDataSetChanged()
+    }
+
+    fun addMoreLectures(list : MutableList<Lecture>) {
+        this.lectureList.addAll(list)
         notifyDataSetChanged()
     }
 

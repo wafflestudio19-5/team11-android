@@ -18,6 +18,7 @@ import androidx.core.content.edit
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
 import com.example.toyproject.network.dto.table.Lecture
@@ -28,6 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.lang.RuntimeException
+import java.net.URLEncoder
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -62,6 +65,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     // 서버에서 불러온 강의들 recyclerView
     private lateinit var lectureListAdapter : TableAddLectureServerAdapter
     private lateinit var lectureListLayoutManager: LinearLayoutManager
+    private var page = 0
 
     // "RESULT_OK" : AddDefaultLectureActivity 에서 시간표 정보 가져온 것 적용
     private val resultListener =
@@ -115,7 +119,8 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                     binding.filterQueryText.text = "없음"
                     binding.filterQueryField.text = "검색어: "
                 }
-                // TODO : 바로 통신 진행
+                // 새로 검색
+                collectFilterCondition(0, 20)
             }
         }
 
@@ -260,6 +265,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             majorPath = arrayListOf("전체")
             binding.filterMajorText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
             // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
         // 2. 검색어 필터
         if(sharedPreferences.contains("filter_query_text")) {
@@ -284,7 +290,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 this.remove("filter_query_text")
                 this.remove("filter_query_field")
             }
-            // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
 
         // 3. 정렬 필터
@@ -317,6 +323,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         }
                         p0!!.dismiss()
                         // TODO : 즉시 통신
+                        collectFilterCondition(0, 20)
                     }
                 })
             val dialog = mBuilder.create()
@@ -328,6 +335,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             binding.filterSortText.text = "기본"
             sharedPreferences.edit { this.remove("filter_sort_index") }
             // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
         // 5. 학년, 구분, 학점 필터
         if(!sharedPreferences.contains("filter_year")) {
@@ -365,6 +373,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             }
             binding.filterYearText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
             // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
         binding.filterTypeClear.setOnClickListener {
             binding.filterTypeText.text = "전체"
@@ -374,6 +383,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             }
             binding.filterTypeText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
             // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
         binding.filterCreditClear.setOnClickListener {
             binding.filterCreditText.text = "전체"
@@ -383,6 +393,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             }
             binding.filterCreditText.setTextColor(ContextCompat.getColor(this, R.color.color_filter_text_default))
             // TODO : 즉시 통신
+            collectFilterCondition(0, 20)
         }
 
         // 액티비티 시작할 때 필터 뷰 적용
@@ -396,18 +407,22 @@ class TableAddLectureServerActivity : AppCompatActivity() {
             adapter = lectureListAdapter
             layoutManager = lectureListLayoutManager
         }
-        // 서버에서 강의 목록 불러오기
-        lifecycleScope.launch {
-            viewModel.loadServerLecture(subject_name = "컴퓨터")
-            viewModel.serverLectureGetFlow.collect {
-                if(it==null) {
-                    Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    lectureListAdapter.setLectures(it.results.toMutableList())
+        binding.addServerLectureRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter!!.itemCount-1
+
+                if(!binding.addServerLectureRecyclerView.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount){
+                    collectFilterCondition(20*page, 20)
                 }
             }
-        }
+        })
+
+        // 필터 값 모아서 검색
+        collectFilterCondition(0, 20)
 
         // 강의 아이템들 클릭 이벤트 (노랗게 바꾸고 버튼 3개 등장)
         val shadows = mutableListOf<TableCellView>()
@@ -485,13 +500,9 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         else if(flag) {
                             val custom_id = it.id
                             val memo = it.memo
-                            Timber.d("고고고고고ㅗㄱ")
-                            Timber.d(tempCells.size.toString())
                             tempCells.forEach { newItem ->
                                 newItem.custom_id = custom_id
                                 newItem.memo = memo
-                                Timber.d("아아아아아아아아")
-                                Timber.d(custom_id.toString())
                                 makeCell(newItem)
                             }
                             flag = false
@@ -523,6 +534,91 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         finish()
         // 뒤로 버튼 누르면 아래로 내려가기
         overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
+    }
+
+    private fun collectFilterCondition(offset : Int, limit : Int = 20) {
+        if(offset==0) page=0
+
+
+        val major = if(binding.filterMajorText.text=="전체") null
+        else {
+            try {
+                "${majorPath[2]} ${majorPath[3]}"
+            } catch (e : RuntimeException) {
+                "${majorPath[2]} ${binding.filterMajorText.text}"
+            }
+        }
+
+        val subject_name = if(binding.filterQueryField.text=="과목명: ") binding.filterQueryText.text.toString()
+        else null
+
+        val professor = if(binding.filterQueryField.text=="교수명: ") {
+            binding.filterQueryText.text.toString()
+        }
+        else null
+
+        val location = if(binding.filterQueryField.text=="장소:") binding.filterQueryText.text.toString()
+        else null
+
+        val subject_code= if(binding.filterQueryField.text=="과목코드: ") binding.filterQueryText.text.toString()
+        else null
+
+        val yearQuery = mutableListOf<String>()
+        sharedPreferences.getString("filter_year", null)!!.split("-").forEachIndexed { idx, string ->
+            if (string.toBoolean()) {
+                if (idx == 4) yearQuery.add("5")
+                else yearQuery.add((idx + 1).toString())
+            }}
+        val year = if(binding.filterYearText.text=="전체") null
+        else Joiner.on(" ").join(yearQuery).toString()
+
+
+        val typeArray = arrayOf("전선", "교양", "일선", "논문", "전필", "교직")
+        val typeQuery = mutableListOf<String>()
+        sharedPreferences.getString("filter_type", null)!!.split("-").forEachIndexed { idx, str ->
+            if(str.toBoolean()) {
+                typeQuery.add(typeArray[idx]) } }
+
+        val category = if(binding.filterTypeText.text=="전체") null
+        else Joiner.on(" ").join(typeQuery).toString()
+
+
+        val creditArray = arrayOf("0", "100", "1", "100", "2", "200", "3", "300", "4")
+        val creditQuery = mutableListOf<String>()
+        sharedPreferences.getString("filter_credit", null)!!.split("-").forEachIndexed { idx, str ->
+            if(str.toBoolean()) {
+                creditQuery.add(creditArray[idx])
+            } }
+
+        val credit = if(binding.filterCreditText.text=="전체") null
+        else Joiner.on(" ").join(creditQuery).toString()
+
+
+        // 서버에서 강의 목록 불러오기
+        var flag = true
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.loadServerLecture(offset=offset, limit=limit, subject_name =subject_name, professor = professor,
+            subject_code = subject_code, location = location, department = major, grade=year,
+            credit=credit, category = category)
+            viewModel.serverLectureGetFlow.collect {
+                if(it==null) {
+                    Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    if(flag) {
+                        if(page==0) {
+                            lectureListAdapter.highlighted = -1
+                            lectureListAdapter.clearLectures()
+                            lectureListAdapter.setLectures(it.results.toMutableList())
+                            lectureListAdapter.notifyItemRemoved((page+1)*20)
+                        }
+                        else lectureListAdapter.addMoreLectures(it.results.toMutableList())
+                        page ++
+                        flag = false
+                    }
+                }
+            }
+        }
     }
 
     private fun buildTimeString(hour : Int, min : Int) : String {

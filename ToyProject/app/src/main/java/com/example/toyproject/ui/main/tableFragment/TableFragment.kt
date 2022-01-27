@@ -59,15 +59,13 @@ class TableFragment : Fragment() {
                 val cellInfo : ArrayList<Cell> = it.data!!.getParcelableArrayListExtra("cellInfo")!!
                 // 불러온 정보로 셀 추가
                 cellInfo.withIndex().forEach { i ->
-                    Timber.d("가가가가가가가가가가가가가가")
-                    Timber.d(i.value.custom_id.toString())
                     makeCell(i.value)
                 }
                 // 동적 시간표 길이 적용
                 adjustTableHeight(findFastestTime(), findLatestTime())
                 addBorder(findFastestTime(), findLatestTime())
             }
-            // "99" : 새 시간표 생성, 바로 적용
+            // "99" : 새 시간표 생성 or 다른 시간표 로드, 바로 적용
             else if(it.resultCode == 99) {
                 clearCell()
                 val id = it.data!!.getIntExtra("id", -1)
@@ -76,9 +74,9 @@ class TableFragment : Fragment() {
                 val title = it.data!!.getStringExtra("title")
                 binding.fragmentTableTitle.text = title
                 binding.fragmentTableSemester.text = "${year}년 $season"
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.loadLecturesById(id)
-                }
+
+                viewModel.loadLecturesById(id)
+
                 scheduleId = id
             }
         }
@@ -110,6 +108,35 @@ class TableFragment : Fragment() {
         loadDefaultSchedule()
         // default 시간표 강의 정보 불러오기
         loadDefaultScheduleDetail()
+
+        viewModel.defaultScheduleLectures.observe(this, {
+            it.custom_lectures.forEach { item ->
+                Timber.d("각 강의 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
+                val colorCode = randomColor()
+                if(item.time_location==null) {
+                    // TODO : 시간, 장소 정보 없는 강의
+                }
+                else {
+                    item.time_location.forEach { timeLocation ->
+                        Timber.d("        각 셀 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
+                        val day: String = timeLocation.time.substring(0, 1)
+                        val timeStrings = timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
+                        val col = dayStringToColInt(day)
+                        val startRow = timeStringToRowInt(timeStrings[0])
+                        val endRow = timeStringToRowInt(timeStrings[1])
+
+                        var lecture_id = -1
+                        if(item.lecture != null) lecture_id = item.lecture
+
+                        makeCell(Cell(item.nickname, colorCode, startRow, endRow-startRow, col=col, item.id,
+                            lecture_id, item.professor, stringListToString(timeLocation.location), item.memo))
+                    }
+                }
+            }
+            // 동적 시간표 길이 적용
+            adjustTableHeight(findFastestTime(), findLatestTime())
+            addBorder(findFastestTime(), findLatestTime())
+        })
 
         // 시간표 없을 때만 보이는, 새 시간표 만들기 창
         binding.fragmentTableMakeButton.setOnClickListener {
@@ -166,17 +193,21 @@ class TableFragment : Fragment() {
         }
     }
     private fun loadDefaultScheduleDetail() {
+        clearCell()
         viewModel.loadDefaultScheduleLectures()
-        lifecycleScope.launch {
-            viewModel.defaultScheduleLecturesFlow.collect { list ->
-                if(list!=null) {
-                    list.custom_lectures.forEach { item ->
+        /*
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.defaultScheduleLecturesFlow.collect {
+                if(it!=null) {
+                    it.custom_lectures.forEach { item ->
+                        Timber.d("각 강의 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
                         val colorCode = randomColor()
                         if(item.time_location==null) {
                             // TODO : 시간, 장소 정보 없는 강의
                         }
                         else {
                             item.time_location.forEach { timeLocation ->
+                                Timber.d("        각 셀 ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ")
                                 val day: String = timeLocation.time.substring(0, 1)
                                 val timeStrings = timeLocation.time.substring(2, timeLocation.time.length - 1).split("~")
                                 val col = dayStringToColInt(day)
@@ -197,6 +228,8 @@ class TableFragment : Fragment() {
                 }
             }
         }
+
+         */
     }
 
     // 시간표에 셀 추가하는 함수
@@ -236,7 +269,6 @@ class TableFragment : Fragment() {
 
         // 각 뷰마다 클릭 리스너도 적용
         item.setOnClickListener {
-            Toast.makeText(activity, item.info.toString(), Toast.LENGTH_SHORT).show()
             // 화면 아래에 뜨는 팝업창
             val bottomSheet = LectureInfoBottomSheet()
             // 전달할 강의 정보들 parcelize 해서 포장

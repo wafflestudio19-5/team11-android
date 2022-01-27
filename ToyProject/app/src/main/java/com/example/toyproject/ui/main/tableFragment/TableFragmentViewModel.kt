@@ -1,5 +1,7 @@
 package com.example.toyproject.ui.main.tableFragment
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.TableService
@@ -21,8 +23,11 @@ class TableFragmentViewModel@Inject constructor(
     private val _defaultScheduleGetFlow = MutableSharedFlow<DefaultSchedule?>()
     val defaultScheduleGetFlow = _defaultScheduleGetFlow.asSharedFlow()
 
-    private val _defaultScheduleLecturesFlow = MutableSharedFlow<DefaultScheduleLectureList?>()
-    val defaultScheduleLecturesFlow = _defaultScheduleLecturesFlow.asSharedFlow()
+    private val _defaultScheduleLectures = MutableLiveData<DefaultScheduleLectureList>()
+    val defaultScheduleLectures : LiveData<DefaultScheduleLectureList> = _defaultScheduleLectures
+
+//    private val _defaultScheduleLecturesFlow = MutableSharedFlow<DefaultScheduleLectureList?>()
+//    val defaultScheduleLecturesFlow = _defaultScheduleLecturesFlow.asSharedFlow()
 
     private val _scheduleCreateFlow = MutableSharedFlow<DefaultSchedule?>()
     val scheduleCreateFlow = _scheduleCreateFlow.asSharedFlow()
@@ -75,7 +80,6 @@ class TableFragmentViewModel@Inject constructor(
             try {
                 service.deleteScheduleDefault()
                 _deleteScheduleFlow.emit(true)
-                Timber.d("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ")
             } catch(e : HttpException) {
                 errorMessage = e.message()
                 _deleteScheduleFlow.emit(false)
@@ -99,10 +103,11 @@ class TableFragmentViewModel@Inject constructor(
     fun loadDefaultScheduleLectures() {
         viewModelScope.launch {
             try {
-                _defaultScheduleLecturesFlow.emit(service.getDefaultScheduleLectures())
+                _defaultScheduleLectures.value = service.getDefaultScheduleLectures()
+                // _defaultScheduleLecturesFlow.emit(service.getDefaultScheduleLectures())
             }catch (e : HttpException) {
                 errorMessage = e.message()
-                _defaultScheduleLecturesFlow.emit(null)
+                // _defaultScheduleLecturesFlow.emit(null)
             }
         }
     }
@@ -121,10 +126,11 @@ class TableFragmentViewModel@Inject constructor(
     fun loadLecturesById(scheduleId : Int) {
         viewModelScope.launch {
             try {
-                _defaultScheduleLecturesFlow.emit(service.loadLecturesById(scheduleId))
+                _defaultScheduleLectures.value = service.loadLecturesById(scheduleId)
+                //_defaultScheduleLecturesFlow.emit(service.loadLecturesById(scheduleId))
             }catch (e : HttpException) {
                 errorMessage = e.message()
-                _defaultScheduleLecturesFlow.emit(null)
+                // _defaultScheduleLecturesFlow.emit(null)
             }
 
         }
