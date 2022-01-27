@@ -34,7 +34,7 @@
                 android:layout_marginStart="20sp"
                 android:text="21년 1학기 수강자"
                 android:layout_gravity="start"
-                android:textSize="10dp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 
@@ -75,5 +75,5 @@
         android:text="강의평"
         android:layout_gravity="start"
         android:textColor="@color/OnBackground"
-        android:textSize="12dp" />
+        android:textSize="14sp" />
 </LinearLayout>

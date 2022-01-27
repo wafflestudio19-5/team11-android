@@ -12,8 +12,6 @@ interface ReviewService {
     @GET("/api/v1/subject_professor/{subject_professor_id}/review/")
     fun getReviewList(
         @Path("subject_professor_id") id: Int,
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int
     ): Call<ReviewList>
 
     @POST("/api/v1/subject_professor/{subject_professor_id}/review/")
@@ -54,13 +52,26 @@ data class ReviewAvg(
 )
 
 data class ReviewList(
-    val count: Int,
-    val next: String?,
-    val previous: String?,
-    val results: List<Review>
+    val reviews: MutableList<Review>
 )
 
 data class Review(
+    val id: Int,
+    val subject_professor_id: Int,
+    val year: Int,
+    val season: String,
+    //val homework: String,
+   // val team_activity: String,
+    //val grading: String,
+    //val attendance: String,
+    //val test_count: String,
+    val rating: Int,
+    val comment: String,
+    //val subject_professor: Int,
+    //val user: Int
+)
+
+data class ReviewResponse(
     val id: Int,
     val subject_professor_id: Int,
     val year: Int,
@@ -92,7 +103,7 @@ data class InformationList(
     val count: Int,
     val next: String?,
     val previous: String?,
-    val results: List<Information>
+    val results: MutableList<Information>?
 )
 
 data class Information(

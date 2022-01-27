@@ -164,6 +164,7 @@
                         android:stepSize="1" />
 
                     <TextView
+                        android:id="@+id/rating_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10sp"
@@ -291,10 +292,11 @@
                             </TableRow>
 
                         </TableLayout>
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view_reviews"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             tools:listitem="@layout/item_lecture_review" />
 
                     </LinearLayout>
