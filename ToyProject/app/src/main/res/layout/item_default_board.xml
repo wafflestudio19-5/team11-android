@@ -14,6 +14,7 @@
     android:paddingBottom="11.5dp">
 
     <ImageView
+        android:id="@+id/board_pin_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="5dp"
