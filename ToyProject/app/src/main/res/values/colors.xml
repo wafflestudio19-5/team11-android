@@ -28,4 +28,5 @@
     <color name="home_selecter_not_selected">#D6D6D6</color>
     <color name="divider">#ECECEC</color>
     <color name="new_message_yellow">#FFFEF4</color>
+    <color name="dark_gray">#7E7E7E</color>
 </resources>

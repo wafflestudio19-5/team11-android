@@ -30,8 +30,8 @@ class ReviewActivityViewModel @Inject constructor(
     private val _myLectureList = MutableSharedFlow<MutableList<CustomLecture>?>()
     val myLectureList = _myLectureList.asSharedFlow()
 
-    private val _searchedLectureList = MutableSharedFlow<LectureSearch>()
-    val searchedLectureList = _searchedLectureList.asSharedFlow()
+    private val _searchedLectureList = MutableLiveData<LectureSearch>()
+    val searchedLectureList : LiveData<LectureSearch> = _searchedLectureList
 
 
 
@@ -51,8 +51,9 @@ class ReviewActivityViewModel @Inject constructor(
         viewModelScope.launch {
             val byKeyword = service.getSubjectList(offset, limit, keyword, null)
             val byProfessor = service.getSubjectList(offset, limit, null, professor)
-            if(byKeyword.count > byProfessor.count) _searchedLectureList.emit(byKeyword)
-            else _searchedLectureList.emit(byProfessor)
+            byKeyword.results.addAll(byProfessor.results)
+
+            _searchedLectureList.value = byKeyword
         }
     }
 }

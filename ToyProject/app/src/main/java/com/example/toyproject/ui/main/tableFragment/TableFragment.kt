@@ -137,7 +137,9 @@ class TableFragment : Fragment() {
                                 lecture_id,
                                 item.professor,
                                 stringListToString(timeLocation.location),
-                                item.memo
+                                item.memo,
+                                url = item.url,
+                                subject_professor = item.subject_professor
                             )
                         )
                     }

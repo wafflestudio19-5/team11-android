@@ -880,7 +880,9 @@ data class Cell (
     val lecture_id : Int,
     val instructor : String?,
     val location : String?,
-    var memo : String?
+    var memo : String?,
+    var url : String="",
+    var subject_professor : Int = 0
 ) : Parcelable {
 }
 

@@ -93,7 +93,7 @@ class ReviewActivity: AppCompatActivity() {
                 when(p1) {
                     KeyEvent.KEYCODE_ENTER -> {
                         search()
-                        return true
+                        return false
                     }
                     else ->
                         return false
@@ -108,6 +108,28 @@ class ReviewActivity: AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        viewModel.searchedLectureList.observe(this) {
+            if (it.count != 0) {
+                binding.notFoundText.visibility = View.GONE
+                binding.lectureReviewLoading.visibility = View.GONE
+            }
+            else binding.notFoundText.visibility = View.VISIBLE
+
+
+            if(page==0) {
+                searchAdapter.setResults(it.results)
+                searchAdapter.notifyItemRemoved((page++) * 20)
+                binding.lectureReviewLoading.visibility = View.GONE
+            }
+            else {
+                binding.notFoundText.visibility = View.GONE
+                binding.lectureReviewLoading.visibility = View.GONE
+                searchAdapter.addResult(it.results)
+            }
+
+
+        }
 
         //과목명으로 검색
         binding.lectureReviewSearchButton.setOnClickListener {
@@ -126,15 +148,7 @@ class ReviewActivity: AppCompatActivity() {
 
                 var flag = true
                 if(!binding.recyclerViewReviewSearch.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount){
-                    CoroutineScope(Dispatchers.Main).launch {
-                        viewModel.getLectureList((page++)*20, 20, keyword, keyword)
-                        viewModel.searchedLectureList.collect {
-                            if(flag)  {
-                                searchAdapter.addResult(it.results)
-                                flag = false
-                            }
-                        }
-                    }
+                    viewModel.getLectureList((page++)*20, 20, keyword, keyword)
                 }
             }
         })
@@ -148,6 +162,8 @@ class ReviewActivity: AppCompatActivity() {
             binding.myLectureLayout.visibility = View.VISIBLE
             binding.recentReviewLayout.visibility = View.VISIBLE
             binding.recyclerViewReviewSearch.visibility= View.GONE
+            binding.notFoundText.visibility = View.GONE
+            binding.lectureReviewLoading.visibility = View.GONE
         }
 
 
@@ -172,6 +188,7 @@ class ReviewActivity: AppCompatActivity() {
         }
         else {
             searchAdapter.clearResults()
+            page = 0
             binding.notFoundText.visibility = View.GONE
             binding.lectureReviewLoading.visibility = View.VISIBLE
 
@@ -183,21 +200,7 @@ class ReviewActivity: AppCompatActivity() {
             binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.VISIBLE
 
             val keyword = binding.reviewSearchBar.text.toString()
-            var flag = true
-            CoroutineScope(Dispatchers.Main).launch {
-                viewModel.getLectureList(0, 20, keyword, keyword)
-                viewModel.searchedLectureList.collect {
-                    if(flag) {
-                        searchAdapter.clearResults()
-                        searchAdapter.setResults(it.results)
-                        searchAdapter.notifyItemRemoved((page+1)*20)
-                        binding.lectureReviewLoading.visibility = View.GONE
-                        page = 1
-                        flag = false
-                    }
-                }
-                if(searchAdapter.itemCount==0) binding.notFoundText.visibility = View.VISIBLE
-            }
+            viewModel.getLectureList(0, 20, keyword, keyword)
             binding.searchReviews.visibility = View.VISIBLE
         }
     }
@@ -219,6 +222,8 @@ class ReviewActivity: AppCompatActivity() {
             binding.recentReviewLayout.visibility = View.VISIBLE
             binding.recyclerViewReviewSearch.visibility= View.GONE
             binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.GONE
+            binding.notFoundText.visibility = View.GONE
+            binding.lectureReviewLoading.visibility = View.GONE
         }
 
     }

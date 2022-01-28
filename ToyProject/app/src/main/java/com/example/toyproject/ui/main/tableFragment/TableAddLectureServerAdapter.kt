@@ -44,46 +44,68 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                 holder.binding.apply {
                     val sBuilder = StringBuilder()
 
+                    // 강의 제목
                     serverLectureTitle.text = lecture.subject_name
 
+                    // 교수명
                     if(lecture.professor == null || lecture.professor.isEmpty()) serverLectureInstructor.visibility = View.GONE
                     else serverLectureInstructor.text = lecture.professor
 
+                    // 시간
                     if(lecture.time == null || lecture.time.isEmpty()) serverLectureTime.visibility = View.GONE
                     else serverLectureTime.text = lecture.time
 
+                    // 장소
                     if(lecture.location==null || lecture.location.isEmpty()) serverLectureLocation.visibility = View.GONE
                     else serverLectureLocation.text = lecture.location
 
+                    // 비고
                     if(lecture.detail==null) serverLectureItemDetail.visibility = View.GONE
                     else serverLectureItemDetail.text = buildDetailText(lecture.detail)
 
+                    // 분반번호 (001, 002..)
                     serverLectureClassCode.text = buildClassNum(lecture.number)
 
+                    // 학년
                     sBuilder.append(lecture.grade)
                     sBuilder.append("학년")
                     serverLectureYear.text = sBuilder.toString()
                     sBuilder.clear()
 
+                    // 전선전필교양
                     serverLectureType.text = lecture.category
 
+                    // 학점
                     sBuilder.append(lecture.credit)
                     sBuilder.append("학점")
                     serverLectureCredit.text = sBuilder.toString()
                     sBuilder.clear()
 
+                    // 과목 코드 (M0080032.0020)
                     serverLectureCode.text = lecture.subject_code
 
+                    // 학사 석사 박사
                     if(lecture.level.isEmpty()) serverLectureItemLevel.visibility = View.GONE
                     else serverLectureItemLevel.text = buildTypeText(lecture.level)
 
+                    // 이론/실습/이론
                     if(lecture.method.isEmpty()) serverLectureItemFeature.visibility=View.GONE
                     else serverLectureItemFeature.text = buildFeatureText(lecture.method)
 
+                    // 정원
                     serverLectureQuotaNum.text = lecture.quota.toString()
+                    // 담은 인원
                     serverLecturePickedNum.text = lecture.people.toString()
 
-                    if(lecture.rate==0)
+                    // 별점
+                    val stars = arrayOf(serverLectureStar1, serverLectureStar1, serverLectureStar2,
+                                        serverLectureStar3, serverLectureStar4, serverLectureStar5)
+                    stars.forEachIndexed { idx, star  ->
+                       if(idx <= lecture.rate) {
+                           star.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icn_e_rating_star_yellow))
+                       }
+                       else star.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icn_e_rating_star_gray400))
+                    }
 
                     if(position==highlighted) {
                         serverLectureItemMoreLayout.visibility = View.VISIBLE

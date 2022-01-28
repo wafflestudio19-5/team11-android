@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground"
     android:paddingStart="10dp"
     android:paddingTop="3dp"
     android:paddingEnd="10dp"
@@ -13,7 +16,7 @@
         android:id="@+id/lecture_my_review_top_bar"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/F2" />
+        android:background="@color/Background_more_dimmed" />
 
     <LinearLayout
         android:layout_width="match_parent"

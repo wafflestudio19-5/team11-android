@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ItemReviewSearchBinding
 import com.example.toyproject.network.LectureInfo
 
@@ -28,7 +30,16 @@ class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<R
                 holder.binding.apply {
                     lectureName.text = data.subject_name
                     professorName.text = data.professor
-                    if(data.review!=null) ratingBar.rating = data.review.rating
+                    // if(data.review!=null) ratingBar.rating = data.review.rating
+                    // 별점
+                    val stars = arrayOf(serverLectureStar1, serverLectureStar1, serverLectureStar2,
+                        serverLectureStar3, serverLectureStar4, serverLectureStar5)
+                    stars.forEachIndexed { idx, star  ->
+                        if(data.review!=null && idx <= data.review.rating) {
+                            star.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icn_e_rating_star_yellow))
+                        }
+                        else star.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icn_e_rating_star_gray400))
+                    }
 
                     itemReviewSearchLayout.setOnClickListener {
                         clicker.click(data.id)
@@ -62,6 +73,7 @@ class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<R
     }
     fun clearResults() {
         this.searchResults.clear()
+        notifyDataSetChanged()
     }
     interface Clicker {
         fun click(id : Int)

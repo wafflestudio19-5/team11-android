@@ -21,7 +21,7 @@ data class Lecture (
     val subject_professor : Int,
     val method : String,
     val url : String,
-    val rate : Int,
+    val rate : Float,
     val quota : Int,
     val people : Int
 )
@@ -29,13 +29,14 @@ data class Lecture (
 data class CustomLecture (
     val id : Int,
     val lecture : Int?,
-    val subject_professor: Int?,
+    val subject_professor: Int,
     val nickname : String,
     val professor : String?,
     val time : String?,
     val location : String?,
     val memo : String?,
-    val time_location : List<TimeLocationGet>?
+    val time_location : List<TimeLocationGet>?,
+    val url : String
 )
 
 data class TimeLocationGet(

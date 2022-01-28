@@ -495,9 +495,13 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
                             val customId = it.id
                             val memo = it.memo
+                            val subjectProfessor = it.subject_professor
+                            val url = it.url
                             tempCells.forEach { newItem ->
                                 newItem.custom_id = customId
                                 newItem.memo = memo
+                                newItem.url = url
+                                newItem.subject_professor = subjectProfessor
                                 makeCell(newItem)
                             }
                             flag = false

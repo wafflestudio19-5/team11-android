@@ -14,7 +14,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.toyproject.R
+import com.example.toyproject.ui.main.homeFragment.BrowseActivity
+import com.example.toyproject.ui.review.LectureInfoActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.common.base.Joiner
 
 class LectureInfoBottomSheet : BottomSheetDialogFragment() {
 
@@ -56,20 +59,18 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         titleView.text = cell.title
         instructorView.text = cell.instructor
 
-        val allTime = StringBuilder()
-        val allLocation = StringBuilder()
+        val allTime = arrayListOf<String>()
+        val allLocation = arrayListOf<String>()
         friends.withIndex().forEach { piece ->
             try {
-                allTime.append(makeTimeViewString(
+                allTime.add(makeTimeViewString(
                     piece.value.start, piece.value.span, piece.value.col))
-                if(piece.index < friends.size-1) allTime.append(" ")
 
-                if(!allLocation.contains(piece.value.location.toString())) allLocation.append(piece.value.location)
-                if(piece.index < friends.size-1 && piece.value.location!!.isNotEmpty()) allLocation.append(", ")
+                if(!allLocation.contains(piece.value.location.toString())) allLocation.add(piece.value.location.toString())
             } catch (n : NullPointerException) {}
         }
-        timeView.text = allTime.toString()
-        locationView.text = allLocation.toString()
+        timeView.text = Joiner.on(", ").join(allTime)
+        locationView.text = Joiner.on(", ").join(allLocation)
 
         // 내용 비어 있으면 텅 빈칸으로 남기지 말고 View 를 GONE 으로.
         if(cell.instructor == null || cell.instructor.isEmpty()) instructorView.visibility = View.GONE
@@ -87,13 +88,18 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
 
 
         view.findViewById<LinearLayout>(R.id.cell_info_rating).setOnClickListener {
-//            TODO : 여기서 강의평 LectureInfoActivity 로 이동 (필요한 정보 putExtra 로 넣어서 챙겨가기)
-//            val intent = Intent(activity, LectureInfoActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(activity, LectureInfoActivity::class.java)
+            intent.putExtra("id", cell.subject_professor)
+            startActivity(intent)
+            dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_syllabus).setOnClickListener {
-            // TODO : 강의계획서로 이동 , webView 사용할것
+            val intent = Intent(activity, BrowseActivity::class.java)
+            intent.putExtra("url", cell.url)
+            intent.putExtra("title", "강의계획서 | 서울대학교 수강신청 시스템")
+            startActivity(intent)
+            dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_memo).setOnClickListener {
@@ -101,6 +107,7 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
             val intent = Intent(activity, TableAddLectureMemoActivity::class.java)
             intent.putExtra("memo", cell.memo)
             resultListener.launch(intent)
+            dismiss()
         }
 
         view.findViewById<LinearLayout>(R.id.cell_info_nick).setOnClickListener {

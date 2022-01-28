@@ -40,7 +40,7 @@ class ReviewActivityMyLectureAdapter(private val context: Context): RecyclerView
                     addMyReviewButton.text = "평가하기" // TODO
 
                     addMyReviewButton.setOnClickListener {
-                        caller.click(lecture.subject_professor!!)
+                        caller.click(lecture.subject_professor)
                     }
                 }
             }
