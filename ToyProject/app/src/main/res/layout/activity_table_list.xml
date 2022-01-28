@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="시간표 목록"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="18sp" />
 
         <LinearLayout

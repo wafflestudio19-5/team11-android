@@ -80,6 +80,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="3px"
-        android:background="#D3D3D3"/>
+        android:background="@color/divider"/>
 
 </LinearLayout>

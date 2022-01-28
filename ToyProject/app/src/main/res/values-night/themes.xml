@@ -10,8 +10,41 @@
         <item name="colorSecondaryVariant">@color/SecondaryVariant</item>
         <item name="colorOnSecondary">@color/OnSecondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnPrimary</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/Background</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
+
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_nothing</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_nothing</item>
+    </style>
+
+    <style name="CustomActivityAnimationUpDown" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_down</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_nothing</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_up</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_nothing</item>
+    </style>
+
+    <style name="time_picker_dialog_style_light">
+        <item name="android:timePickerStyle">@style/myTimePickerStyle</item>
+        <item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="myTimePickerStyle">
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <style name="MyRadioButtonStyle">
+        <item name="android:buttonTint">@drawable/radio_button_text_selector</item>
+        <item name="android:textColor">@drawable/radio_button_text_selector</item>
+    </style>
+
 </resources>

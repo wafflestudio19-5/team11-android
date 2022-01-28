@@ -20,14 +20,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="20dp"
-        android:padding="4dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:tabBackground="@color/Background"
         app:tabIconTint="@drawable/home_fragment_selector_home"
         app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorHeight="0dp"
         app:tabRippleColor="@null">
+
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

@@ -34,7 +34,10 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/icn_m_back_background" />
+                android:src="@drawable/icn_m_back_background"
+                app:tint="@color/OnBackground"
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -70,6 +73,7 @@
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_marginEnd="10dp"
+            app:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_notification_off_gray400" />
 
         <ImageView
@@ -77,6 +81,7 @@
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
+            android:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_more_background" />
 
 
@@ -134,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="익명"
-                            android:textColor="#292929"
+                            android:textColor="@color/home_fragment_cell_title"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -157,7 +162,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
-                android:textColor="#292929"
+                android:textColor="@color/home_fragment_cell_title"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -168,7 +173,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
-                android:textColor="#444444"
+                android:textColor="@color/home_fragment_content"
                 android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -217,6 +222,7 @@
                     android:layout_marginStart="22dp"
                     android:backgroundTint="@color/Background"
                     android:scaleType="centerInside"
+                    android:tint="@color/Primary"
                     app:srcCompat="@drawable/icn_s_posvote_red" />
 
                 <TextView

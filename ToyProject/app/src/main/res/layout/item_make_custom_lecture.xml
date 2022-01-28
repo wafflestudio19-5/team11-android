@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:text="월요일"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
 
         <ImageView
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:text="09:00"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
 
         <ImageView
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:text="10:00"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
 
         <ImageView
@@ -94,7 +94,7 @@
         android:ems="10"
         android:hint="장소"
         android:inputType="textPersonName"
-        android:textColor="#000000"
+        android:textColor="@color/OnBackground"
         android:textColorHint="@android:color/darker_gray"
         app:layout_constraintEnd_toStartOf="@+id/make_custom_lecture_delete_button"
         app:layout_constraintStart_toStartOf="parent"

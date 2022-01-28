@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="Primary">#CD0000</color>
-    <color name="PrimaryVariant">#B00000</color>
+    <color name="Primary">#D86458</color>
+    <color name="PrimaryVariant">#C86458</color>
     <color name="Secondary">#03DAC6</color>
     <color name="SecondaryVariant">#018786</color>
     <color name="Background">#121212</color>
@@ -9,7 +9,23 @@
     <color name="Error">#CF6679</color>
     <color name="OnPrimary">#000000</color>
     <color name="OnSecondary">#000000</color>
-    <color name="OnBackground">#FFFFFF</color>
+    <color name="OnBackground">#F0F0F0</color>
     <color name="OnSurface">#FFFFFF</color>
     <color name="OnError">#000000</color>
+    <color name="ButtonGray">#ECECEC</color>
+    <color name="star">#f3ca28</color>
+    <color name="home_fragment_cell_title">#F0F0F0</color>
+    <color name="home_fragment_content">#C9C9C9</color>
+    <color name="home_fragment_light_gray">#A6A6A6</color>
+    <color name="Background_dimmed">#1F1F1F</color>
+    <color name="Background_more_dimmed">#282828</color>
+    <color name="A6">#A6A6A6</color>
+    <color name="light_yellow">#FDFAF3</color>
+    <color name="color_filter_folder">#737373</color>
+    <color name="color_filter_text_default">#707070</color>
+    <color name="home_banner_more">#1F1F1F</color>
+    <color name="home_selecter_selected">#F0F0F0</color>
+    <color name="home_selecter_not_selected">#484848</color>
+    <color name="divider">#333333</color>
+    <color name="new_message_yellow">#00010A</color>
 </resources>

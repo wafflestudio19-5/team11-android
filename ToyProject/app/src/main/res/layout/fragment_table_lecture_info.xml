@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:text="창의융합세미나"
-        android:textColor="#000000"
+        android:textColor="@color/OnBackground"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:text="인현정"
-        android:textColor="#000000"
+        android:textColor="@color/OnBackground"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cell_info_title" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="강의평"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="강의계획서"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="메모 추가"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="약칭 지정"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -200,7 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="수업 정보 수정"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -230,7 +230,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:text="삭제"
-            android:textColor="#000000"
+            android:textColor="@color/OnBackground"
             android:textSize="16sp" />
     </LinearLayout>
 

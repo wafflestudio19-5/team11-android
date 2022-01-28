@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="조은수"
-            android:textColor="#444444"
+            android:textColor="@color/home_fragment_content"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/server_lecture_title" />

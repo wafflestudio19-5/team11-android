@@ -17,9 +17,15 @@
     <color name="home_fragment_cell_title">#292929</color>
     <color name="home_fragment_content">#444444</color>
     <color name="home_fragment_light_gray">#A6A6A6</color>
-    <color name="F2">#F2F2F2</color>
+    <color name="Background_dimmed">#FAFAFA</color>
+    <color name="Background_more_dimmed">#F2F2F2</color>
     <color name="A6">#A6A6A6</color>
     <color name="light_yellow">#FDFAF3</color>
     <color name="color_filter_folder">#737373</color>
     <color name="color_filter_text_default">#707070</color>
+    <color name="home_banner_more">#F7F7F7</color>
+    <color name="home_selecter_selected">#292929</color>
+    <color name="home_selecter_not_selected">#D6D6D6</color>
+    <color name="divider">#ECECEC</color>
+    <color name="new_message_yellow">#FFFEF4</color>
 </resources>
