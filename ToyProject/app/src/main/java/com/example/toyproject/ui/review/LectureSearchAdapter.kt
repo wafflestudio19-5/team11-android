@@ -10,8 +10,11 @@ import com.example.toyproject.network.LectureInfo
 
 class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var results: MutableList<LectureInfo> = mutableListOf()
+    private lateinit var clicker : Clicker
+
+    private var searchResults: MutableList<LectureInfo> = mutableListOf()
     inner class LectureSearchViewHolder(val binding: ItemReviewSearchBinding) : RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemReviewSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,20 +22,24 @@ class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<R
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = results[position]
+        val data = searchResults[position]
         when(holder){
             is LectureSearchViewHolder ->{
                 holder.binding.apply {
                     lectureName.text = data.subject_name
                     professorName.text = data.professor
                     if(data.review!=null) ratingBar.rating = data.review.rating
+
+                    itemReviewSearchLayout.setOnClickListener {
+                        clicker.click(data.id)
+                    }
                 }
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return results.size
+        return searchResults.size
     }
 
     interface OnItemClickListener{
@@ -46,6 +53,19 @@ class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<R
     }
 
     fun setResults(results: MutableList<LectureInfo>){
-        this.results.addAll(results)
+        this.searchResults = results
+        notifyDataSetChanged()
+    }
+    fun addResult(results: MutableList<LectureInfo>) {
+        this.searchResults.addAll(results)
+    }
+    fun clearResults() {
+        this.searchResults.clear()
+    }
+    interface Clicker {
+        fun click(id : Int)
+    }
+    fun setClicker(clicker : Clicker) {
+        this.clicker = clicker
     }
 }

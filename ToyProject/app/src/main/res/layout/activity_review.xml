@@ -12,21 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingStart="20dp"
         android:paddingTop="5dp"
         android:paddingEnd="5dp"
         android:paddingBottom="10dp">
 
         <LinearLayout
-            android:id="@+id/table_add_server_lecture_search_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="27dp"
             android:orientation="horizontal"
             android:padding="8dp"
             android:visibility="gone">
 
             <ImageButton
+                android:id="@+id/table_add_server_lecture_search_back_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
@@ -38,8 +36,10 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activity_review_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
             android:gravity="center_vertical"
             android:text="@string/lecture_review"
             android:textColor="@color/OnBackground"
@@ -86,14 +86,15 @@
 
         <EditText
             android:id="@+id/review_search_bar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="과목명, 교수명으로 검색"
             android:singleLine="true"
-            android:text=""
-            android:textSize="16dp"
+            android:textSize="16sp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
@@ -118,6 +119,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/my_lecture_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
@@ -198,10 +200,12 @@
                     android:id="@+id/recycler_view_my_review"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:overScrollMode="never"
                     tools:listitem="@layout/item_my_review" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/recent_review_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
@@ -224,6 +228,7 @@
                     android:id="@+id/recycler_view_recent_review"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:overScrollMode="never"
                     tools:listitem="@layout/item_recent_review" />
             </LinearLayout>
 
@@ -231,6 +236,7 @@
                 android:id="@+id/recycler_view_review_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_review_search" />
 
             <TextView

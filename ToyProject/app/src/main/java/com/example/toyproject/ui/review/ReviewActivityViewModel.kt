@@ -30,7 +30,7 @@ class ReviewActivityViewModel @Inject constructor(
     private val _myLectureList = MutableSharedFlow<MutableList<CustomLecture>?>()
     val myLectureList = _myLectureList.asSharedFlow()
 
-    private val _searchedLectureList = MutableSharedFlow<LectureSearch?>()
+    private val _searchedLectureList = MutableSharedFlow<LectureSearch>()
     val searchedLectureList = _searchedLectureList.asSharedFlow()
 
 
