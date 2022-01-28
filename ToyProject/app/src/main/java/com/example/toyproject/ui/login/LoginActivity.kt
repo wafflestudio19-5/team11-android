@@ -302,7 +302,7 @@ class LoginActivity:AppCompatActivity() {
 
                         // Get new FCM registration token
                         var token = task.result
-                        Toast.makeText(this, "my token is : " + token, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this, "my token is : " + token, Toast.LENGTH_SHORT).show()
 
                         val msg = "FCM registration Token: " + token
                         Log.d("LoginActivity", msg)

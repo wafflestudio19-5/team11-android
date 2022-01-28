@@ -74,43 +74,9 @@ class NotifyFragment : Fragment() {
         })
     }
 
-    override fun onResume(){
-        super.onResume()
-
-        notifyAdapter = NotifyRecyclerViewAdapter()
-        notifyLayoutManager = LinearLayoutManager(activity)
-
-        binding.recyclerViewNotification.apply{
-            adapter = notifyAdapter
-            layoutManager = notifyLayoutManager
-        }
-
-        binding.refreshLayout.setOnRefreshListener {
-            notifyAdapter.resetNotification()
-            viewModel.getNotificationList()
-            binding.refreshLayout.isRefreshing = false
-        }
-
-        binding.refreshLayout.setColorSchemeResources(R.color.PrimaryVariant)
-
+    override fun onStart() {
+        super.onStart()
         viewModel.getNotificationList()
-
-        viewModel.notificationList.observe(viewLifecycleOwner, {
-            notifyAdapter.setNotification(it)
-        })
-
-        notifyAdapter.setItemClickListener(object: NotifyRecyclerViewAdapter.OnItemClickListener{
-            @RequiresApi(Build.VERSION_CODES.M)
-            override fun onItemClick(v: View, data: Notification, position: Int) {
-                activity?.let { v.setBackgroundColor(it.getColor(R.color.Background)) }
-                viewModel.readNotification(data.id)
-                Intent(activity, ArticleActivity::class.java).apply{
-                    putExtra("board_name", data.board_name)
-                    putExtra("board_id", data.board_id)
-                    putExtra("article_id", data.article_id)
-                }.run{startActivity(this)}
-            }
-        })
     }
 
 }

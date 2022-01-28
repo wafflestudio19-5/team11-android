@@ -16,3 +16,7 @@ data class NotificationResponse(
     val previous: String?,
     val results: MutableList<Notification>
 )
+
+data class UnreadCount(
+    val unread_count: Int
+)

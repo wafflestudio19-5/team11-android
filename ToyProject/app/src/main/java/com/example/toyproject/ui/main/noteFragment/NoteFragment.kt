@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
@@ -35,6 +37,8 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         noteAdapter = NoteFragmentRecyclerViewAdapter()
         noteLayoutManager = LinearLayoutManager(activity)
 
@@ -53,7 +57,7 @@ class NoteFragment : Fragment() {
 
         viewModel.getMessageRoomList()
 
-        viewModel.messageRoomList.observe(this,{
+        viewModel.messageRoomList.observe(viewLifecycleOwner,{
             noteAdapter.setMessageRoom(it)
         })
 
@@ -67,38 +71,15 @@ class NoteFragment : Fragment() {
 
     }
 
-    override fun onResume(){
-        super.onResume()
-
-        noteAdapter = NoteFragmentRecyclerViewAdapter()
-        noteLayoutManager = LinearLayoutManager(activity)
-
-        binding.recyclerViewMessageRoom.apply{
-            adapter = noteAdapter
-            layoutManager = noteLayoutManager
-        }
-
-        binding.refreshLayout.setOnRefreshListener {
-            noteAdapter.resetMessageRoom()
-            viewModel.getMessageRoomList()
-            binding.refreshLayout.isRefreshing = false
-        }
-
-        binding.refreshLayout.setColorSchemeResources(R.color.PrimaryVariant)
+    override fun onStart(){
+        super.onStart()
 
         viewModel.getMessageRoomList()
+    }
 
-        viewModel.messageRoomList.observe(this,{
-            noteAdapter.setMessageRoom(it)
-        })
-
-        noteAdapter.setItemClickListener(object: NoteFragmentRecyclerViewAdapter.OnItemClickListener{
-            override fun onItemClick(v: View, data: MessageRoom, position: Int) {
-                Intent(activity, NoteActivity::class.java).apply{
-                    putExtra("message_room_id", data.id)
-                }.run{startActivity(this)}
-            }
-        })
+    override fun onStop(){
+        super.onStop()
+        viewModel.getMessageRoomList()
     }
 
 }
