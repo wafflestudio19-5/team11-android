@@ -106,4 +106,10 @@ object NetworkModule {
     fun provideNoteService(retrofit: Retrofit): NoteService {
         return retrofit.create(NoteService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideNotifyService(retrofit: Retrofit): NotifyService {
+        return retrofit.create(NotifyService::class.java)
+    }
 }
