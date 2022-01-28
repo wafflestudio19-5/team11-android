@@ -57,7 +57,8 @@ interface TableService {
         @Query("department") department : String? = null,
         @Query("grade") grade : String? = null,
         @Query("credit") credit : String? = null,
-        @Query("category") category : String? = null
+        @Query("category") category : String? = null,
+        @Query("sort") sort : String? = null
     ) : ServerLectureList
 
     @GET("/api/v1/schedule/")

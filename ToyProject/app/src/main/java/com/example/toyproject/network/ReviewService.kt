@@ -38,6 +38,12 @@ interface ReviewService {
         @Path("subject_professor_id") id: Int,
         @Body param: CreateInformation
     ): Call<Information>
+
+    @GET("/api/v1/subject_professor/all/review/")
+    fun getRecentReview(
+        @Query("offset") offset : Int,
+        @Query("limit") limit : Int
+    ) : RecentReview
 }
 
 data class LectureSearch(
@@ -118,4 +124,19 @@ data class CreateInformation(
     val test_method: String,
     val strategy: String,
     val problems: List<String>
+)
+
+data class RecentReview(
+    val count : Int,
+    val results : List<RecentReviewItem>
+)
+
+data class RecentReviewItem(
+    val subject_professor_id: Int,
+    val year: Int,
+    val season: String,
+    val rating: Int,
+    val comment: String,
+    val subject_name: String,
+    val professor: String?
 )

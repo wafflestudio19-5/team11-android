@@ -20,6 +20,7 @@ import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.main.MainActivity
 import com.example.toyproject.ui.profile.UserActivity
 import com.example.toyproject.ui.review.ReviewActivity
+import com.example.toyproject.ui.review.ReviewRecentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import javax.inject.Inject
@@ -43,6 +44,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var issueAdapter : HomeIssueRecyclerViewAdapter
     private lateinit var issueLayoutManager: LinearLayoutManager
+
+    private lateinit var recentAdapter : ReviewRecentAdapter
+    private lateinit var recentLayoutManager: LinearLayoutManager
 
 
     override fun onCreateView(
@@ -239,6 +243,18 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, ReviewActivity::class.java)
             startActivity(intent)
         }
+        recentAdapter = ReviewRecentAdapter(requireActivity())
+        recentLayoutManager = LinearLayoutManager(activity)
+        binding.homeFragmentCellLecture.recyclerView.apply {
+            adapter = recentAdapter
+            layoutManager = recentLayoutManager
+        }
+        // viewModel.loadRecentReview() TODO
+        viewModel.recentReviewList.observe(viewLifecycleOwner) {
+            recentAdapter.setReview(it.toMutableList())
+        }
+
+
         // 주변 맛집?
 
         // 답변을 기다리는 질문

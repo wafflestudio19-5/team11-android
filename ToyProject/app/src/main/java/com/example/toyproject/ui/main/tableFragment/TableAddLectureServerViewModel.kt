@@ -28,12 +28,12 @@ class TableAddLectureServerViewModel @Inject constructor(
 
     fun loadServerLecture(offset : Int=0, limit : Int=20, subject_name : String?=null,
                           professor : String?=null, subject_code : String? =null, location : String? = null,
-                          department : String? = null, grade : String? = null,
+                          department : String? = null, grade : String? = null, sort : String? = null,
                           credit : String? = null, category : String? = null) {
         viewModelScope.launch {
             try {
                 _serverLectureGetFlow.emit(service.loadServerLectures(offset, limit, subject_name, professor=professor, subject_code, location, department,
-                    grade, credit, category))
+                    grade, credit, category, sort=sort))
             }catch (e : HttpException) {
                 errorMessage = e.message()
                 _serverLectureGetFlow.emit(null)

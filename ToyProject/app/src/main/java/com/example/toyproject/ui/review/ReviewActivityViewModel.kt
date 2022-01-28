@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.toyproject.network.LectureInfo
-import com.example.toyproject.network.LectureSearch
-import com.example.toyproject.network.ReviewService
-import com.example.toyproject.network.TableService
+import com.example.toyproject.network.*
 import com.example.toyproject.network.dto.table.CustomLecture
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,7 +30,8 @@ class ReviewActivityViewModel @Inject constructor(
     private val _searchedLectureList = MutableLiveData<LectureSearch>()
     val searchedLectureList : LiveData<LectureSearch> = _searchedLectureList
 
-
+    private val _recentReviewList = MutableLiveData<List<RecentReviewItem>>()
+    val recentReviewList : LiveData<List<RecentReviewItem>> = _recentReviewList
 
 
     fun loadMyLecture() {
@@ -54,6 +52,17 @@ class ReviewActivityViewModel @Inject constructor(
             byKeyword.results.addAll(byProfessor.results)
 
             _searchedLectureList.value = byKeyword
+        }
+    }
+
+    fun getRecentReview(offset: Int, limit: Int) {
+        viewModelScope.launch {
+            try{
+                _recentReviewList.value = service.getRecentReview(offset, limit).results
+            } catch (e : HttpException) {
+                errorMessage = e.message()
+            }
+
         }
     }
 }

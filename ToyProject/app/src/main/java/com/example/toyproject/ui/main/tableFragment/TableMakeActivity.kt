@@ -56,6 +56,10 @@ class TableMakeActivity : AppCompatActivity() {
         }
 
         binding.makeBoardButton.setOnClickListener {
+            if(binding.tableMakeNewTitle.text.isEmpty()) {
+                Toast.makeText(this, "시간표 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val title = binding.tableMakeNewTitle.text.toString()
             val selected = binding.makeNewScheduleSpinner.selectedItem.toString()
             val year = selected.split("년")[0].toInt()

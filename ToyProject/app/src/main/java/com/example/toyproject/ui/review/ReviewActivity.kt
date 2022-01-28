@@ -32,7 +32,13 @@ class ReviewActivity: AppCompatActivity() {
     private lateinit var searchAdapter: LectureSearchAdapter
     private lateinit var searchLinearLayoutManager: LinearLayoutManager
 
+    private lateinit var recentAdapter: ReviewRecentAdapter
+    private lateinit var recentLinearLayoutManager: LinearLayoutManager
+
+
+
     private var page = 0
+    private var recentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,14 +114,13 @@ class ReviewActivity: AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
+        // 검색 결과 observe
         viewModel.searchedLectureList.observe(this) {
             if (it.count != 0) {
                 binding.notFoundText.visibility = View.GONE
                 binding.lectureReviewLoading.visibility = View.GONE
             }
             else binding.notFoundText.visibility = View.VISIBLE
-
 
             if(page==0) {
                 searchAdapter.setResults(it.results)
@@ -127,10 +132,7 @@ class ReviewActivity: AppCompatActivity() {
                 binding.lectureReviewLoading.visibility = View.GONE
                 searchAdapter.addResult(it.results)
             }
-
-
         }
-
         //과목명으로 검색
         binding.lectureReviewSearchButton.setOnClickListener {
             search()
@@ -152,6 +154,50 @@ class ReviewActivity: AppCompatActivity() {
                 }
             }
         })
+
+        // 최근 강의평
+        recentAdapter = ReviewRecentAdapter(this)
+        recentLinearLayoutManager = LinearLayoutManager(this)
+        binding.recyclerViewRecentReview.apply {
+            adapter= recentAdapter
+            layoutManager = recentLinearLayoutManager
+        }
+        // 최근 강의평 아이템 클릭
+        recentAdapter.setClicker(object : ReviewRecentAdapter.Clicker {
+            override fun click(id: Int) {
+                val intent = Intent(this@ReviewActivity, LectureInfoActivity::class.java)
+                intent.putExtra("id", id)
+                startActivity(intent)
+            }
+        })
+        // 최근 강의평 첫 20개 불러오기
+       //viewModel.getRecentReview(0, 20)
+        // 페이지네이션
+        binding.recyclerViewRecentReview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter!!.itemCount-1
+
+                if(!binding.recyclerViewRecentReview.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount){
+                    viewModel.getRecentReview((recentPage++)*20, 20)
+                }
+            }
+        })
+        // 최근 강의평 observe
+        viewModel.recentReviewList.observe(this) {
+            if(recentPage==0) {
+                recentAdapter.setReview(it.toMutableList())
+                page++
+            }
+            else {
+                recentAdapter.addReview(it.toMutableList())
+            }
+        }
+
+
         // 검색 시 나오는 뒤로가기 버튼
         binding.tableAddServerLectureSearchBackButton.setOnClickListener {
             binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.GONE

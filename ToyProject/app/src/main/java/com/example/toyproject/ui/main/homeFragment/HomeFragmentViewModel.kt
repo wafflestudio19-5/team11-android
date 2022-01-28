@@ -5,16 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.BoardService
+import com.example.toyproject.network.RecentReviewItem
+import com.example.toyproject.network.ReviewService
 import com.example.toyproject.network.dto.Board
 import com.example.toyproject.network.dto.MyArticle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
-    private val service: BoardService
+    private val service: BoardService,
+    private val boardService: ReviewService
 ) : ViewModel() {
 
     private val _hotArticleList = MutableLiveData<MutableList<MyArticle>>()
@@ -35,6 +39,10 @@ class HomeFragmentViewModel @Inject constructor(
     // 즐겨찾기 한 board 의 id 별로 불러온 첫 번째 게시글의 title 저장
     private val _favorBoardsTitle = MutableLiveData<List<String>>()
     val favorBoardsTitle : LiveData<List<String>> = _favorBoardsTitle
+
+    // 최근 강의평
+    private val _recentReviewList = MutableLiveData<List<RecentReviewItem>>()
+    val recentReviewList : LiveData<List<RecentReviewItem>> = _recentReviewList
 
     var boardNames :  MutableList<String> = mutableListOf()
     var articleIds : MutableList<Int> = mutableListOf()
@@ -137,6 +145,19 @@ class HomeFragmentViewModel @Inject constructor(
                 _hotArticleList.value = mutableListOf()
             }
         }
+    }
+
+    // 최근 강의평 (4개) 불러오기
+    fun loadRecentReview() {
+        viewModelScope.launch {
+            try{
+                _recentReviewList.value = boardService.getRecentReview(0, 4).results
+            } catch (e : HttpException) {
+
+            }
+
+        }
+
     }
 
 }

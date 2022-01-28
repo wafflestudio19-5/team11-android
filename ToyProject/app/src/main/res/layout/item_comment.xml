@@ -132,8 +132,8 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:visibility="invisible"
-            app:tint="@color/Primary"
-            app:srcCompat="@drawable/icn_s_posvote_red" />
+            app:srcCompat="@drawable/icn_s_posvote_red"
+            app:tint="@color/Primary" />
 
         <TextView
             android:id="@+id/item_comment_like_num"

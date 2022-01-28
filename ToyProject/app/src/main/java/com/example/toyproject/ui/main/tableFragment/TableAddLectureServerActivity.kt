@@ -309,6 +309,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                 .setTitle("정렬")
                 .setSingleChoiceItems(choices, queryChecked, object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
+                        if(p1 > 2) Toast.makeText(this@TableAddLectureServerActivity, "해당 필터는 미구현입니다", Toast.LENGTH_SHORT).show()
                         binding.filterSortText.text = choices[p1]
                         binding.filterSortText.setTextColor(ContextCompat.getColor(this@TableAddLectureServerActivity, R.color.Primary))
                         binding.filterSortText.setTypeface(null, Typeface.BOLD)
@@ -604,13 +605,20 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         val credit = if(binding.filterCreditText.text=="전체") null
         else Joiner.on(" ").join(creditQuery).toString()
 
+        val sort : String? = when (binding.filterSortText.text) {
+            "전체" -> null
+            "과목코드" -> "subject_code"
+            "과목명" -> "subject_name"
+            else -> null
+        }
+
 
         // 서버에서 강의 목록 불러오기
         var flag = true
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.loadServerLecture(offset=offset, limit=limit, subject_name =subjectName, professor = professor,
             subject_code = subjectCode, location = location, department = major, grade=year,
-            credit=credit, category = category)
+            credit=credit, category = category, sort=sort)
             viewModel.serverLectureGetFlow.collect {
                 if(it==null) {
                     Toast.makeText(this@TableAddLectureServerActivity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()

@@ -112,6 +112,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -127,10 +128,10 @@
                 android:layout_width="11dp"
                 android:layout_height="11dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:visibility="invisible"
-                app:tint="@color/Primary"
-                app:srcCompat="@drawable/icn_s_posvote_red" />
+                app:srcCompat="@drawable/icn_s_posvote_red"
+                app:tint="@color/Primary" />
 
             <TextView
                 android:id="@+id/item_comment_like_num"
