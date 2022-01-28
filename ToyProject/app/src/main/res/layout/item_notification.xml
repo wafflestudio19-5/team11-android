@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:background="#FFFEF4">
+    android:background="@color/new_message_yellow">
 
     <ImageView
         android:layout_width="50dp"

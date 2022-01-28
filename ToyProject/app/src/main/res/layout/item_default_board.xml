@@ -36,7 +36,7 @@
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="10dp"
-        android:tint="@color/Primary"
+        app:tint="@color/Primary"
         app:srcCompat="@drawable/icn_e_new" />
 
 </LinearLayout>

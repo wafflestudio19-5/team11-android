@@ -54,7 +54,7 @@
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
-            android:tint="@color/OnBackground"
+            app:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_search_gray800" />
 
         <ImageView
@@ -62,7 +62,7 @@
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
-            android:tint="@color/OnBackground"
+            app:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_account_gray800" />
 
     </LinearLayout>

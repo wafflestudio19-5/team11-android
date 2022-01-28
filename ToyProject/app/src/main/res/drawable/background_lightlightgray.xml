@@ -4,7 +4,7 @@
     android:padding="2dp"
     android:shape="rectangle">
     <!-- 테두리 내부 색상 설정 -->
-    <solid android:color="#F9F9F9" />
+    <solid android:color="@color/home_banner_more" />
     <corners android:radius="6dp"/>
 
 </shape>

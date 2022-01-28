@@ -853,7 +853,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:background="#EFEFEF"
+                    android:background="@color/divider"
                     app:layout_column="3"
                     app:layout_gravity="fill"
                     app:layout_row="0"
@@ -873,7 +873,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:background="#EFEFEF"
+                    android:background="@color/divider"
                     app:layout_column="5"
                     app:layout_gravity="fill"
                     app:layout_row="0"
@@ -893,7 +893,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:background="#EFEFEF"
+                    android:background="@color/divider"
                     app:layout_column="7"
                     app:layout_gravity="fill"
                     app:layout_row="0"
@@ -913,7 +913,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:background="#EFEFEF"
+                    android:background="@color/divider"
                     app:layout_column="9"
                     app:layout_gravity="fill"
                     app:layout_row="0"
