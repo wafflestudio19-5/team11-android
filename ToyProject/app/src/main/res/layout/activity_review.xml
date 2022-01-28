@@ -41,26 +41,32 @@
 
         <EditText
             android:id="@+id/review_search_bar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="과목명, 교수명으로 검색"
+            android:layout_weight="1"
+            android:hint="과목명으로 검색"
             android:singleLine="true"
             android:text=""
             android:textSize="16dp"
             tools:ignore="TouchTargetSizeCheck" />
+
+        <ImageView
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="30sp"
+            android:src="@drawable/icn_m_search_gray800"/>
 
 
 
     </LinearLayout>
 
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -93,12 +99,16 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5sp"
                         android:layout_marginBottom="5sp"
-                        android:layout_marginStart="200sp"
                         android:textSize="15sp"
                         android:text = "포인트"
                         android:textColor="@color/OnBackground" />
@@ -109,6 +119,7 @@
                         android:layout_marginTop="5sp"
                         android:layout_marginBottom="5sp"
                         android:layout_marginStart="5sp"
+                        android:layout_marginEnd="10sp"
                         android:textSize="15sp"
                         android:text = "0P"
                         android:textStyle="bold"
@@ -168,7 +179,5 @@
                 />
 
         </FrameLayout>
-    </androidx.core.widget.NestedScrollView>
-
 
 </LinearLayout>

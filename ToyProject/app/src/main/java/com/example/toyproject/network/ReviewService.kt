@@ -4,6 +4,14 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ReviewService {
+    @GET("/api/v1/subject_professor/")
+    fun getSubjectList(
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+        @Query("subject_name") subject: String?,
+        //@Query("professor") professor: String?
+    ): Call<LectureSearch>
+
     @GET("/api/v1/subject_professor/{subject_professor_id}/")
     fun getLectureInfo(
         @Path("subject_professor_id") id: Int
@@ -31,6 +39,13 @@ interface ReviewService {
         @Body param: CreateInformation
     ): Call<Information>
 }
+
+data class LectureSearch(
+    val count: Int,
+    val next: String?,
+    val previous: String?,
+    val results: MutableList<LectureInfo>
+)
 
 data class LectureInfo(
     val id: Int,

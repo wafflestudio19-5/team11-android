@@ -71,10 +71,11 @@
 
     <TextView
         android:id="@+id/review_detail"
-        android:layout_width="370sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
         android:layout_marginBottom="10sp"
+        android:layout_marginEnd="20sp"
         android:text="강의평"
         android:layout_gravity="start"
         android:textColor="@color/OnBackground"
