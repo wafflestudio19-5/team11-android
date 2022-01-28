@@ -45,11 +45,19 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     val sBuilder = StringBuilder()
 
                     serverLectureTitle.text = lecture.subject_name
-                    serverLectureInstructor.text = lecture.professor
-                    serverLectureTime.text = lecture.time                // TODO ?
-                    serverLectureLocation.text = lecture.location        // TODO ?
 
-                    serverLectureItemDetail.text = lecture.detail
+                    if(lecture.professor == null || lecture.professor.isEmpty()) serverLectureInstructor.visibility = View.GONE
+                    else serverLectureInstructor.text = lecture.professor
+
+                    if(lecture.time == null || lecture.time.isEmpty()) serverLectureTime.visibility = View.GONE
+                    else serverLectureTime.text = lecture.time
+
+                    if(lecture.location==null || lecture.location.isEmpty()) serverLectureLocation.visibility = View.GONE
+                    else serverLectureLocation.text = lecture.location
+
+                    if(lecture.detail==null) serverLectureItemDetail.visibility = View.GONE
+                    else serverLectureItemDetail.text = buildDetailText(lecture.detail)
+
                     serverLectureClassCode.text = buildClassNum(lecture.number)
 
                     sBuilder.append(lecture.grade)
@@ -65,8 +73,17 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     sBuilder.clear()
 
                     serverLectureCode.text = lecture.subject_code
-                    serverLectureItemLevel.text = lecture.level
-                    serverLectureItemFeature.text
+
+                    if(lecture.level.isEmpty()) serverLectureItemLevel.visibility = View.GONE
+                    else serverLectureItemLevel.text = buildTypeText(lecture.level)
+
+                    if(lecture.method.isEmpty()) serverLectureItemFeature.visibility=View.GONE
+                    else serverLectureItemFeature.text = buildFeatureText(lecture.method)
+
+                    serverLectureQuotaNum.text = lecture.quota.toString()
+                    serverLecturePickedNum.text = lecture.people.toString()
+
+                    if(lecture.rate==0)
 
                     if(position==highlighted) {
                         serverLectureItemMoreLayout.visibility = View.VISIBLE
@@ -97,6 +114,12 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     serverLectureItemAdd.setOnClickListener {
                         lectureClickListener.addItem(serverLectureItemLayout, it, lecture, position)
                     }
+                    serverLectureItemRating.setOnClickListener {
+                        lectureClickListener.showReview(lecture.subject_professor)
+                    }
+                    serverLectureItemSyllabus.setOnClickListener {
+                        lectureClickListener.openSyllabus(lecture.url)
+                    }
                 }
             }
         }
@@ -114,6 +137,26 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
             i<100 -> "0$i"
             else -> i.toString()
         }
+    }
+
+    private fun buildFeatureText(s : String) : String {
+        return StringBuilder()
+                .append("형태: ")
+                .append(s)
+                .toString()
+    }
+    private fun buildTypeText(s : String) : String {
+        return StringBuilder()
+            .append("수강대상: ")
+            .append(s)
+            .toString()
+    }
+
+    private fun buildDetailText(s : String) : String {
+        return StringBuilder()
+            .append("비고: ")
+            .append(s)
+            .toString()
     }
 
     fun setLectures(list : MutableList<Lecture>) {
@@ -135,6 +178,8 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
         fun onItemClick(v: View, data: Lecture, position: Int)
         fun removeShadow()
         fun addItem(parent : View, v: View, lecture: Lecture, position: Int)
+        fun showReview(id : Int)
+        fun openSyllabus(url : String)
     }
 
     fun setItemClickListener(onLectureClickListener: OnLectureClickListener){

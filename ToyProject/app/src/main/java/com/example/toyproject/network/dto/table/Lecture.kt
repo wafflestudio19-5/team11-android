@@ -18,7 +18,12 @@ data class Lecture (
     val language : String,
     val time : String?,
     val location : String?,
-    val subject_professor : Int
+    val subject_professor : Int,
+    val method : String,
+    val url : String,
+    val rate : Int,
+    val quota : Int,
+    val people : Int
 )
 
 data class CustomLecture (

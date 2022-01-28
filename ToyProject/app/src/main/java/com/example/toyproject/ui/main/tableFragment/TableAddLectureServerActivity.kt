@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityTableAddLectureServerBinding
 import com.example.toyproject.network.dto.table.Lecture
+import com.example.toyproject.ui.main.homeFragment.BrowseActivity
+import com.example.toyproject.ui.review.LectureInfoActivity
 import com.google.common.base.Joiner
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -510,6 +512,18 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                     }
                 }
             }
+            override fun showReview(id: Int) {
+                val intent = Intent(this@TableAddLectureServerActivity, LectureInfoActivity::class.java)
+                intent.putExtra("id", id)
+                startActivity(intent)
+            }
+
+            override fun openSyllabus(url: String) {
+                val intent = Intent(this@TableAddLectureServerActivity, BrowseActivity::class.java)
+                intent.putExtra("url", url)
+                intent.putExtra("title", "강의계획서 | 서울대학교 수강신청 시스템")
+                startActivity(intent)
+            }
         })
 
         // X 버튼
@@ -959,6 +973,7 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     }
     private fun parseServerTimeInput(input : String?) : MutableList<Pair<Int, Pair<Int, Int>>>? {
         if(input==null) return null
+        if(input.isEmpty()) return mutableListOf()
         val processedTimes = mutableListOf<Pair<Int, Pair<Int, Int>>>()
 
         val times = input.split("/")

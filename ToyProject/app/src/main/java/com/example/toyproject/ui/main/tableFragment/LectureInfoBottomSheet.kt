@@ -49,8 +49,8 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
         val locationView = view.findViewById<TextView>(R.id.cell_info_location)
 
         // TableFragment 에서 전달받은 cellInfo 얻기
-        val cell : Cell = arguments!!.getParcelable("cellInfo")!!
-        val friends : ArrayList<Cell> = arguments!!.getParcelableArrayList("friends")!!
+        val cell : Cell = requireArguments().getParcelable("cellInfo")!!
+        val friends : ArrayList<Cell> = requireArguments().getParcelableArrayList("friends")!!
 
         // 뷰 내용 채우기
         titleView.text = cell.title
@@ -62,9 +62,9 @@ class LectureInfoBottomSheet : BottomSheetDialogFragment() {
             try {
                 allTime.append(makeTimeViewString(
                     piece.value.start, piece.value.span, piece.value.col))
-                if(piece.index < friends.size-1) allTime.append(", ")
+                if(piece.index < friends.size-1) allTime.append(" ")
 
-                allLocation.append(piece.value.location)
+                if(!allLocation.contains(piece.value.location.toString())) allLocation.append(piece.value.location)
                 if(piece.index < friends.size-1 && piece.value.location!!.isNotEmpty()) allLocation.append(", ")
             } catch (n : NullPointerException) {}
         }
