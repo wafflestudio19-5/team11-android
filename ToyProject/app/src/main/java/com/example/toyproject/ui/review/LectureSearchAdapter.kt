@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.review
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.databinding.ItemReviewSearchBinding
 import com.example.toyproject.network.LectureInfo
 
-class LectureSearchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var results: MutableList<LectureInfo> = mutableListOf()
     inner class LectureSearchViewHolder(val binding: ItemReviewSearchBinding) : RecyclerView.ViewHolder(binding.root)

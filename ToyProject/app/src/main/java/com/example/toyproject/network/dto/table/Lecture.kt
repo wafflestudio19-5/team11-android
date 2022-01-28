@@ -24,6 +24,7 @@ data class Lecture (
 data class CustomLecture (
     val id : Int,
     val lecture : Int?,
+    val subject_professor: Int?,
     val nickname : String,
     val professor : String?,
     val time : String?,

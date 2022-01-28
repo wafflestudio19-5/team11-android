@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:layout_marginTop="6dp" >
-
-    <TextView
-        android:id="@+id/lecture_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20sp"
-        android:text="과목명"
-        android:layout_gravity="center"
-        android:textColor="@color/OnBackground"
-        android:textSize="16dp" />
-
-    <TextView
-        android:id="@+id/professor_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_gravity="center"
-        android:text="교수명"
-        android:textSize="11sp"/>
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    android:paddingTop="3dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="3dp">
 
     <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:id="@+id/lecture_my_review_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/F2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/btn_login"
-        android:backgroundTint="@color/Primary"
-        android:layout_gravity="center"
-        android:text="평가하기"
-        android:textColor="@android:color/white"
-        tools:ignore="DuplicateSpeakableTextCheck"
-        android:textSize="11sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/lecture_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="과목명"
+            android:textColor="@color/OnBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/professor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10sp"
+            android:text="교수명"
+            android:textSize="11sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/add_my_review_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_login"
+            android:backgroundTint="@color/Primary"
+            android:padding="5dp"
+            android:text="평가하기"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+    </LinearLayout>
+
 </LinearLayout>

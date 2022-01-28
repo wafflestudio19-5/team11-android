@@ -5,12 +5,12 @@ import retrofit2.http.*
 
 interface ReviewService {
     @GET("/api/v1/subject_professor/")
-    fun getSubjectList(
+    suspend fun getSubjectList(
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
         @Query("subject_name") subject: String?,
-        //@Query("professor") professor: String?
-    ): Call<LectureSearch>
+        @Query("professor") professor: String?
+    ): LectureSearch
 
     @GET("/api/v1/subject_professor/{subject_professor_id}/")
     fun getLectureInfo(

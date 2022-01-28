@@ -2,24 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.review.ReviewActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:id="@+id/table_add_server_lecture_search_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="27dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <ImageButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_m_back_background" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="@string/lecture_review"
             android:textColor="@color/OnBackground"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="17sp"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/table_add_server_lecture_close_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_m_close_background" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -27,105 +76,123 @@
         android:id="@+id/search_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background_lightgray"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/borderline_gray">
-
-        <ImageView
-            android:id="@+id/back_arrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/baseline_arrow_back_24" />
+        android:padding="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp">
 
         <EditText
             android:id="@+id/review_search_bar"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="과목명으로 검색"
+            android:background="@android:color/transparent"
+            android:hint="과목명, 교수명으로 검색"
             android:singleLine="true"
             android:text=""
             android:textSize="16dp"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="30sp"
-            android:src="@drawable/icn_m_search_gray800"/>
-
-
-
+            android:id="@+id/lecture_review_search_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/icn_m_search_gray800" />
     </LinearLayout>
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
+        <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10sp"
-            android:layout_marginEnd="10sp"
             android:gravity="fill_vertical"
             android:orientation="vertical">
 
-                <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="5dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20sp"
-                        android:layout_marginTop="10sp"
-                        android:layout_marginBottom="5sp"
                         android:text="내 강의평"
                         android:textColor="@color/OnBackground"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5sp"
-                        android:layout_marginBottom="5sp"
-                        android:textSize="15sp"
-                        android:text = "포인트"
-                        android:textColor="@color/OnBackground" />
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="포인트"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="13sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5sp"
-                        android:layout_marginBottom="5sp"
-                        android:layout_marginStart="5sp"
-                        android:layout_marginEnd="10sp"
-                        android:textSize="15sp"
-                        android:text = "0P"
-                        android:textStyle="bold"
-                        android:textColor="@color/OnBackground" />
+                        android:layout_marginEnd="7dp"
+                        android:text="0P"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lecture_review_point_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자세히"
+                        android:textColor="@color/Primary"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        app:srcCompat="@drawable/icn_s_arrow_mini_right_red" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lecture_my_review_nothing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="아직 확인할 수 있는 과목이 없습니다."
+                    android:textColor="@color/A6"
+                    android:textSize="13sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_my_review"
@@ -134,22 +201,23 @@
                     tools:listitem="@layout/item_my_review" />
             </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10sp"
                 android:background="@drawable/borderline"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginTop="10sp"
-                    android:layout_marginBottom="5sp"
                     android:text="최근 강의평"
                     android:textColor="@color/OnBackground"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -158,8 +226,6 @@
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_recent_review" />
             </LinearLayout>
-            </LinearLayout>
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_review_search"
@@ -171,13 +237,15 @@
                 android:id="@+id/not_found_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="100sp"
                 android:text="검색된 과목 및 교수가 없습니다"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"
-                />
+                android:textSize="20sp"
+                android:visibility="gone" />
+        </LinearLayout>
 
-        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </LinearLayout>
