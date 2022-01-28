@@ -58,6 +58,7 @@ class LectureSearchAdapter(private val context: Context): RecyclerView.Adapter<R
     }
     fun addResult(results: MutableList<LectureInfo>) {
         this.searchResults.addAll(results)
+        notifyDataSetChanged()
     }
     fun clearResults() {
         this.searchResults.clear()

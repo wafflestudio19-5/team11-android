@@ -17,11 +17,12 @@
         android:paddingBottom="10dp">
 
         <LinearLayout
+            android:id="@+id/table_add_server_lecture_search_back_button_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:padding="8dp">
 
             <ImageButton
                 android:id="@+id/table_add_server_lecture_search_back_button"
@@ -106,8 +107,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:overScrollMode="never"
         android:scrollbars="none">
 
@@ -246,6 +246,16 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="100sp"
                 android:text="검색된 과목 및 교수가 없습니다"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/lecture_review_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="100sp"
+                android:text="로딩중입니다..."
                 android:textSize="20sp"
                 android:visibility="gone" />
         </LinearLayout>

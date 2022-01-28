@@ -93,9 +93,11 @@ class ReviewActivity: AppCompatActivity() {
                 when(p1) {
                     KeyEvent.KEYCODE_ENTER -> {
                         search()
+                        return true
                     }
+                    else ->
+                        return false
                 }
-                return true
             }
         })
         // 검색 결과 item 클릭
@@ -124,8 +126,8 @@ class ReviewActivity: AppCompatActivity() {
 
                 var flag = true
                 if(!binding.recyclerViewReviewSearch.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount){
-                    lifecycleScope.launch {
-                        viewModel.getLectureList(page*20, 20, keyword, keyword)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        viewModel.getLectureList((page++)*20, 20, keyword, keyword)
                         viewModel.searchedLectureList.collect {
                             if(flag)  {
                                 searchAdapter.addResult(it.results)
@@ -138,8 +140,9 @@ class ReviewActivity: AppCompatActivity() {
         })
         // 검색 시 나오는 뒤로가기 버튼
         binding.tableAddServerLectureSearchBackButton.setOnClickListener {
-            binding.tableAddServerLectureSearchBackButton.visibility = View.GONE
+            binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.GONE
             binding.activityReviewTitle.text = "강의평가"
+            binding.reviewSearchBar.text.clear()
 
             binding.searchReviews.visibility = View.VISIBLE
             binding.myLectureLayout.visibility = View.VISIBLE
@@ -158,7 +161,7 @@ class ReviewActivity: AppCompatActivity() {
     }
     private fun search() {
         if(binding.reviewSearchBar.text.length<2) {
-            val dialog = AlertDialog.Builder(this)
+            AlertDialog.Builder(this)
                 .setMessage("검색어를 두 글자 이상 입력해주세요")
                 .setPositiveButton("확인") { dialogInterface, _ ->
                     dialogInterface.dismiss()
@@ -167,47 +170,55 @@ class ReviewActivity: AppCompatActivity() {
                 .show()
             return
         }
-        binding.activityReviewTitle.text = "강의평가 검색"
-        binding.searchReviews.visibility = View.GONE
-        binding.myLectureLayout.visibility = View.GONE
-        binding.recentReviewLayout.visibility = View.GONE
-        binding.recyclerViewReviewSearch.visibility= View.VISIBLE
-        binding.tableAddServerLectureSearchBackButton.visibility = View.VISIBLE
+        else {
+            searchAdapter.clearResults()
+            binding.notFoundText.visibility = View.GONE
+            binding.lectureReviewLoading.visibility = View.VISIBLE
 
-        val keyword = binding.reviewSearchBar.text.toString()
-        var flag = true
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLectureList(0, 20, keyword, keyword)
-            viewModel.searchedLectureList.collect {
-                if(flag) {
-                    if(it.results.isEmpty()) binding.notFoundText.visibility = View.VISIBLE
-                    searchAdapter.clearResults()
-                    searchAdapter.setResults(it.results)
-                    searchAdapter.notifyItemRemoved((page+1)*20)
-                    page = 1
-                    flag = false
+            binding.activityReviewTitle.text = "강의평가 검색"
+            binding.searchReviews.visibility = View.GONE
+            binding.myLectureLayout.visibility = View.GONE
+            binding.recentReviewLayout.visibility = View.GONE
+            binding.recyclerViewReviewSearch.visibility= View.VISIBLE
+            binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.VISIBLE
+
+            val keyword = binding.reviewSearchBar.text.toString()
+            var flag = true
+            CoroutineScope(Dispatchers.Main).launch {
+                viewModel.getLectureList(0, 20, keyword, keyword)
+                viewModel.searchedLectureList.collect {
+                    if(flag) {
+                        searchAdapter.clearResults()
+                        searchAdapter.setResults(it.results)
+                        searchAdapter.notifyItemRemoved((page+1)*20)
+                        binding.lectureReviewLoading.visibility = View.GONE
+                        page = 1
+                        flag = false
+                    }
                 }
+                if(searchAdapter.itemCount==0) binding.notFoundText.visibility = View.VISIBLE
             }
+            binding.searchReviews.visibility = View.VISIBLE
         }
     }
 
     override fun onBackPressed() {
         // 보통 상태에서 뒤로가기 -> 액티비티 종료
-        if(binding.tableAddServerLectureSearchBackButton.visibility==View.GONE) {
+        if(binding.tableAddServerLectureSearchBackButtonLayout.visibility==View.GONE) {
             // 뒤로 버튼 누르면 아래로 내려가기
             finish()
             overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
         }
         // 검색 상태에서 뒤로가기 -> 액티비티 종료 x, 그냥 검색 창 닫기
         else {
-            binding.tableAddServerLectureSearchBackButton.visibility = View.VISIBLE
+            binding.tableAddServerLectureSearchBackButton.visibility = View.GONE
             binding.activityReviewTitle.text = "강의평가"
+            binding.reviewSearchBar.text.clear()
 
-            binding.searchReviews.visibility = View.VISIBLE
             binding.myLectureLayout.visibility = View.VISIBLE
             binding.recentReviewLayout.visibility = View.VISIBLE
             binding.recyclerViewReviewSearch.visibility= View.GONE
-            binding.tableAddServerLectureSearchBackButton.visibility = View.GONE
+            binding.tableAddServerLectureSearchBackButtonLayout.visibility = View.GONE
         }
 
     }
