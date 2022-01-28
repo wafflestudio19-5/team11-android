@@ -26,6 +26,9 @@ class LectureInfoViewModel @Inject constructor(
     private val _informationResult = MutableLiveData<String>()
     val informationResult: LiveData<String> = _informationResult
 
+    private val _postInfoResult = MutableLiveData<String>()
+    val postInfoResult: LiveData<String> = _postInfoResult
+
     private val _lectureInfo = MutableLiveData<LectureInfo>()
     val lectureInfo: LiveData<LectureInfo> = _lectureInfo
 
@@ -37,6 +40,9 @@ class LectureInfoViewModel @Inject constructor(
 
     private val _informationList = MutableLiveData<MutableList<Information>>()
     val informationList: LiveData<MutableList<Information>> = _informationList
+
+    private val _information = MutableLiveData<Information>()
+    val information: LiveData<Information> = _information
 
     fun getLectureInfo(id: Int){
         service.getLectureInfo(id).clone().enqueue(object : Callback<LectureInfo> {
@@ -105,6 +111,24 @@ class LectureInfoViewModel @Inject constructor(
                 }
                 else{
                     _informationResult.value = response.errorBody()?.string()!!
+                }
+            }
+        })
+    }
+
+    fun postInformation(id: Int, param: CreateInformation){
+        service.postInformation(id, param).clone().enqueue(object : Callback<Information> {
+            override fun onFailure(call: Call<Information>, t: Throwable){
+                _postInfoResult.value = t.message
+            }
+            override fun onResponse(
+                call: Call<Information>, response: Response<Information>
+            ){
+                if(response.isSuccessful){
+                    _information.value = response.body()
+                }
+                else{
+                    _postInfoResult.value = response.errorBody()?.string()!!
                 }
             }
         })

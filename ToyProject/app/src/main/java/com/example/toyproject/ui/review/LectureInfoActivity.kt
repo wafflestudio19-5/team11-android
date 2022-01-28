@@ -16,7 +16,9 @@ import androidx.core.view.children
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityLectureInfoBinding
+import com.example.toyproject.network.CreateInformation
 import com.example.toyproject.network.CreateReview
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,9 +55,10 @@ class LectureInfoActivity: AppCompatActivity() {
             layoutManager = informationLayoutManager
         }
 
-        viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 1))
-        viewModel.getReviews(intent.getIntExtra("id", 1))
-        viewModel.getInformation(intent.getIntExtra("id", 1))
+        val id = intent.getIntExtra("id", 1)
+        viewModel.getLectureInfo(id)
+        viewModel.getReviews(id)
+        viewModel.getInformation(id)
 
 
         viewModel.result.observe(this) {
@@ -67,7 +70,9 @@ class LectureInfoActivity: AppCompatActivity() {
             binding.professorName.text = it.professor
             binding.lectureSemester.text = it.semester.joinToString(", ")
             val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, it.semester)
+            val spinnerAdapterInfo = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, it.semester)
             binding.spinnerSemester.adapter = spinnerAdapter
+            binding.spinnerSemesterInfo.adapter = spinnerAdapterInfo
             if(it.review==null){
                 binding.reviewLayout.visibility = GONE
                 binding.notFoundText1.visibility = VISIBLE
@@ -144,9 +149,7 @@ class LectureInfoActivity: AppCompatActivity() {
                 .map { (it as Chip).resources.getResourceName(it.id) }
                 .toList().joinToString()
             val year = binding.spinnerSemester.selectedItem.toString().substring(0,4).toInt()
-            val seasonTemp = binding.spinnerSemester.selectedItem.toString().substring(6)
-            var season = 1
-            season = when (seasonTemp) {
+            val season: Int = when (binding.spinnerSemester.selectedItem.toString().substring(6)) {
                 "1학기" -> {
                     1
                 }
@@ -161,7 +164,7 @@ class LectureInfoActivity: AppCompatActivity() {
                 }
             }
 
-            viewModel.postReview(intent.getIntExtra("id", 1),
+            viewModel.postReview(id,
                 CreateReview(binding.ratingUser.rating.toInt(), getNumber(homework), getNumber(team), getNumber(grading), getNumber(attendance), getNumber(exam), binding.reviewText.text.toString(), year, season))
         }
 
@@ -171,12 +174,73 @@ class LectureInfoActivity: AppCompatActivity() {
 
         viewModel.review.observe(this){
             binding.createReviewLayout.visibility = GONE
-            viewModel.getLectureInfo(intent.getIntExtra("lecture_professor_id", 1))
-            viewModel.getReviews(intent.getIntExtra("id", 1))
+            viewModel.getLectureInfo(id)
+            viewModel.getReviews(id)
         }
 
         binding.writeExamButton.setOnClickListener {
             binding.createInformationLayout.visibility = VISIBLE
+            val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.exam_type))
+            binding.spinnerExamType.adapter = spinnerAdapter
+        }
+
+        binding.postInformationButton.setOnClickListener {
+            val year = binding.spinnerSemesterInfo.selectedItem.toString().substring(0,4).toInt()
+            val season: Int = when (binding.spinnerSemesterInfo.selectedItem.toString().substring(6)) {
+                "1학기" -> {
+                    1
+                }
+                "2학기" -> {
+                    2
+                }
+                "여름학기" -> {
+                    3
+                }
+                else -> {
+                    4
+                }
+            }
+            val testType: Int = when(binding.spinnerExamType.selectedItem.toString()){
+                "중간고사"->{
+                    0
+                }
+                "기말고사"->{
+                    1
+                }
+                "1차"->{
+                    2
+                }
+                "2차"->{
+                    3
+                }
+                "3차"->{
+                    4
+                }
+                "4차"->{
+                    5
+                }
+                else->{
+                    6
+                }
+            }
+            val method = binding.questionTypeGroup.children
+                .filter { (it as Chip).isChecked }
+                .map { (it as Chip).text.toString() }
+                .toList().joinToString(" ")
+            val strategy = binding.informationText.text.toString()
+            val question = binding.questionText.text.toString()
+            val questionList = listOf(question)
+            viewModel.postInformation(id,
+                CreateInformation(year, season, testType, method, strategy, questionList))
+        }
+
+        viewModel.postInfoResult.observe(this){
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+
+        viewModel.information.observe(this){
+            binding.createInformationLayout.visibility = GONE
+            viewModel.getInformation(id)
         }
     }
 

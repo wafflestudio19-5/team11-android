@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -217,6 +218,25 @@ class ListFragment : Fragment() {
                     putExtra("board_id", data.id)
                 }.run{resultListener.launch(this)}
 
+            }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
             }
         })
 
