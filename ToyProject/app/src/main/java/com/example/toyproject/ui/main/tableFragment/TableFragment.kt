@@ -331,19 +331,21 @@ class TableFragment : Fragment() {
                 }
 
                 override fun nick(nickname : String?, memo : String?){
+                    var flag = true
                     CoroutineScope(Dispatchers.Main).launch {
                         viewModel.editMemo(EditCustomLecture(nickname, memo, null), item.info)
                         viewModel.editLectureMemoNick.collect {
                             if(it==null) {
                                 Toast.makeText(activity, viewModel.errorMessage, Toast.LENGTH_SHORT).show()
                             }
-                            else {
+                            else if(flag){
                                 // 친구들도 싹 약칭으로
                                 lectureHashMap[item.info]!!.forEach { piece ->
                                     val pieceObject = myCells[piece]!!
                                     piece.text = it.nickname
                                     pieceObject.title = it.nickname
                                 }
+                                flag = false
                             }
                         }
                     }

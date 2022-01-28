@@ -12,6 +12,7 @@ import com.example.toyproject.databinding.ActivityTableListBinding
 import com.example.toyproject.network.dto.table.Schedule
 import com.example.toyproject.network.dto.table.Semester
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TableListActivity : AppCompatActivity() {
@@ -56,21 +57,33 @@ class TableListActivity : AppCompatActivity() {
         // 시간표 리스트 가져오기
         // loadScheduleList()
         viewModel.loadScheduleList()
-        viewModel.semesterList.observe(this, {
+        viewModel.semesterList.observe(this) {
             val sortSemester = hashMapOf<YearSemesterPair, MutableList<Schedule>>()
             it.forEach { schedule ->
-                if(!sortSemester.containsKey(YearSemesterPair(schedule.year, schedule.season))) {
+                if (!sortSemester.containsKey(YearSemesterPair(schedule.year, schedule.season))) {
                     sortSemester[YearSemesterPair(schedule.year, schedule.season)] = mutableListOf(schedule)
-                }
-                else sortSemester[YearSemesterPair(schedule.year, schedule.season)]!!.add(schedule)
+                } else sortSemester[YearSemesterPair(
+                    schedule.year,
+                    schedule.season
+                )]!!.add(schedule)
             }
             val semesterList = mutableListOf<Semester>()
+            sortSemester.keys.forEach { key ->
+                Timber.d(key.year.toString())
+                Timber.d(key.semester.toString())
+                Timber.d("아아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ")
+            }
+            Timber.d(sortSemester.keys.sorted().toString())
             sortSemester.keys.sorted().forEach { semester ->
-                semesterList.add(Semester(semester.year, semester.semester,
-                    sortSemester[semester]!!.toList()))
+                semesterList.add(
+                    Semester(
+                        semester.year, semester.semester,
+                        sortSemester[semester]!!.toList()
+                    )
+                )
             }
             tableListAdapter.setSemesters(semesterList)
-        })
+        }
 
         // "RESULT_OK" : 새 시간표 만듬
         val resultListener =
@@ -138,6 +151,14 @@ class TableListActivity : AppCompatActivity() {
 }
 
 class YearSemesterPair(val year : Int, val semester : Int) : Comparable<YearSemesterPair> {
+    override fun equals(other: Any?): Boolean {
+        return (other is YearSemesterPair) && this.year==other.year && this.semester==other.semester
+    }
+
+    override fun hashCode(): Int {
+        return year*1000+semester
+    }
+
     override fun compareTo(other: YearSemesterPair): Int {
         when {
             this.year > other.year -> return -1
@@ -146,7 +167,7 @@ class YearSemesterPair(val year : Int, val semester : Int) : Comparable<YearSeme
                 when (this.semester) {
                     1 -> {
                         return when(other.semester) {
-                            1 -> -1
+                            1 -> 0
                             else ->  1
                         }
                     }

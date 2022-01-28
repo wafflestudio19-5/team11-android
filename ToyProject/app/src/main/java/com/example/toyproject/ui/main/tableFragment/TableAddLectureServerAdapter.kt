@@ -65,6 +65,8 @@ class TableAddLectureServerAdapter(private val context: Context): RecyclerView.A
                     sBuilder.clear()
 
                     serverLectureCode.text = lecture.subject_code
+                    serverLectureItemLevel.text = lecture.level
+                    serverLectureItemFeature.text
 
                     if(position==highlighted) {
                         serverLectureItemMoreLayout.visibility = View.VISIBLE
