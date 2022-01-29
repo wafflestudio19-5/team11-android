@@ -55,37 +55,50 @@ class ArticleMakeActivity : AppCompatActivity() {
             }
             else{
                 val imageUri: Uri? = result.data?.data
-                uriList.add(imageUri)
-                val dialogBinding = DialogAddDescriptionBinding.inflate(layoutInflater)
-                val dialogBuilder = AlertDialog.Builder(this)
-                    .setTitle("이미지 설명")
-                    .setView(dialogBinding.root)
-                    .setPositiveButton("완료") { _, _ ->
-                        if(dialogBinding.textContent.text != null){
-                            descriptionList.add(dialogBinding.textContent.text.toString())
-                        }else{
-                            descriptionList.add("")
-                        }
-                        articleMakeAdapter = ArticleMakeAdapter(this)
-                        articleMakeLayoutManager = LinearLayoutManager(this).also {
-                            it.orientation = LinearLayoutManager.HORIZONTAL
-                        }
-                        binding.articleImageUploadView.apply {
-                            adapter = articleMakeAdapter
-                            layoutManager = articleMakeLayoutManager
-                        }
-                        val list: ArrayList<ArticleImageInfo> = arrayListOf()
-                        if(uriList.size!=0){
-                            for(i in 0 until uriList.size){
-                                list.add(ArticleImageInfo(uriList[i], descriptionList[i]))
+                lateinit var imageBitmap: Bitmap
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P){
+                    imageBitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri!!))
+                } else{
+                    imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                }
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+                if(imageBitmap.height>4000||imageBitmap.width>4000){
+                    Toast.makeText(this@ArticleMakeActivity, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                }else{
+                    uriList.add(imageUri)
+                    val dialogBinding = DialogAddDescriptionBinding.inflate(layoutInflater)
+                    val dialogBuilder = AlertDialog.Builder(this)
+                        .setTitle("이미지 설명")
+                        .setView(dialogBinding.root)
+                        .setPositiveButton("완료") { _, _ ->
+                            if(dialogBinding.textContent.text != null){
+                                descriptionList.add(dialogBinding.textContent.text.toString())
+                            }else{
+                                descriptionList.add("")
                             }
+                            articleMakeAdapter = ArticleMakeAdapter(this)
+                            articleMakeLayoutManager = LinearLayoutManager(this).also {
+                                it.orientation = LinearLayoutManager.HORIZONTAL
+                            }
+                            binding.articleImageUploadView.apply {
+                                adapter = articleMakeAdapter
+                                layoutManager = articleMakeLayoutManager
+                            }
+                            val list: ArrayList<ArticleImageInfo> = arrayListOf()
+                            if(uriList.size!=0){
+                                for(i in 0 until uriList.size){
+                                    list.add(ArticleImageInfo(uriList[i], descriptionList[i]))
+                                }
+                            }
+                            articleMakeAdapter.setImages(list)
+                            articleMakeAdapter.notifyDataSetChanged()
+                            //binding.warningView.visibility = View.GONE
                         }
-                        articleMakeAdapter.setImages(list)
-                        articleMakeAdapter.notifyDataSetChanged()
-                        //binding.warningView.visibility = View.GONE
-                    }
-                val dialog = dialogBuilder.create()
-                dialog.show()
+                    val dialog = dialogBuilder.create()
+                    dialog.show()
+                }
+
             }
         }
 
@@ -147,7 +160,6 @@ class ArticleMakeActivity : AppCompatActivity() {
                 } else if(articleTextTemp.replace(" ", "")==""){
                     Toast.makeText(this@ArticleMakeActivity, "내용을 입력해주세요.", Toast.LENGTH_LONG).show()
                 } else{
-                    var imageSizeCheck = true
                     val list: MutableList<MultipartBody.Part> = mutableListOf()
                     for(uri in uriList){
                         lateinit var imageBitmap: Bitmap
@@ -158,36 +170,30 @@ class ArticleMakeActivity : AppCompatActivity() {
                         }
                         val byteArrayOutputStream = ByteArrayOutputStream()
                         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
-                        if(imageBitmap.height>4000||imageBitmap.width>4000){
-                            Toast.makeText(this@ArticleMakeActivity, "4000px*4000px 이하의 이미지만 업로드할 수 있습니다.", Toast.LENGTH_SHORT).show()
-                            imageSizeCheck = false
-                        }
                         val requestBody: RequestBody = byteArrayOutputStream.toByteArray().toRequestBody()
                         val fileName = System.currentTimeMillis().toString() + ".jpg"
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", fileName, requestBody)
                         list.add(body)
                     }
-                    if(imageSizeCheck){
-                        val titleRequestBody: RequestBody = articleTitleTemp.toPlainRequestBody()
-                        val textRequestBody: RequestBody = articleTextTemp.toPlainRequestBody()
-                        val anonymousBody : RequestBody = isAnonymous.toString().toPlainRequestBody()
-                        val questionBody : RequestBody = isQuestion.toString().toPlainRequestBody()
-                        val textHashMap = hashMapOf<String, RequestBody>()
-                        textHashMap["title"] = titleRequestBody
-                        textHashMap["text"] = textRequestBody
-                        textHashMap["is_anonymous"] = anonymousBody
-                        textHashMap["is_question"] = questionBody
-                        val textsList = mutableListOf<MultipartBody.Part>()
-                        for(texts in descriptionList){
-                            val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
-                            textsList.add(body)
-                        }
-
-                        viewModel.createArticle(boardId, textHashMap, textsList, list)
-                        setResult(RESULT_OK)
-                        finish()
-                        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
+                    val titleRequestBody: RequestBody = articleTitleTemp.toPlainRequestBody()
+                    val textRequestBody: RequestBody = articleTextTemp.toPlainRequestBody()
+                    val anonymousBody : RequestBody = isAnonymous.toString().toPlainRequestBody()
+                    val questionBody : RequestBody = isQuestion.toString().toPlainRequestBody()
+                    val textHashMap = hashMapOf<String, RequestBody>()
+                    textHashMap["title"] = titleRequestBody
+                    textHashMap["text"] = textRequestBody
+                    textHashMap["is_anonymous"] = anonymousBody
+                    textHashMap["is_question"] = questionBody
+                    val textsList = mutableListOf<MultipartBody.Part>()
+                    for(texts in descriptionList){
+                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("texts", texts)
+                        textsList.add(body)
                     }
+
+                    viewModel.createArticle(boardId, textHashMap, textsList, list)
+                    setResult(RESULT_OK)
+                    finish()
+                    overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out_up)
                 }
             }
         }

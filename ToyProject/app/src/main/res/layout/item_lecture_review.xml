@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:layout_marginBottom="5sp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="#FFC107"
+                android:rating="3"
+                android:stepSize="1" />
+            <TextView
+                android:id="@+id/lecture_semester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp"
+                android:layout_marginBottom="5sp"
+                android:text="21년 1학기 수강자"
+                android:layout_gravity="start"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/like_button"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/comment_buttons_background"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:layout_marginStart="5sp"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                app:srcCompat="@drawable/icn_s_posvote_gray500" />
+            <TextView
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="추천"/>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/review_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginEnd="20sp"
+        android:text="강의평"
+        android:layout_gravity="start"
+        android:textColor="@color/OnBackground"
+        android:textSize="14sp" />
+</LinearLayout>

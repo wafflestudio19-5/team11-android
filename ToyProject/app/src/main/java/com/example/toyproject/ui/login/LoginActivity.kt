@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,6 +35,9 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import com.kakao.auth.AuthType
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.KakaoSDK
@@ -117,6 +121,7 @@ class LoginActivity:AppCompatActivity() {
         checkSelfPermission()
         viewModel
 
+
         // signup 이 완료되지 않았으면 뒤로가기 버튼으로 다시 이 화면으로 돌아올 수 있고, 이후 과정이 모두 끝날 때 이 액티비티를 종료
         val resultListener =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -156,6 +161,21 @@ class LoginActivity:AppCompatActivity() {
                     binding.loginButton.setOnClickListener {
                         val param = Login(binding.emailEdit.text.toString(), binding.passwordEdit.text.toString())
                         viewModel.login(param)
+                        var token : String = "ohmygod"
+
+                        Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
+                            if (!task.isSuccessful) {
+                                Log.w("LoginActivity", "Fetching FCM registration token failed", task.exception)
+                                return@OnCompleteListener
+                            }
+
+                            // Get new FCM registration token
+                            token = task.result
+                            Toast.makeText(this, "my token is : " + token, Toast.LENGTH_SHORT).show()
+                            viewModel.fcmToken(token)
+
+                        })
+
                     }
                     viewModel.result.observe(this, {
                         if(it=="success") {
@@ -263,11 +283,33 @@ class LoginActivity:AppCompatActivity() {
 
             // 로그인 버튼 눌렀을 때 (일반 로그인)
             binding.loginButton.setOnClickListener {
+
                 val param = Login(binding.emailEdit.text.toString(), binding.passwordEdit.text.toString())
                 viewModel.login(param)
+
+
+
+
             }
             viewModel.result.observe(this, {
                 if(it=="success") {
+
+                    Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("LoginActivity", "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
+                        }
+
+                        // Get new FCM registration token
+                        var token = task.result
+                        //Toast.makeText(this, "my token is : " + token, Toast.LENGTH_SHORT).show()
+
+                        val msg = "FCM registration Token: " + token
+                        Log.d("LoginActivity", msg)
+
+                        viewModel.fcmToken(token)
+                    })
+
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("socialType", "normal")
                     startActivity(intent)
@@ -295,7 +337,7 @@ class LoginActivity:AppCompatActivity() {
             val length = permissions.size
             for (i in 0 until length) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "권한허용", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(this, "권한허용", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -317,7 +359,7 @@ class LoginActivity:AppCompatActivity() {
                 1
             )
         } else {
-            Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show()
         }
     }
 }

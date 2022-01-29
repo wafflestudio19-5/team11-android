@@ -12,7 +12,9 @@ data class ArticleContent (
     val like_count : Int,
     val scrap_count : Int,
     val has_scraped : Boolean,
+    val has_subscribed : Boolean,
     val is_mine : Boolean,
+    val is_question: Boolean,
     val comment_count : Int,
     val image_count : Int,
     val created_at : String,
@@ -35,5 +37,6 @@ data class Comment(
     val like_count : Int,
     val is_writer : Boolean,
     val user_nickname: String,
-    val user_image: String?
+    val user_image: String?,
+    val has_subscribed: Boolean
 )

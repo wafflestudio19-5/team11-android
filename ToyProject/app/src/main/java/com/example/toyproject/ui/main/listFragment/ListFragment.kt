@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.toyproject.ui.board.BoardActivity
 import com.example.toyproject.ui.board.BoardSearchActivity
 import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.board.MyArticleBoardActivity
+import com.example.toyproject.ui.review.ReviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -146,21 +148,18 @@ class ListFragment : Fragment() {
         }
 
         binding.bestBoardView.setOnClickListener {
-            Intent(activity, HotBestBoardActivity::class.java).apply{
+            Intent(activity, HotBestBoardActivity::class.java).apply {
                 putExtra("board_name", "BEST 게시판")
                 putExtra("board_interest", "best")
             }.run{resultListener.launch(this)}
         }
 
-        binding.refreshButton.setOnClickListener {
-            generalAdapter.resetBoards()
-            promotionAdapter.resetBoards()
-            organizationAdapter.resetBoards()
-            departmentAdapter.resetBoards()
-            careerAdapter.resetBoards()
-            defaultAdapter.resetBoards()
-            viewModel.getBoardList()
+        binding.lectureReviewView.setOnClickListener {
+            Intent(activity, ReviewActivity::class.java).apply {
+
+            }.run{resultListener.launch(this)}
         }
+
 
 
         // 게시판 검색 후 게시판 생성하고 돌아올 수 있으니, 새로고침 listener 적용
@@ -220,6 +219,25 @@ class ListFragment : Fragment() {
                 }.run{resultListener.launch(this)}
 
             }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
+            }
         })
 
         defaultAdapter.setItemClickListener(object: DefaultRecyclerViewAdapter.OnItemClickListener {
@@ -229,6 +247,25 @@ class ListFragment : Fragment() {
                     putExtra("board_id", data.id)
                 }.run{startActivity(this)}
             }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
+            }
         })
 
         careerAdapter.setItemClickListener(object: CareerRecyclerViewAdapter.OnItemClickListener {
@@ -237,6 +274,25 @@ class ListFragment : Fragment() {
                     putExtra("board_name", data.name)
                     putExtra("board_id", data.id)
                 }.run{startActivity(this)}
+            }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
             }
         })
 
@@ -248,6 +304,25 @@ class ListFragment : Fragment() {
                     putExtra("board_id", data.id)
                 }.run{startActivity(this)}
             }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
+            }
         })
 
         organizationAdapter.setItemClickListener(object:
@@ -258,6 +333,25 @@ class ListFragment : Fragment() {
                     putExtra("board_id", data.id)
                 }.run{startActivity(this)}
             }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
+            }
         })
 
         departmentAdapter.setItemClickListener(object:
@@ -267,6 +361,25 @@ class ListFragment : Fragment() {
                     putExtra("board_name", data.name)
                     putExtra("board_id", data.id)
                 }.run{startActivity(this)}
+            }
+
+            override fun pinClick(v: View, data: Board, position: Int, favorite: Boolean) {
+                if(favorite) {
+                    Toast.makeText(activity, "즐겨찾기를 껐습니다.",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(activity, "즐겨찾기를 켰습니다.",Toast.LENGTH_SHORT).show()
+                }
+                viewModel.putFavoriteBoard(data.id)
+                //핀 후 보드 초기화
+                Handler(Looper.getMainLooper()).postDelayed({
+                    generalAdapter.resetBoards()
+                    promotionAdapter.resetBoards()
+                    organizationAdapter.resetBoards()
+                    departmentAdapter.resetBoards()
+                    careerAdapter.resetBoards()
+                    defaultAdapter.resetBoards()
+                    viewModel.getBoardList() },
+                    100)
             }
         })
 

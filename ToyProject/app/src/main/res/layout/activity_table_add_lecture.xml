@@ -1,0 +1,1352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/table_add_lecture_top_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageButton
+                android:id="@+id/table_add_lecture_close_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_m_close_background" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/table_add_lecture_top_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="수업 추가"
+            android:textColor="@color/OnBackground"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_lecture_button"
+            android:layout_width="48dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_login"
+            android:backgroundTint="#C62918"
+            android:text="완료"
+            android:textColor="@color/OnPrimary"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/add_lecture_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="235dp"
+        android:background="@drawable/borderline"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table_add_lecture_top_layout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/table_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:background="@drawable/borderline"
+                app:alignmentMode="alignMargins"
+                app:columnCount="11"
+                app:orientation="vertical"
+                app:rowCount="100">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="0" />
+
+                <View
+                    android:id="@+id/table_grid_0_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="1" />
+
+                <View
+                    android:id="@+id/table_grid_0_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="2" />
+
+                <View
+                    android:id="@+id/table_grid_0_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="3" />
+
+                <View
+                    android:id="@+id/table_grid_0_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="4" />
+
+                <View
+                    android:id="@+id/table_grid_1_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="5" />
+
+                <View
+                    android:id="@+id/table_grid_1_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="6" />
+
+                <View
+                    android:id="@+id/table_grid_1_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="7" />
+
+                <View
+                    android:id="@+id/table_grid_1_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="8" />
+
+                <View
+                    android:id="@+id/table_grid_2_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="9" />
+
+                <View
+                    android:id="@+id/table_grid_2_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="10" />
+
+                <View
+                    android:id="@+id/table_grid_2_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="11" />
+
+                <View
+                    android:id="@+id/table_grid_2_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="12" />
+
+                <View
+                    android:id="@+id/table_grid_3_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="13" />
+
+                <View
+                    android:id="@+id/table_grid_3_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="14" />
+
+                <View
+                    android:id="@+id/table_grid_3_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="15" />
+
+                <View
+                    android:id="@+id/table_grid_3_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="16" />
+
+                <View
+                    android:id="@+id/table_grid_4_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="17" />
+
+                <View
+                    android:id="@+id/table_grid_4_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="18" />
+
+                <View
+                    android:id="@+id/table_grid_4_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="19" />
+
+                <View
+                    android:id="@+id/table_grid_4_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="20" />
+
+                <View
+                    android:id="@+id/table_grid_5_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="21" />
+
+                <View
+                    android:id="@+id/table_grid_5_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="22" />
+
+                <View
+                    android:id="@+id/table_grid_5_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="23" />
+
+                <View
+                    android:id="@+id/table_grid_5_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="24" />
+
+                <View
+                    android:id="@+id/table_grid_6_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="25" />
+
+                <View
+                    android:id="@+id/table_grid_6_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="26" />
+
+                <View
+                    android:id="@+id/table_grid_6_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="27" />
+
+                <View
+                    android:id="@+id/table_grid_6_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="28" />
+
+                <View
+                    android:id="@+id/table_grid_7_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="29" />
+
+                <View
+                    android:id="@+id/table_grid_7_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="30" />
+
+                <View
+                    android:id="@+id/table_grid_7_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="31" />
+
+                <View
+                    android:id="@+id/table_grid_7_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="32" />
+
+                <View
+                    android:id="@+id/table_grid_8_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="33" />
+
+                <View
+                    android:id="@+id/table_grid_8_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="34" />
+
+                <View
+                    android:id="@+id/table_grid_8_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="35" />
+
+                <View
+                    android:id="@+id/table_grid_8_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="36" />
+
+                <View
+                    android:id="@+id/table_grid_9_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="37" />
+
+                <View
+                    android:id="@+id/table_grid_9_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="38" />
+
+                <View
+                    android:id="@+id/table_grid_9_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="39" />
+
+                <View
+                    android:id="@+id/table_grid_9_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="40" />
+
+                <View
+                    android:id="@+id/table_grid_10_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="41" />
+
+                <View
+                    android:id="@+id/table_grid_10_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="42" />
+
+                <View
+                    android:id="@+id/table_grid_10_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="43" />
+
+                <View
+                    android:id="@+id/table_grid_10_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="44" />
+
+                <View
+                    android:id="@+id/table_grid_11_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="45" />
+
+                <View
+                    android:id="@+id/table_grid_11_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="46" />
+
+                <View
+                    android:id="@+id/table_grid_11_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="47" />
+
+                <View
+                    android:id="@+id/table_grid_11_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="48" />
+
+                <View
+                    android:id="@+id/table_grid_12_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="49" />
+
+                <View
+                    android:id="@+id/table_grid_12_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="50" />
+
+                <View
+                    android:id="@+id/table_grid_12_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="51" />
+
+                <View
+                    android:id="@+id/table_grid_12_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="52" />
+
+                <View
+                    android:id="@+id/table_grid_13_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="53" />
+
+                <View
+                    android:id="@+id/table_grid_13_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="54" />
+
+                <View
+                    android:id="@+id/table_grid_13_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="55" />
+
+                <View
+                    android:id="@+id/table_grid_13_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="56" />
+
+                <View
+                    android:id="@+id/table_grid_14_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="57" />
+
+                <View
+                    android:id="@+id/table_grid_14_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="58" />
+
+                <View
+                    android:id="@+id/table_grid_14_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="59" />
+
+                <View
+                    android:id="@+id/table_grid_14_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="60" />
+
+                <View
+                    android:id="@+id/table_grid_15_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="61" />
+
+                <View
+                    android:id="@+id/table_grid_15_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="62" />
+
+                <View
+                    android:id="@+id/table_grid_15_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="63" />
+
+                <View
+                    android:id="@+id/table_grid_15_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    app:layout_column="0"
+                    app:layout_row="64" />
+
+                <View
+                    android:id="@+id/table_grid_16_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="65" />
+
+                <View
+                    android:id="@+id/table_grid_16_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="66" />
+
+                <View
+                    android:id="@+id/table_grid_16_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="67" />
+
+                <View
+                    android:id="@+id/table_grid_16_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="68" />
+
+                <View
+                    android:id="@+id/table_grid_17_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="69" />
+
+                <View
+                    android:id="@+id/table_grid_17_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="70" />
+
+                <View
+                    android:id="@+id/table_grid_17_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="71" />
+
+                <View
+                    android:id="@+id/table_grid_17_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="72" />
+
+                <View
+                    android:id="@+id/table_grid_18_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="73" />
+
+                <View
+                    android:id="@+id/table_grid_18_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="74" />
+
+                <View
+                    android:id="@+id/table_grid_18_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="75" />
+
+                <View
+                    android:id="@+id/table_grid_18_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="76" />
+
+                <View
+                    android:id="@+id/table_grid_19_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="77" />
+
+                <View
+                    android:id="@+id/table_grid_19_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="78" />
+
+                <View
+                    android:id="@+id/table_grid_19_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="79" />
+
+                <View
+                    android:id="@+id/table_grid_19_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="80" />
+
+                <View
+                    android:id="@+id/table_grid_20_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="81" />
+
+                <View
+                    android:id="@+id/table_grid_20_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="82" />
+
+                <View
+                    android:id="@+id/table_grid_20_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="83" />
+
+                <View
+                    android:id="@+id/table_grid_20_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="84" />
+
+                <View
+                    android:id="@+id/table_grid_21_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="85" />
+
+                <View
+                    android:id="@+id/table_grid_21_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="86" />
+
+                <View
+                    android:id="@+id/table_grid_21_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="87" />
+
+                <View
+                    android:id="@+id/table_grid_21_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="88" />
+
+                <View
+                    android:id="@+id/table_grid_22_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="89" />
+
+                <View
+                    android:id="@+id/table_grid_22_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="90" />
+
+                <View
+                    android:id="@+id/table_grid_22_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="91" />
+
+                <View
+                    android:id="@+id/table_grid_22_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="92" />
+
+                <View
+                    android:id="@+id/table_grid_23_1"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="93" />
+
+                <View
+                    android:id="@+id/table_grid_23_2"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="94" />
+
+                <View
+                    android:id="@+id/table_grid_23_3"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="95" />
+
+                <View
+                    android:id="@+id/table_grid_23_4"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/table_row_width"
+                    android:visibility="gone"
+                    app:layout_column="0"
+                    app:layout_row="96" />
+
+                <View
+                    android:id="@+id/table_left_top"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    app:layout_column="1"
+                    app:layout_row="0" />
+
+                <TextView
+                    android:id="@+id/table_col_mon"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="월"
+                    android:textSize="@dimen/table_border_text_size"
+                    app:layout_column="2"
+                    app:layout_gravity="fill"
+                    app:layout_row="0" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/divider"
+                    app:layout_column="3"
+                    app:layout_gravity="fill"
+                    app:layout_row="0"
+                    app:layout_rowSpan="97" />
+
+                <TextView
+                    android:id="@+id/table_col_tue"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="화"
+                    android:textSize="11sp"
+                    app:layout_column="4"
+                    app:layout_gravity="fill"
+                    app:layout_row="0" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/divider"
+                    app:layout_column="5"
+                    app:layout_gravity="fill"
+                    app:layout_row="0"
+                    app:layout_rowSpan="97" />
+
+                <TextView
+                    android:id="@+id/table_col_wed"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="수"
+                    android:textSize="11sp"
+                    app:layout_column="6"
+                    app:layout_gravity="fill"
+                    app:layout_row="0" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/divider"
+                    app:layout_column="7"
+                    app:layout_gravity="fill"
+                    app:layout_row="0"
+                    app:layout_rowSpan="97" />
+
+                <TextView
+                    android:id="@+id/table_col_thu"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="목"
+                    android:textSize="11sp"
+                    app:layout_column="8"
+                    app:layout_gravity="fill"
+                    app:layout_row="0" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/divider"
+                    app:layout_column="9"
+                    app:layout_gravity="fill"
+                    app:layout_row="0"
+                    app:layout_rowSpan="97" />
+
+                <TextView
+                    android:id="@+id/table_col_fri"
+                    android:layout_width="@dimen/table_col_width"
+                    android:layout_height="@dimen/table_row_border_width"
+                    android:background="@drawable/table_cell_stroke"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="금"
+                    android:textSize="11sp"
+                    app:layout_column="10"
+                    app:layout_gravity="fill"
+                    app:layout_row="0" />
+
+                <TextView
+                    android:id="@+id/table_grid_0"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="12"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="1"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_1"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="1"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="5"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_2"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="2"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="9"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_3"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="3"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="13"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_4"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="4"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="17"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_5"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="5"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="21"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_6"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="6"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="25"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_7"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="7"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="29"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_8"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="8"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="33"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_9"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="9"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="37"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_10"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="10"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="41"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_11"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="11"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="45"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_12"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="12"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="49"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_13"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="1"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="53"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_14"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="2"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="57"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_15"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="3"
+                    android:textSize="11sp"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="61"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_16"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="4"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="65"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_17"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="5"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="69"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_18"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="6"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="73"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_19"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="7"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="77"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_20"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="8"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="81"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_21"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="9"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="85"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_22"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="10"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="89"
+                    app:layout_rowSpan="4" />
+
+                <TextView
+                    android:id="@+id/table_grid_23"
+                    android:layout_width="@dimen/table_row_border_width"
+                    android:layout_height="@dimen/table_row_width"
+                    android:background="@drawable/table_cell_stroke_right"
+                    android:gravity="top|end"
+                    android:text="11"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    app:layout_column="1"
+                    app:layout_gravity="fill"
+                    app:layout_row="93"
+                    app:layout_rowSpan="4" />
+            </androidx.gridlayout.widget.GridLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_lecture_preview">
+
+        <LinearLayout
+            android:id="@+id/add_lecture_scroll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/add_lecture_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="수업명"
+                android:inputType="textPersonName"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/add_lecture_title_underline"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/background_lightlightgray" />
+
+            <EditText
+                android:id="@+id/add_lecture_instructor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="교수명"
+                android:inputType="textPersonName"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <View
+                android:id="@+id/add_lecture_instructor_underline"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/background_lightlightgray" />
+
+            <TextView
+                android:id="@+id/add_lecture_time_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:text="시간 및 장소 추가"
+                android:textColor="@color/Primary"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

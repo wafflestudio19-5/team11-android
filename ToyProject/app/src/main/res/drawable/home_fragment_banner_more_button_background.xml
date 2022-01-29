@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#F7F7F7"/>
+    <solid android:color="@color/home_banner_more"/>
     <corners
         android:topLeftRadius="14dp"
         android:topRightRadius="14dp"

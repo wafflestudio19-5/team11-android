@@ -39,9 +39,11 @@ class HotBestBoardAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     articleContent.text = data.text
                     profileNickname.text = data.user_nickname
                     if(data.image_count==0){
-                        articleImageIcon.visibility = View.INVISIBLE
+                        articleImageIcon.visibility = View.GONE
+                        articleImageNumber.visibility = View.GONE
                     }else{
                         articleImageIcon.visibility = View.VISIBLE
+                        articleImageNumber.visibility =View.VISIBLE
                         articleImageNumber.text = data.image_count.toString()
                     }
                     articleCommentNumber.text = data.comment_count.toString()

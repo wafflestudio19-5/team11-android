@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.toyproject.R
 import com.example.toyproject.databinding.ItemNotDefaultBoardBinding
 import com.example.toyproject.network.dto.Board
 
@@ -25,6 +26,12 @@ class DepartmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.binding.apply {
                     notDefaultBoardTitle.text = data.name
                     notDefaultBoardDescription.text = data.description
+                    if(data.favorite) boardPinIcon.setImageResource(R.drawable.icn_mcr_board_pin_on)
+                    else boardPinIcon.setImageResource(R.drawable.icn_mcr_board_pin_off)
+                    boardPinIcon.setOnClickListener{
+                        if(data.favorite) itemClickListener.pinClick(it, data, position, true)
+                        else itemClickListener.pinClick(it, data, position, false)
+                    }
                     root.setOnClickListener {
                         itemClickListener.onItemClick(root, data, position)
                     }
@@ -41,6 +48,7 @@ class DepartmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
 
     interface OnItemClickListener {
         fun onItemClick(v: View, data: Board, position: Int)
+        fun pinClick(v: View, data: Board, position: Int, favorite: Boolean)
     }
 
     fun setItemClickListener(onItemClickListener : OnItemClickListener){

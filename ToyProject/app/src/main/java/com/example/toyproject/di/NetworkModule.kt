@@ -3,9 +3,7 @@ package com.example.toyproject.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.toyproject.BuildConfig
-import com.example.toyproject.network.BoardService
-import com.example.toyproject.network.Service
-import com.example.toyproject.network.UserService
+import com.example.toyproject.network.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -89,5 +87,29 @@ object NetworkModule {
     @Singleton
     fun provideBoardService(retrofit: Retrofit): BoardService {
         return retrofit.create(BoardService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTableService(retrofit: Retrofit): TableService {
+        return retrofit.create(TableService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReviewService(retrofit: Retrofit): ReviewService {
+        return retrofit.create(ReviewService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoteService(retrofit: Retrofit): NoteService {
+        return retrofit.create(NoteService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotifyService(retrofit: Retrofit): NotifyService {
+        return retrofit.create(NotifyService::class.java)
     }
 }

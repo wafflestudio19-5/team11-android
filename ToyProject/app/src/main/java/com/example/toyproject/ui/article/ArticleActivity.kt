@@ -2,6 +2,7 @@ package com.example.toyproject.ui.article
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -26,6 +27,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityArticleBinding
 import com.example.toyproject.network.dto.CommentCreate
 import com.example.toyproject.ui.board.SwipeDismissBaseActivity
+import com.example.toyproject.ui.main.noteFragment.NoteMakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URL
 import java.util.*
@@ -78,8 +80,12 @@ class ArticleActivity : SwipeDismissBaseActivity(){
 
         var isMine = false
         var hasScraped = false
+        var hasSubscribed = false
         // 게시글 내용물들 다 불러왔으면 채워넣기
         viewModel.result.observe(this, {
+            if(it.is_question){
+                binding.questionLayout.visibility = View.VISIBLE
+            }
             //게시글 작성자 프로필 이미지 불러오기
             val credentials: BasicAWSCredentials
             val key = getString(R.string.AWS_ACCESS_KEY_ID)
@@ -108,12 +114,16 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                             .fitCenter()
                     )
                     .load(url.toString())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(findViewById(R.id.article_full_writer_profile))
             }
 
             isMine = it.is_mine
             hasScraped = it.has_scraped
+            hasSubscribed = it.has_subscribed
+            if(hasSubscribed) binding.articleFullNotifyButton.setImageResource(R.drawable.icn_m_notification_on_red)
+            else binding.articleFullNotifyButton.setImageResource(R.drawable.icn_m_notification_off_gray400)
             binding.articleFullWriterNickname.text = it.user_nickname
             binding.articleFullWrittenTime.text = it.created_at
             binding.articleFullTitle.text = it.title
@@ -202,10 +212,10 @@ class ArticleActivity : SwipeDismissBaseActivity(){
             override fun onCommentClick(parent: Int) {
                 val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                     .setMessage("대댓글을 작성하시겠습니까?")
-                    .setNegativeButton("취소") { dialogInterface, i ->
+                    .setNegativeButton("취소") { dialogInterface, _ ->
                         dialogInterface.dismiss()
                     }
-                    .setPositiveButton("확인") { dialogInterface, i ->
+                    .setPositiveButton("확인") { _, _ ->
                         // 원래 빨갰던 댓글은 하얗게 되돌리고,대댓글의 parent 가 될 댓글을 빨갛게 만들고, 키보드 올리기
                         binding.commentView[commentAdapter.getItemPosition(commentParent)].setBackgroundColor(
                             Color.parseColor("#FFFFFF")
@@ -236,10 +246,10 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                 } else {
                     val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                         .setMessage("이 댓글을 공감하시겠습니까?")
-                        .setNegativeButton("취소") { dialogInterface, i ->
+                        .setNegativeButton("취소") { dialogInterface, _ ->
                             dialogInterface.dismiss()
                         }
-                        .setPositiveButton("확인") { dialogInterface, i ->
+                        .setPositiveButton("확인") { _, _ ->
                             viewModel.likeComment(id)
                         }
                     val dialog = mBuilder.create()
@@ -249,18 +259,20 @@ class ArticleActivity : SwipeDismissBaseActivity(){
             }
 
             // ... 버튼 누를 때
-            override fun onCommentMore(id: Int, mine: Boolean, sub: Boolean) {
+            override fun onCommentMore(id: Int, mine: Boolean, sub: Boolean, subscribe: Boolean) {
                 val array = if (!mine) {
                     if (sub) {
                         arrayOf("쪽지 보내기", "신고")
                     } else {
-                        arrayOf("대댓글 알림 켜기", "쪽지 보내기", "신고")
+                        if(!subscribe) arrayOf("대댓글 알림 켜기", "쪽지 보내기", "신고")
+                        else arrayOf("대댓글 알림 끄기", "쪽지 보내기", "신고")
                     }
                 } else {
                     if (sub) {
                         arrayOf("삭제")
                     } else {
-                        arrayOf("대댓글 알림 켜기", "삭제")
+                        if(!subscribe) arrayOf("대댓글 알림 켜기", "삭제")
+                        else arrayOf("대댓글 알림 끄기", "삭제")
                     }
                 }
                 val builder = AlertDialog.Builder(this@ArticleActivity)
@@ -269,15 +281,29 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                         "삭제" -> {
                             val mBuilder = AlertDialog.Builder(this@ArticleActivity)
                                 .setMessage("삭제하시겠습니까?")
-                                .setNegativeButton("취소") { dialogInterface, i ->
+                                .setNegativeButton("취소") { dialogInterface, _ ->
                                     dialogInterface.dismiss()
                                 }
-                                .setPositiveButton("확인") { dialogInterface, i ->
+                                .setPositiveButton("확인") { _, _ ->
                                     viewModel.deleteComment(boardId, articleId, id)
                                 }
                             val dialog = mBuilder.create()
                             dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                             dialog.show()
+                        }
+                        //TODO: 알림 키고 끌 때 즉각 반영하기
+                        "대댓글 알림 켜기" -> {
+                            viewModel.subscribeComment(id)
+                        }
+                        "대댓글 알림 끄기" -> {
+                            viewModel.subscribeComment(id)
+                            array[which] = "대댓글 알림 켜기"
+                        }
+                        "쪽지 보내기" -> {
+                            Intent(this@ArticleActivity, NoteMakeActivity::class.java).apply{
+                                putExtra("id", id)
+                                putExtra("from", "comment")
+                            }.run{startActivity(this)}
                         }
                         // TODO (다른 선택지들)
                     }
@@ -286,6 +312,11 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                 dialog.show()
             }
         })
+
+        viewModel.subscribeCommentResult.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        })
+
         // 왼쪽 상단 뒤로가기 버튼
         binding.articleBackButton.setOnClickListener {
             finish()
@@ -315,6 +346,12 @@ class ArticleActivity : SwipeDismissBaseActivity(){
                         val dialog = mBuilder.create()
                         dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
                         dialog.show()
+                    }
+                    "쪽지 보내기" -> {
+                        Intent(this@ArticleActivity, NoteMakeActivity::class.java).apply{
+                            putExtra("id", articleId)
+                            putExtra("from", "article")
+                        }.run{startActivity(this)}
                     }
                 }
             }
@@ -357,6 +394,25 @@ class ArticleActivity : SwipeDismissBaseActivity(){
             dialog.findViewById<TextView>(android.R.id.message)?.textSize = 13f
             dialog.show()
         }
+
+        //알림 버튼 누를 때
+        binding.articleFullNotifyButton.setOnClickListener {
+            viewModel.subscribeArticle(articleId)
+        }
+
+        //알림 버튼 observe
+        viewModel.subscribeResult.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            if(it=="댓글 알림을 켰습니다."){
+                binding.articleFullNotifyButton.setImageResource(R.drawable.icn_m_notification_on_red)
+            } else{
+                binding.articleFullNotifyButton.setImageResource(R.drawable.icn_m_notification_off_gray400)
+            }
+
+        })
+
+
+
         // 댓글 삭제 결과 출력
         viewModel.deleteResult.observe(this, {
             viewModel.getArticle(boardId, articleId)

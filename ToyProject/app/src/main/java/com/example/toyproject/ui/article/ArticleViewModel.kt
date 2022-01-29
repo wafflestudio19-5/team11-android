@@ -40,6 +40,12 @@ class ArticleViewModel @Inject constructor(
     private val _scrapResult = MutableLiveData<String>()
     val scrapResult : LiveData<String> = _scrapResult
 
+    private val _subscribeResult = MutableLiveData<String>()
+    val subscribeResult : LiveData<String> = _subscribeResult
+
+    private val _subscribeCommentResult = MutableLiveData<String>()
+    val subscribeCommentResult : LiveData<String> = _subscribeCommentResult
+
     private val _deleteArticleResult = MutableLiveData<String>()
     val deleteArticleResult : LiveData<String> = _deleteArticleResult
 
@@ -127,6 +133,55 @@ class ArticleViewModel @Inject constructor(
             }
         })
     }
+
+    //게시물 알림 받기
+    fun subscribeArticle(article_id: Int) {
+        service.subscribeArticle(article_id).clone().enqueue(object : Callback<ScrapResponse> {
+            override fun onFailure(call: Call<ScrapResponse>, t: Throwable) {
+                _subscribeResult.value = "서버와의 통신에 실패하였습니다."
+            }
+
+            override fun onResponse(call: Call<ScrapResponse>, response: Response<ScrapResponse>) {
+                if(response.isSuccessful){
+                    //게시물 알림 설정 성공
+                    _subscribeResult.value = response.body()!!.detail.toString()
+                }
+                else{
+                    //에러
+                    val error = retrofit.responseBodyConverter<ErrorMessage>(
+                        ErrorMessage::class.java,
+                        ErrorMessage::class.java.annotations
+                    ).convert(response.errorBody())
+                    _subscribeResult.value = error!!.detail.toString()
+                }
+            }
+        })
+    }
+
+    //댓글 알림 받기
+    fun subscribeComment(comment_id: Int) {
+        service.subscribeComment(comment_id).clone().enqueue(object : Callback<ScrapResponse> {
+            override fun onFailure(call: Call<ScrapResponse>, t: Throwable) {
+                _subscribeCommentResult.value = "서버와의 통신에 실패하였습니다."
+            }
+
+            override fun onResponse(call: Call<ScrapResponse>, response: Response<ScrapResponse>) {
+                if(response.isSuccessful){
+                    //댓글 알림 설정 성공
+                    _subscribeCommentResult.value = response.body()!!.detail.toString()
+                }
+                else{
+                    //에러
+                    val error = retrofit.responseBodyConverter<ErrorMessage>(
+                        ErrorMessage::class.java,
+                        ErrorMessage::class.java.annotations
+                    ).convert(response.errorBody())
+                    _subscribeCommentResult.value = error!!.detail.toString()
+                }
+            }
+        })
+    }
+
     // 댓글 삭제
     fun deleteComment(board_id : Int, article_id : Int, comment_id : Int) {
         service.deleteComment(board_id, article_id, comment_id).enqueue(object : Callback<CommentDeleteResponse> {

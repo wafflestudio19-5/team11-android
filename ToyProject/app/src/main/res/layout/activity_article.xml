@@ -34,7 +34,10 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/icn_m_back_background" />
+                android:src="@drawable/icn_m_back_background"
+                app:tint="@color/OnBackground"
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -70,6 +73,7 @@
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_marginEnd="10dp"
+            app:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_notification_off_gray400" />
 
         <ImageView
@@ -77,6 +81,7 @@
             android:layout_width="30dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
+            android:tint="@color/OnBackground"
             app:srcCompat="@drawable/icn_m_more_background" />
 
 
@@ -134,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="익명"
-                            android:textColor="#292929"
+                            android:textColor="@color/home_fragment_cell_title"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -157,7 +162,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
-                android:textColor="#292929"
+                android:textColor="@color/home_fragment_cell_title"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -168,7 +173,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
-                android:textColor="#444444"
+                android:textColor="@color/home_fragment_content"
                 android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -181,6 +186,27 @@
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_article_image" />
+
+            <LinearLayout
+                android:id="@+id/question_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/borderline_mint"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="질문 글을 작성하면 게시판상단에 일정 기간 동안 노출되어, 더욱 빠르게 답변을 얻을 수 있게 됩니다.
+\n또한, 다른 학우들이 정성껏 작성한 답변을 유지하기 위해, 댓글이 달린 이후에는 글을 수정 및 삭제할 수 없습니다. "
+                    android:textColor="@color/SecondaryVariant"
+                    android:textSize="11dp"
+                    android:layout_margin="10dp"/>
+
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,6 +222,7 @@
                     android:layout_marginStart="22dp"
                     android:backgroundTint="@color/Background"
                     android:scaleType="centerInside"
+                    android:tint="@color/Primary"
                     app:srcCompat="@drawable/icn_s_posvote_red" />
 
                 <TextView

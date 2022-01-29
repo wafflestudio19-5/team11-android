@@ -4,7 +4,7 @@
     android:shape="oval">
 
     <solid
-        android:color="#F7F7F7"/>
+        android:color="@color/home_banner_more"/>
     <size
         android:width="10dp"
         android:height="10dp"/>

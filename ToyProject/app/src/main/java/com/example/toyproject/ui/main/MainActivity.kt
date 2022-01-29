@@ -1,5 +1,6 @@
 package com.example.toyproject.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +20,25 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 import javax.inject.Inject
+import android.util.DisplayMetrics
+import android.view.Display
+import androidx.lifecycle.lifecycleScope
+import com.example.toyproject.network.NoteService
+import com.example.toyproject.network.NotifyService
+import com.example.toyproject.ui.main.tableFragment.Cell
+import com.google.android.material.badge.BadgeDrawable
+import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var service: Service
+    @Inject
+    lateinit var notifyService: NotifyService
+    @Inject
+    lateinit var noteService: NoteService
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -35,12 +49,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+    private var notifyBadgeNumber: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
 
         // 로그인 화면에서 진입할 때 페이드 인 효과
         overridePendingTransition(R.anim.slide_hold_fade_in, R.anim.slide_nothing)
@@ -50,13 +69,17 @@ class MainActivity : AppCompatActivity() {
         tabLayout = binding.tabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
-            override fun onTabSelected(tab: TabLayout.Tab?) { tab?.position?.let { viewPager?.setCurrentItem(it, false) } }
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.position?.let { viewPager?.setCurrentItem(it, false) }
+                tab?.removeBadge()
+            }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
 
         val pagerAdapter = ViewpagerFragmentAdapter(this)
         viewPager.adapter = pagerAdapter
         viewPager.isUserInputEnabled = false
+        viewPager.offscreenPageLimit = 4
 
         TabLayoutMediator(tabLayout, viewPager){
                 tab: TabLayout.Tab, i: Int ->
@@ -65,10 +88,33 @@ class MainActivity : AppCompatActivity() {
                 1-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_timetable_active, null)
                 2-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_board_active, null)
                 3-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_notification_active, null)
-                4-> ResourcesCompat.getDrawable(resources, R.drawable.icn_tab_campuspick_active, null)
+                4-> ResourcesCompat.getDrawable(resources, R.drawable.outline_send_24, null)
                 else-> throw IllegalStateException("no tab")
             }
         }.attach()
+
+        val tab3 = tabLayout.getTabAt(3)
+        val tab4 = tabLayout.getTabAt(4)
+        lifecycleScope.launch{
+            val badge3 = tab3?.orCreateBadge
+            val notificationCount = notifyService.unreadNotification().unread_count
+            if(notificationCount == 0) badge3?.isVisible = false
+            else badge3?.number = notificationCount
+        }
+
+        lifecycleScope.launch{
+            val badge4 = tab4?.orCreateBadge
+            badge4?.isVisible = noteService.getMessageRoom().has_new_message
+        }
+
+
+
+//        val badgeDrawable : BadgeDrawable = tabLayout.getTabAt(4)?.orCreateBadge ?: BadgeDrawable.create(this)
+//        badgeDrawable.isVisible = true
+//        badgeDrawable.number = 5
+
+
+
 
     }
     // 홈 화면에서 각 셀의 "더 보기"를 눌렀을 때 그 탭으로 이동(viewPager)

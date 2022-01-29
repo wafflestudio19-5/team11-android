@@ -95,6 +95,16 @@ interface BoardService {
         @Path("article_id") article_id: Int
     ) : Call<ScrapResponse>
 
+    @POST("api/v1/subscribe/article/{article_id}/")
+    fun subscribeArticle(
+        @Path("article_id") article_id: Int
+    ) : Call<ScrapResponse>
+
+    @POST("api/v1/subscribe/comment/{comment_id}/")
+    fun subscribeComment(
+        @Path("comment_id") comment_id: Int
+    ) : Call<ScrapResponse>
+
     @DELETE("/api/v1/board/{board_id}/article/{article_id}/comment/{comment_id}/")
     fun deleteComment(
         @Path("board_id") board_id : Int,
@@ -113,6 +123,7 @@ interface BoardService {
         @Path("article_id") article_id: Int
     ) : Call<Success>
 
+
     @GET("/api/v1/board_favorite/")
     suspend fun searchFavoriteBoard(): FetchAllBoard
 
@@ -120,5 +131,15 @@ interface BoardService {
     suspend fun putFavoriteBoard(
         @Path("board_id") board_id: Int
     ) : FavoriteBoard
+
+    @FormUrlEncoded
+    @POST("/api/v1/message/")
+    suspend fun sendMessage(
+        @Field("article_id") article_id: Int,
+        @Field("comment_id") comment_id: Int,
+        @Field("text") text: String
+    ) : Success
+
+
 
 }

@@ -19,6 +19,8 @@ import com.example.toyproject.network.dto.MyArticle
 import com.example.toyproject.ui.board.HotBestBoardActivity
 import com.example.toyproject.ui.main.MainActivity
 import com.example.toyproject.ui.profile.UserActivity
+import com.example.toyproject.ui.review.ReviewActivity
+import com.example.toyproject.ui.review.ReviewRecentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import javax.inject.Inject
@@ -42,6 +44,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var issueAdapter : HomeIssueRecyclerViewAdapter
     private lateinit var issueLayoutManager: LinearLayoutManager
+
+    private lateinit var recentAdapter : HomeRecentRecyclerViewAdapter
+    private lateinit var recentLayoutManager: LinearLayoutManager
 
 
     override fun onCreateView(
@@ -84,10 +89,7 @@ class HomeFragment : Fragment() {
         // 맨 위 배너 부분
         binding.homeTopBanner.clipToPadding = false
         binding.homeTopBanner.offscreenPageLimit = 1
-        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
-        val currentItemHorizontalMarginPx =
-            resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
-        val pageTranslationX = nextItemVisiblePx //+ currentItemHorizontalMarginPx
+
         val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
             val width = Resources.getSystem().displayMetrics.widthPixels
             page.translationX = (-width * 0.23 * position).toFloat()
@@ -150,13 +152,15 @@ class HomeFragment : Fragment() {
         }
         // 즐겨찾는 게시판 내용 채우기
         viewModel.loadFavorite()
-        viewModel.favorBoards.observe(this, {
-            if(it.isEmpty()) binding.homeFragmentCellFavorite.visibility = View.GONE
+        viewModel.favorBoards.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) binding.homeFragmentCellFavorite.visibility = View.GONE
             else viewModel.loadFavoriteTitles(it)
-        })
-        viewModel.favorBoardsTitle.observe(this, {
-            favorAdapter.setFavoriteBoard(it, viewModel.boardIds, viewModel.articleIds, viewModel.boardNames)
-        })
+        }
+        viewModel.favorBoardsTitle.observe(viewLifecycleOwner) {
+            favorAdapter.setFavoriteBoard(
+                it, viewModel.boardIds, viewModel.articleIds, viewModel.boardNames
+            )
+        }
         // 즐겨찾는 게시판 아이템 클릭
         favorAdapter.setItemClickListener(object : HomeFavoriteRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, board_id : Int, article_id : Int, board_name : String, position: Int) {
@@ -177,12 +181,12 @@ class HomeFragment : Fragment() {
         }
         // 실시간 인기 글 게시판 내용 채우기
         viewModel.loadIssue()
-        viewModel.issueArticleList.observe(this, {
+        viewModel.issueArticleList.observe(viewLifecycleOwner) {
             viewModel.loadIssueBoardName(it)
-        })
-        viewModel.issueArticleBoardNameList.observe(this, {
+        }
+        viewModel.issueArticleBoardNameList.observe(viewLifecycleOwner) {
             issueAdapter.setIssue(viewModel.issueArticleList.value!!, it)
-        })
+        }
         // 실시간 인기 글 게시판 아이템 클릭
         issueAdapter.setItemClickListener(object : HomeIssueRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
@@ -206,9 +210,9 @@ class HomeFragment : Fragment() {
             layoutManager = hotLayoutManager
         }
         viewModel.loadHot(0, 4, "hot")
-        viewModel.hotArticleList.observe(this, {
+        viewModel.hotArticleList.observe(viewLifecycleOwner) {
             hotAdapter.setHotArticles(it)
-        })
+        }
         hotAdapter.setItemClickListener(object : HomeHotRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(v: View, data: MyArticle, position: Int) {
                 (activity as MainActivity).openArticle(data.board_id, data.id, "HOT 게시판")
@@ -235,10 +239,22 @@ class HomeFragment : Fragment() {
         // 최근 강의평
         if(setting[7] =="true") binding.homeFragmentCellLecture.visibility = View.VISIBLE
         else binding.homeFragmentCellLecture.visibility = View.GONE
-        binding.homeFragmentCellLecture.setOnClickListener {
-            // TODO
-            (activity as MainActivity).preparing()
+        binding.homeFragmentCellLecture.topLayout.setOnClickListener {
+            val intent = Intent(activity, ReviewActivity::class.java)
+            startActivity(intent)
         }
+        recentAdapter = HomeRecentRecyclerViewAdapter(requireActivity())
+        recentLayoutManager = LinearLayoutManager(activity)
+        binding.homeFragmentCellLecture.recyclerView.apply {
+            adapter = recentAdapter
+            layoutManager = recentLayoutManager
+        }
+        viewModel.loadRecentReview()
+        viewModel.recentReviewList.observe(viewLifecycleOwner) {
+            recentAdapter.setReview(it.toMutableList())
+        }
+
+
         // 주변 맛집?
 
         // 답변을 기다리는 질문

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="3px"
         android:layout_marginBottom="8dp"
-        android:background="#EDEDED" />
+        android:background="@color/divider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
-            android:textColor="#292929"
+            android:textColor="@color/home_fragment_cell_title"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="4dp"
-        android:textColor="#444444"
+        android:textColor="@color/home_fragment_content"
         android:textSize="14sp"
         android:textStyle="normal" />
 
@@ -132,7 +132,8 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:visibility="invisible"
-            app:srcCompat="@drawable/icn_s_posvote_red" />
+            app:srcCompat="@drawable/icn_s_posvote_red"
+            app:tint="@color/Primary" />
 
         <TextView
             android:id="@+id/item_comment_like_num"

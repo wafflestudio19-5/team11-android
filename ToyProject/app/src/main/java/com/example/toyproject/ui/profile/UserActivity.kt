@@ -123,6 +123,7 @@ class UserActivity: AppCompatActivity() {
                             .fitCenter()
                     )
                     .load(url.toString())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(findViewById(R.id.profileImageView))
             }

@@ -7,11 +7,13 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.toyproject.network.Service
 import com.example.toyproject.network.dto.*
 import com.example.toyproject.ui.univsearch.UnivSearchActivity
 import com.example.toyproject.ui.univsearch.UnivSearchActivity_GeneratedInjector
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -206,5 +208,11 @@ class LoginViewModel @Inject constructor(
                 }
             }
         })
+    }
+
+    fun fcmToken(token: String){
+        viewModelScope.launch {
+            service.fcmToken(token)
+        }
     }
 }

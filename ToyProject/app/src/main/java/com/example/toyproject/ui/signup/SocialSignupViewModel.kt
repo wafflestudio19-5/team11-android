@@ -60,7 +60,7 @@ class SocialSignupViewModel @Inject constructor(
                             val error = retrofit.responseBodyConverter<ErrorMessage>(
                                 ErrorMessage::class.java,
                                 ErrorMessage::class.java.annotations
-                            ).convert(response.errorBody())
+                            ).convert(response.errorBody()!!)
                             errorMessage = parsing(error)
                         } catch (e:Exception) {
                             errorMessage = response.errorBody()?.string()!!
@@ -88,7 +88,7 @@ class SocialSignupViewModel @Inject constructor(
                             val error = retrofit.responseBodyConverter<ErrorMessage>(
                                 ErrorMessage::class.java,
                                 ErrorMessage::class.java.annotations
-                            ).convert(response.errorBody())
+                            ).convert(response.errorBody()!!)
                             errorMessage = parsing(error)
                         } catch (e:Exception) {
                             errorMessage = response.errorBody()?.string()!!

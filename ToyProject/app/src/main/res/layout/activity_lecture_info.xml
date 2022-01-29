@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="@string/lecture_review"
+            android:textColor="@color/OnBackground"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:gravity="fill_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/borderline"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lecture_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="과목명"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginBottom="5sp"
+                            android:text="교수명"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/professor_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginBottom="5sp"
+                            android:text="교수명"
+                            android:textColor="@color/OnBackground"
+                            android:textSize="14sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginBottom="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginBottom="5sp"
+                            android:text="개설학기"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/lecture_semester"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginEnd="20sp"
+                            android:text="2021-2, 2020-2"
+                            android:textColor="@color/OnBackground"
+                            android:textSize="14sp"/>
+                    </TableRow>
+
+                </TableLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/borderline"
+                    android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="5sp"
+                        android:text="강의평"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/write_review_button"
+                        android:layout_width="120sp"
+                        android:layout_height="30sp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginEnd="20sp"
+                        android:background="@drawable/btn_login"
+                        android:backgroundTint="@color/Primary"
+                        android:text="새 강의평 쓰기"
+                        android:textColor="@color/OnPrimary"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20sp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="#FFC107"
+                        android:rating="0"
+                        android:stepSize="0.01" />
+
+                    <TextView
+                        android:id="@+id/rating_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_gravity="center"
+                        android:text="0"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="20sp" />
+
+
+                </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/review_layout"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="과제"
+                                    android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/assignment_avg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="많음"
+                                    android:textColor="@color/OnBackground"
+                                    android:textSize="14sp" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="조모임"
+                                    android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/team_avg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="없음"
+                                    android:textColor="@color/OnBackground"
+                                    android:textSize="14sp"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="성적"
+                                    android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/grading_avg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="너그러움"
+                                    android:textColor="@color/OnBackground"
+                                    android:textSize="14sp"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="출결"
+                                    android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/attend_avg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="전자출결"
+                                    android:textColor="@color/OnBackground"
+                                    android:textSize="14sp"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_marginBottom="10sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="시험횟수"
+                                    android:textSize="13sp" />
+                                <TextView
+                                    android:id="@+id/exam_avg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:text="세 번"
+                                    android:textColor="@color/OnBackground"
+                                    android:textSize="14sp"/>
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_reviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_lecture_review" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/not_found_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginBottom="10sp"
+                        android:textSize="13sp"
+                        android:text="아직 등록된 강의평이 없습니다"
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/create_review_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:backgroundTint="@color/Primary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="새 강의평 쓰기"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="성적 반영"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="과제"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:id="@+id/assignment_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/assignment_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="많음"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/assignment_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:checked="true"
+                        android:text="보통"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/assignment_0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="없음"/>
+                </com.google.android.material.chip.ChipGroup>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="조모임"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:id="@+id/team_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/team_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="많음"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/team_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:checked="true"
+                        android:text="보통"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/team_0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="없음"/>
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="성적"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:id="@+id/grading_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/grading_0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:checked="true"
+                        android:text="너그러움"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/grading_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="보통"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/grading_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="깐깐함"/>
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="출결"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:id="@+id/attendance_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/attend_0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="혼용"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/attend_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:checked="true"
+                        android:text="직접호명"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/attend_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="지정좌석"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/attend_3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="전자출결"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/attend_4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="반영안함"/>
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="시험횟수"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    android:id="@+id/exam_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/exam_4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="네번이상"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/exam_3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="세번"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/exam_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:checked="true"
+                        android:text="두번"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/exam_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="한번"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/exam_0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="없음"/>
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="총평"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="총점"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <RatingBar
+                    android:id="@+id/rating_user"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:progressTint="#FFC107"
+                    android:rating="3"
+                    android:stepSize="1" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="수강학기"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_semester"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:minHeight="20sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <EditText
+                    android:id="@+id/review_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:layout_marginEnd="10sp"
+                    android:textSize="14sp"
+                    android:paddingTop="5sp"
+                    android:paddingStart="10sp"
+                    android:hint="이 강의에 대한 총평을 작성해주세요.\n(등록 후에는 수정 및 삭제가 불가능하므로 신중히 적어 주세요.)"
+                    android:maxLength="1000"
+                    android:background="@drawable/borderline_gray"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/post_review_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/btn_login"
+                    android:backgroundTint="@color/Primary"
+                    android:text="작성하기(+10P)"
+                    android:textColor="@color/OnPrimary"
+                    android:textSize="16sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="5sp"
+                        android:text="시험정보"
+                        android:textColor="@color/OnBackground"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/write_exam_button"
+                        android:layout_width="120sp"
+                        android:layout_height="30sp"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginEnd="20sp"
+                        android:background="@drawable/btn_login"
+                        android:backgroundTint="@color/Primary"
+                        android:text="시험 정보 공유"
+                        android:textColor="@color/OnPrimary"
+                        android:textSize="16sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_exams"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/item_exam_info" />
+
+                    <TextView
+                        android:id="@+id/not_found_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginBottom="10sp"
+                        android:textSize="13sp"
+                        android:text="아직 등록된 시험정보가 없습니다."
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/create_information_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/borderline"
+                android:backgroundTint="@color/Primary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="시험 정보 공유"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="응시한 시험"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="수강학기"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_semester_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:minHeight="48dp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="종류"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_exam_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:minHeight="48dp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="시험 전략"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/information_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/borderline_gray"
+                    android:hint="시험에 대한 전략, 공부 방법, 노하우를 자유롭게 적어주세요."
+                    android:maxLength="1000"
+                    android:minHeight="48dp"
+                    android:paddingStart="10sp"
+                    android:paddingTop="5sp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="문제 유형(복수 선택)"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_marginStart="20sp"
+                    app:singleSelection="false"
+                    app:selectionRequired="true"
+                    android:id="@+id/question_type_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="객관식"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="주관식"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="T/F형"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="약술형"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="논술형"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_6"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="구술"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/question_type_7"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3A3A3A"
+                        android:text="기타"/>
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="문제 예시"
+                    android:textColor="@color/OnBackground"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/question_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginBottom="5sp"
+                    android:layout_marginEnd="10sp"
+                    android:textSize="14sp"
+                    android:paddingTop="5sp"
+                    android:paddingStart="10sp"
+                    android:minHeight="48dp"
+                    android:hint="예) 게임이론의 정의와 두 가지 이상의 사례를 작성하시오."
+                    android:maxLength="1000"
+                    android:background="@drawable/borderline_gray"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/post_information_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:background="@drawable/btn_login"
+                    android:backgroundTint="@color/Primary"
+                    android:text="공유하기(+10P)"
+                    android:textColor="@color/OnPrimary"
+                    android:textSize="16sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

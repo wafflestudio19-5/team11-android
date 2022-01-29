@@ -77,8 +77,6 @@ class ListViewModel @Inject constructor(
                     Timber.d("error")
                 }
             }
-
-
         }
     }
 
@@ -89,9 +87,15 @@ class ListViewModel @Inject constructor(
         _organizationBoardList.value = organizationTempList
         _departmentBoardList.value = departmentTempList
         _generalBoardList.value = generalTempList
-
-
     }
+
+    fun putFavoriteBoard(board_id: Int){
+        viewModelScope.launch {
+            service.putFavoriteBoard(board_id)
+        }
+    }
+
+
 
 
 }
