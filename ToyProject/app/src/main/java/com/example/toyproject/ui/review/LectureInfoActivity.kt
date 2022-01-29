@@ -245,6 +245,7 @@ class LectureInfoActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        setResult(RESULT_OK)
         finish()
     }
 

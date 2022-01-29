@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
 import com.example.toyproject.databinding.ActivityReviewBinding
 import com.example.toyproject.network.dto.table.CustomLecture
+import com.example.toyproject.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ReviewActivity: AppCompatActivity() {
@@ -39,6 +42,7 @@ class ReviewActivity: AppCompatActivity() {
 
     private var page = 0
     private var recentPage = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,16 +166,23 @@ class ReviewActivity: AppCompatActivity() {
             adapter= recentAdapter
             layoutManager = recentLinearLayoutManager
         }
+        // 최상단 툴바
+        val resultListener =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if(it.resultCode == RESULT_OK) {
+                    viewModel.getRecentReview(0, 20)
+                }
+            }
         // 최근 강의평 아이템 클릭
         recentAdapter.setClicker(object : ReviewRecentAdapter.Clicker {
             override fun click(id: Int) {
                 val intent = Intent(this@ReviewActivity, LectureInfoActivity::class.java)
                 intent.putExtra("id", id)
-                startActivity(intent)
+                resultListener.launch(intent)
             }
         })
         // 최근 강의평 첫 20개 불러오기
-       //viewModel.getRecentReview(0, 20)
+        viewModel.getRecentReview(0, 20)
         // 페이지네이션
         binding.recyclerViewRecentReview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -190,9 +201,10 @@ class ReviewActivity: AppCompatActivity() {
         viewModel.recentReviewList.observe(this) {
             if(recentPage==0) {
                 recentAdapter.setReview(it.toMutableList())
-                page++
+                recentPage++
             }
             else {
+                Timber.d("가가가가가가가 $recentPage" )
                 recentAdapter.addReview(it.toMutableList())
             }
         }

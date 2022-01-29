@@ -39,6 +39,8 @@ class HomeRecentRecyclerViewAdapter(private val context: Context) : RecyclerView
                     lectureInfo.text = buildLectureInfoString(review.subject_name, review.professor)
                     reviewDetail.text = review.comment
 
+                    lectureInfoSemester.text = buildSeasonInfoString(review.year, review.season)
+
                     val stars = arrayOf(serverLectureStar1, serverLectureStar1, serverLectureStar2,
                         serverLectureStar3, serverLectureStar4, serverLectureStar5)
                     stars.forEachIndexed { idx, star  ->
@@ -83,6 +85,15 @@ class HomeRecentRecyclerViewAdapter(private val context: Context) : RecyclerView
                 .append(professor)
         }
         return sBuilder.toString()
+    }
+
+    private fun buildSeasonInfoString(year : Int, season : String) : String {
+        return StringBuilder()
+            .append(year-2000)
+            .append("-")
+            .append(season)
+            .append(" 수강")
+            .toString()
     }
 
     interface Clicker {

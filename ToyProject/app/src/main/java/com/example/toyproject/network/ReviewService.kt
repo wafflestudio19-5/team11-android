@@ -40,7 +40,7 @@ interface ReviewService {
     ): Call<Information>
 
     @GET("/api/v1/subject_professor/all/review/")
-    fun getRecentReview(
+    suspend fun getRecentReview(
         @Query("offset") offset : Int,
         @Query("limit") limit : Int
     ) : RecentReview

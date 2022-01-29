@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var issueAdapter : HomeIssueRecyclerViewAdapter
     private lateinit var issueLayoutManager: LinearLayoutManager
 
-    private lateinit var recentAdapter : ReviewRecentAdapter
+    private lateinit var recentAdapter : HomeRecentRecyclerViewAdapter
     private lateinit var recentLayoutManager: LinearLayoutManager
 
 
@@ -243,13 +243,13 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, ReviewActivity::class.java)
             startActivity(intent)
         }
-        recentAdapter = ReviewRecentAdapter(requireActivity())
+        recentAdapter = HomeRecentRecyclerViewAdapter(requireActivity())
         recentLayoutManager = LinearLayoutManager(activity)
         binding.homeFragmentCellLecture.recyclerView.apply {
             adapter = recentAdapter
             layoutManager = recentLayoutManager
         }
-        // viewModel.loadRecentReview() TODO
+        viewModel.loadRecentReview()
         viewModel.recentReviewList.observe(viewLifecycleOwner) {
             recentAdapter.setReview(it.toMutableList())
         }

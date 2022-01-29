@@ -10,6 +10,7 @@ import com.example.toyproject.R
 import com.example.toyproject.databinding.ItemRecentReviewBinding
 import com.example.toyproject.network.RecentReviewItem
 import com.example.toyproject.network.Review
+import timber.log.Timber
 
 class ReviewRecentAdapter(private val context: FragmentActivity): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -69,11 +70,13 @@ class ReviewRecentAdapter(private val context: FragmentActivity): RecyclerView.A
     }
 
     fun setReview(reviews : MutableList<RecentReviewItem>) {
+        Timber.d("아아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ")
         this.recentReview = reviews
         notifyDataSetChanged()
     }
 
     fun addReview(reviews : MutableList<RecentReviewItem>) {
+        Timber.d("가가ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ")
         this.recentReview.addAll(reviews)
         notifyDataSetChanged()
     }
@@ -81,7 +84,7 @@ class ReviewRecentAdapter(private val context: FragmentActivity): RecyclerView.A
     private fun buildLectureSemesterString(year : Int, season : String) : String{
         return StringBuilder()
             .append(year-2000)
-            .append("년")
+            .append("년 ")
             .append(season)
             .append(" 수강자")
             .toString()

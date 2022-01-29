@@ -396,8 +396,8 @@
                 android:layout_height="wrap_content"
                 app:title = "최근 강의평"
                 app:moreVisible = "0"
-                app:recyclerViewVisible = "8"
-                app:preparingVisible="0" />
+                app:recyclerViewVisible = "0"
+                app:preparingVisible="8" />
 
             <com.example.toyproject.ui.main.homeFragment.HomeFragmentCell
                 android:id="@+id/home_fragment_cell_out"
