@@ -696,12 +696,17 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/write_exam_button"
                         android:layout_width="120sp"
                         android:layout_height="30sp"
-                        android:layout_marginStart="170sp"
                         android:layout_marginTop="10sp"
+                        android:layout_marginEnd="20sp"
                         android:background="@drawable/btn_login"
                         android:backgroundTint="@color/Primary"
                         android:text="시험 정보 공유"
