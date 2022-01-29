@@ -465,13 +465,18 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
     // 시간표에 셀 추가하는 함수
     private fun makeCell(cellObject : Cell) : TableCellView {
         val item = TableCellView(this)
-        item.text = cellObject.title
-        item.setTypeface(item.typeface, Typeface.BOLD)
-        item.setTextColor(Color.parseColor("#FFFFFF"))
+        item.title.text = cellObject.title
+        item.title.setTypeface(item.title.typeface, Typeface.BOLD)
+        item.title.setTextColor(Color.parseColor("#FFFFFF"))
         item.setBackgroundColor(Color.parseColor(cellObject.color))
+        item.location.text = cellObject.location
         // item.width = resources.getDimension(R.dimen.table_col_width).toInt()
-        item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+        val layoutParam = item.topLayout.layoutParams
+        layoutParam.width = colWidth
+        layoutParam.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+        item.topLayout.layoutParams = layoutParam
+        //item.width = colWidth
+        //item.topLayout.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
         item.gravity = Gravity.TOP
 
         val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(cellObject.col,1)
@@ -504,8 +509,12 @@ class TableAddLectureDefaultActivity : AppCompatActivity() {
         val item =  TableCellView(this)
 
         item.setBackgroundColor(Color.parseColor("#803C3C3C"))
-        item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+//        item.width = colWidth
+//        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+        val layoutParam = item.topLayout.layoutParams
+        layoutParam.width = colWidth
+        layoutParam.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+        item.topLayout.layoutParams = layoutParam
 
         val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
         val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(start, span)

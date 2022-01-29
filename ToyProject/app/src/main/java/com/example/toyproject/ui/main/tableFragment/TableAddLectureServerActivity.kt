@@ -457,10 +457,12 @@ class TableAddLectureServerActivity : AppCompatActivity() {
 
                 // 시간대마다 셀 추가
                 val times = parseServerTimeInput(lecture.time)
+                val locations = if(lecture.location!=null) lecture.location.split("/")
+                                else null
                 val tempCells = mutableListOf<Cell>()
 
                 val colorCode = randomColor()
-                times?.forEach { time ->
+                times?.forEachIndexed { idx, time ->
                     // 기존 시간표와 중복 확인
                     val isDuplicate : String? = checkDuplicate(time.second.first,
                         time.second.first+time.second.second, time.first, -1)
@@ -477,10 +479,12 @@ class TableAddLectureServerActivity : AppCompatActivity() {
                         shadows.clear()
                         return
                     }
+                    var location = ""
+                    if(locations!=null && idx<locations.size) location = locations[idx]
                     val newItem = Cell(
                         lecture.subject_name, colorCode, time.second.first,
                         time.second.second, time.first, lecture.subject_name.hashCode(), lecture.id,
-                        lecture.professor, lecture.location, memo = "")
+                        lecture.professor, location, memo = "")
                     tempCells.add(newItem)
                 }
                 var flag = true
@@ -643,14 +647,21 @@ class TableAddLectureServerActivity : AppCompatActivity() {
     // 시간표에 셀 추가하는 함수
     private fun makeCell(cellObject : Cell) : TableCellView {
         val item = TableCellView(this)
-        item.text = cellObject.title
-        item.setTypeface(item.typeface, Typeface.BOLD)
-        item.setTextColor(Color.parseColor("#FFFFFF"))
+        item.title.text = cellObject.title
+        item.title.setTypeface(null, Typeface.BOLD)
+        item.title.setTextColor(Color.parseColor("#FFFFFF"))
         item.setBackgroundColor(Color.parseColor(cellObject.color))
+        item.location.text = cellObject.location
         // item.width = resources.getDimension(R.dimen.table_col_width).toInt()
-        item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
-        item.gravity = Gravity.TOP
+
+//        item.width = colWidth
+//        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+//        item.gravity = Gravity.TOP
+        val layoutParam = item.topLayout.layoutParams
+        layoutParam.width = colWidth
+        layoutParam.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+        item.topLayout.layoutParams = layoutParam
+
 
         val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(cellObject.col,1)
         val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(cellObject.start, cellObject.span)
@@ -682,8 +693,12 @@ class TableAddLectureServerActivity : AppCompatActivity() {
         val item =  TableCellView(this)
 
         item.setBackgroundColor(Color.parseColor("#803C3C3C"))
-        item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+//        item.width = colWidth
+//        item.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+        val layoutParam = item.topLayout.layoutParams
+        layoutParam.width = colWidth
+        layoutParam.height = (resources.getDimension(R.dimen.table_row_width)*span).toInt()
+        item.topLayout.layoutParams = layoutParam
 
         val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(col,1)
         val rowSpan : androidx.gridlayout.widget.GridLayout.Spec = androidx.gridlayout.widget.GridLayout.spec(start, span)

@@ -337,7 +337,7 @@ class LoginActivity:AppCompatActivity() {
             val length = permissions.size
             for (i in 0 until length) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "권한허용", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(this, "권한허용", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -359,7 +359,7 @@ class LoginActivity:AppCompatActivity() {
                 1
             )
         } else {
-            Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show()
         }
     }
 }

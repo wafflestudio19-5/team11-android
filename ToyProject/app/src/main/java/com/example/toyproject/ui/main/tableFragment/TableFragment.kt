@@ -247,13 +247,19 @@ class TableFragment : Fragment() {
     // 시간표에 셀 추가하는 함수
     private fun makeCell(cellObject : Cell) : TableCellView {
         val item = TableCellView(activity)
-        item.text = cellObject.title
-        item.setTypeface(item.typeface, Typeface.BOLD)
-        item.setTextColor(Color.parseColor("#FFFFFF"))
+        item.title.text = cellObject.title
+        item.title.setTypeface(null, Typeface.BOLD)
+        item.title.setTextColor(Color.parseColor("#FFFFFF"))
         item.setBackgroundColor(Color.parseColor(cellObject.color))
+        item.location.text = cellObject.location
         // item.width = resources.getDimension(R.dimen.table_col_width).toInt()
-        item.width = colWidth
-        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+//        item.width = colWidth
+//        item.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+        val layoutParam = item.topLayout.layoutParams
+        layoutParam.width = colWidth
+        layoutParam.height = (resources.getDimension(R.dimen.table_row_width)*cellObject.span).toInt()
+        item.topLayout.layoutParams = layoutParam
+
         item.gravity = Gravity.TOP
 
         val colSpan :  androidx.gridlayout.widget.GridLayout.Spec =  androidx.gridlayout.widget.GridLayout.spec(cellObject.col,1)
@@ -344,7 +350,7 @@ class TableFragment : Fragment() {
                                 // 친구들도 싹 약칭으로
                                 lectureHashMap[item.info]!!.forEach { piece ->
                                     val pieceObject = myCells[piece]!!
-                                    piece.text = it.nickname
+                                    piece.title.text = it.nickname
                                     pieceObject.title = it.nickname
                                 }
                                 flag = false
