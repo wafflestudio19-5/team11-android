@@ -73,6 +73,11 @@ class ReviewRecentAdapter(private val context: FragmentActivity): RecyclerView.A
         notifyDataSetChanged()
     }
 
+    fun addReview(reviews : MutableList<RecentReviewItem>) {
+        this.recentReview.addAll(reviews)
+        notifyDataSetChanged()
+    }
+
     private fun buildLectureSemesterString(year : Int, season : String) : String{
         return StringBuilder()
             .append(year-2000)
